@@ -31,7 +31,7 @@
 
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; }
-    a { color: inherit; text-decoration: none; }
+    a { color: inherit; }
 
     .app {
       max-width: 1320px;
@@ -281,8 +281,7 @@
       flex-wrap: wrap;
     }
 
-    .btn,
-    .btn-link {
+    .btn {
       border: none;
       border-radius: 12px;
       padding: 10px 12px;
@@ -291,21 +290,11 @@
       background: #111827;
       color: white;
       font-size: 0.82rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .btn.secondary,
-    .btn-link.secondary {
+    .btn.secondary {
       background: #eef2ff;
       color: #1e3a8a;
-    }
-
-    .btn-link.ig {
-      background: #fdf2f8;
-      color: #9d174d;
-      border: 1px solid #fbcfe8;
     }
 
     .gallery {
@@ -410,13 +399,13 @@
           <div class="logo">🗺️</div>
           <div class="title">
             <h1>Qingdao Travel Map Pro</h1>
-            <p>Map + Metro + 20 จุดถ่ายรูป + ร้าน local + แผน 3 วัน เริ่มจากโรงแรมทุกวัน</p>
+            <p>Map + Metro + 20 จุดถ่ายรูป + ร้าน local + แผน 3 วัน</p>
           </div>
         </div>
       </div>
       <div class="searchbar">
         <span>🔎</span>
-        <input id="searchInput" type="text" placeholder="ค้นหาสถานที่ เช่น Cathedral, Taidong, Beer Museum, Manxin Hotel" />
+        <input id="searchInput" type="text" placeholder="ค้นหาสถานที่ เช่น Cathedral, Taidong, Beer Museum" />
       </div>
       <div class="chips" id="chipBar">
         <button class="chip active" data-filter="all">ทั้งหมด</button>
@@ -434,13 +423,12 @@
         <div class="map-head">
           <div>
             <h2>Interactive Browser Map</h2>
-            <p>แตะการ์ดด้านขวาเพื่อซูมไปยังจุดนั้นบนแผนที่ได้ทันที ทุก route เริ่มจากโรงแรมก่อน</p>
+            <p>แตะการ์ดด้านขวาเพื่อซูมไปยังจุดนั้นบนแผนที่ได้ทันที เส้น Day 1–3 แยกสีไว้ให้แล้ว</p>
           </div>
           <div class="badge">📱 Mobile-first UI</div>
         </div>
         <div id="map"></div>
         <div class="legend">
-          <span class="badge"><span class="dot" style="background:#dc2626"></span>Hotel Start</span>
           <span class="badge"><span class="dot" style="background:#ef4444"></span>Day 1</span>
           <span class="badge"><span class="dot" style="background:#2563eb"></span>Day 2</span>
           <span class="badge"><span class="dot" style="background:#16a34a"></span>Day 3</span>
@@ -453,7 +441,7 @@
         <section class="panel" id="itineraryPanel">
           <div class="section-title">
             <h2>3-Day Itinerary</h2>
-            <p>ทุกวัน start จากโรงแรม แล้วค่อยต่อ route ให้ไม่ย้อนทาง</p>
+            <p>จัด route ให้ต่อเนื่อง ใช้ Metro ง่าย และไม่ย้อนทาง</p>
           </div>
           <div class="card-list" id="itineraryList"></div>
         </section>
@@ -470,7 +458,7 @@
         <section class="panel" id="photoPanel">
           <div class="section-title">
             <h2>20 Photo Spots</h2>
-            <p>มีปุ่ม IG ให้ทุกจุด เผื่อเปิดดู reference หรือเช็กภาพสถานที่เพิ่มเติม</p>
+            <p>จัดแบบ grid สไตล์ gallery ให้เลือกจุดถ่ายรูปได้ไว</p>
           </div>
           <div class="gallery" id="photoGallery"></div>
         </section>
@@ -478,7 +466,7 @@
         <section class="panel" id="foodPanel">
           <div class="section-title">
             <h2>Local Food & Streets</h2>
-            <p>รวมร้าน local และ food street ที่แทรกลง route ได้ง่าย พร้อมลิงก์ IG</p>
+            <p>รวมร้าน local และ food street ที่แทรกลง route ได้ง่าย</p>
           </div>
           <div class="card-list" id="foodList"></div>
         </section>
@@ -492,96 +480,31 @@
     crossorigin=""
   ></script>
   <script>
-    /*
-      ==========================================================
-      Coding Spec Summary
-      - Preserve original layout and logic as much as possible
-      - Add hotel start point to every day
-      - Add IG link field for every place
-      - Add IG button to popup / food cards / photo cards
-      - Keep everything static for GitHub Pages
-      ==========================================================
-    */
-
-    /*
-      ----------------------------------------------------------
-      Hotel start point
-      NOTE:
-      The hotel listing found publicly confirms:
-      - Manxin Hotel Qingdao Zhanqiao Railway Station
-      - No.158 Jiaozhou Road
-      - very close to Qingdao Railway Station
-      Public snippets did not expose exact coordinates directly,
-      so this is an APPROXIMATE hotel point near the station.
-      Replace these two values with exact coordinates later if you have them.
-      ----------------------------------------------------------
-    */
-    const hotelLat = 36.0652;
-    const hotelLng = 120.3162;
-    const hotelName = 'Manxin Hotel Qingdao Zhanqiao Railway Station';
-    const hotelZh = '青岛栈桥火车站漫心酒店';
-
-    /*
-      ----------------------------------------------------------
-      Helper: fallback IG search link
-      If you do not know the exact Instagram URL of a place,
-      this creates a search URL that opens Instagram search.
-      ----------------------------------------------------------
-    */
-    function igSearchLink(query) {
-      return `https://www.instagram.com/explore/search/keyword/?q=${encodeURIComponent(query)}`;
-    }
-
     const itineraries = [
       {
         id: 'day1',
         title: 'Day 1 — Old Town + Sea View + Sunset',
-        subtitle: `${hotelName} → Old Town walking route → Taiping Mountain`,
-        tags: ['เริ่มจากโรงแรม', 'เดินเยอะ', 'ถ่ายรูป', 'Sunset'],
-        points: [
-          hotelName,
-          'Silver Fish Street',
-          'St. Michael\'s Cathedral',
-          'Yue Xikelai Square',
-          'Longjiang Road',
-          'Qinyu Road',
-          'Taiping Mountain Cableway',
-          'Cafe La Mansarde'
-        ],
+        subtitle: 'Railway Station → Old Town walking route → Taiping Mountain',
+        tags: ['เดินเยอะ', 'ถ่ายรูป', 'Sunset'],
+        points: ['Silver Fish Street', 'St. Michael\'s Cathedral', 'Yue Xikelai Square', 'Longjiang Road', 'Qinyu Road', 'Taiping Mountain Cableway', 'Cafe La Mansarde'],
         center: [36.071, 120.321],
         zoom: 14
       },
       {
         id: 'day2',
         title: 'Day 2 — Beer + City Icons + Night Market',
-        subtitle: `${hotelName} → Beer museum route + old city icons + Taidong street food`,
-        tags: ['เริ่มจากโรงแรม', 'เบียร์', 'กลางคืน', 'กินเก่ง'],
-        points: [
-          hotelName,
-          'Tsingtao Brewery Museum',
-          'Qingdao Beer Street',
-          'Signal Hill Park',
-          'Zhongshan Road',
-          'Pichaiyuan',
-          'Taidong Pedestrian Street'
-        ],
+        subtitle: 'Beer museum route + old city icons + Taidong street food',
+        tags: ['เบียร์', 'กลางคืน', 'กินเก่ง'],
+        points: ['Tsingtao Brewery Museum', 'Qingdao Beer Street', 'Signal Hill Park', 'Zhongshan Road', 'Pichaiyuan', 'Taidong Pedestrian Street'],
         center: [36.081, 120.338],
         zoom: 13
       },
       {
         id: 'day3',
         title: 'Day 3 — Garden + Temple + Coastal Classics',
-        subtitle: `${hotelName} → Garden + Temple + coastal classics`,
-        tags: ['เริ่มจากโรงแรม', 'สวน', 'วัด', 'วิวเมือง'],
-        points: [
-          hotelName,
-          'Qingdao Botanical Garden',
-          'Zhanshan Temple',
-          'May Fourth Square',
-          'Olympic Sailing Center',
-          'Badaguan',
-          'Xiaoyushan Park'
-        ],
+        subtitle: 'ชิลกว่าเดิม เหมาะวันสุดท้ายหรือวันอากาศดี',
+        tags: ['สวน', 'วัด', 'วิวเมือง'],
+        points: ['Qingdao Botanical Garden', 'Zhanshan Temple', 'May Fourth Square', 'Olympic Sailing Center', 'Badaguan', 'Xiaoyushan Park'],
         center: [36.066, 120.377],
         zoom: 12
       }
@@ -596,66 +519,45 @@
       { line: 'Tourist Tip', color: '#111827', text: 'สำหรับทริปนี้ ใช้ Line 8 เข้าเมือง แล้วสลับ Line 1 หรือ Line 3 เป็นแกนหลักจะง่ายที่สุด' }
     ];
 
-    /*
-      ----------------------------------------------------------
-      Places
-      - Added hotel as a place
-      - Added ig for every place
-      - ig can be an exact Instagram link OR a search link
-      ----------------------------------------------------------
-    */
     const places = [
-      {
-        name: hotelName,
-        zh: hotelZh,
-        cat: 'hotel',
-        day: 'hotel',
-        lat: hotelLat,
-        lng: hotelLng,
-        district: 'Jiaozhou Road / Railway Station Area',
-        note: 'จุดเริ่มต้นทุกวัน',
-        best: 'ออกเดินทางตอนเช้า',
-        ig: igSearchLink('Manxin Hotel Qingdao Zhanqiao Railway Station')
-      },
+      { name: 'Silver Fish Street', zh: '银鱼巷', cat: 'photo', day: 'day1', lat: 36.0641, lng: 120.3202, district: 'Old Town', note: 'ตรอกสวย คาเฟ่เยอะ', best: 'เช้า / เย็น' },
+      { name: 'St. Michael\'s Cathedral', zh: '圣弥厄尔教堂', cat: 'photo', day: 'day1', lat: 36.06797, lng: 120.31561, district: 'Old Town', note: 'แลนด์มาร์กสถาปัตยกรรม', best: 'เช้า' },
+      { name: 'Yue Xikelai Square', zh: '悦喜客来广场', cat: 'route', day: 'day1', lat: 36.0685, lng: 120.3194, district: 'Old Town', note: 'พักกินข้าวกลาง route', best: 'กลางวัน' },
+      { name: 'Longjiang Road', zh: '龙江路', cat: 'photo', day: 'day1', lat: 36.0727, lng: 120.3149, district: 'Old Town', note: 'กำแพง art / graffiti', best: 'บ่าย' },
+      { name: 'Qinyu Road', zh: '琴屿路', cat: 'photo', day: 'day1', lat: 36.0782, lng: 120.3107, district: 'Coast', note: 'ถนนทะเลสุดคลาสสิก', best: 'golden hour' },
+      { name: 'Taiping Mountain Cableway', zh: '太平山索道', cat: 'photo', day: 'day1', lat: 36.0775, lng: 120.3365, district: 'Hill View', note: 'วิวเมืองจากมุมสูง', best: 'sunset' },
+      { name: 'Cafe La Mansarde', zh: 'La Mansarde', cat: 'food', day: 'day1', lat: 36.0812, lng: 120.3383, district: 'Hill View', note: 'คาเฟ่วิวดี ปิดท้ายวัน', best: 'sunset' },
 
-      { name: 'Silver Fish Street', zh: '银鱼巷', cat: 'photo', day: 'day1', lat: 36.0641, lng: 120.3202, district: 'Old Town', note: 'ตรอกสวย คาเฟ่เยอะ', best: 'เช้า / เย็น', ig: igSearchLink('Silver Fish Street Qingdao') },
-      { name: 'St. Michael\'s Cathedral', zh: '圣弥厄尔教堂', cat: 'photo', day: 'day1', lat: 36.06797, lng: 120.31561, district: 'Old Town', note: 'แลนด์มาร์กสถาปัตยกรรม', best: 'เช้า', ig: igSearchLink('St Michaels Cathedral Qingdao') },
-      { name: 'Yue Xikelai Square', zh: '悦喜客来广场', cat: 'route', day: 'day1', lat: 36.0685, lng: 120.3194, district: 'Old Town', note: 'พักกินข้าวกลาง route', best: 'กลางวัน', ig: igSearchLink('Yue Xikelai Square Qingdao') },
-      { name: 'Longjiang Road', zh: '龙江路', cat: 'photo', day: 'day1', lat: 36.0727, lng: 120.3149, district: 'Old Town', note: 'กำแพง art / graffiti', best: 'บ่าย', ig: igSearchLink('Longjiang Road Qingdao') },
-      { name: 'Qinyu Road', zh: '琴屿路', cat: 'photo', day: 'day1', lat: 36.0782, lng: 120.3107, district: 'Coast', note: 'ถนนทะเลสุดคลาสสิก', best: 'golden hour', ig: igSearchLink('Qinyu Road Qingdao') },
-      { name: 'Taiping Mountain Cableway', zh: '太平山索道', cat: 'photo', day: 'day1', lat: 36.0775, lng: 120.3365, district: 'Hill View', note: 'วิวเมืองจากมุมสูง', best: 'sunset', ig: igSearchLink('Taiping Mountain Cableway Qingdao') },
-      { name: 'Cafe La Mansarde', zh: 'La Mansarde', cat: 'food', day: 'day1', lat: 36.0812, lng: 120.3383, district: 'Hill View', note: 'คาเฟ่วิวดี ปิดท้ายวัน', best: 'sunset', ig: igSearchLink('Cafe La Mansarde Qingdao') },
+      { name: 'Tsingtao Brewery Museum', zh: '青岛啤酒博物馆', cat: 'photo', day: 'day2', lat: 36.0866, lng: 120.3293, district: 'Shibei', note: 'พิพิธภัณฑ์เบียร์ดังสุด', best: 'บ่าย' },
+      { name: 'Qingdao Beer Street', zh: '登州路啤酒街', cat: 'food', day: 'day2', lat: 36.0869, lng: 120.3315, district: 'Shibei', note: 'บรรยากาศเบียร์และของกิน', best: 'ค่ำ' },
+      { name: 'Signal Hill Park', zh: '信号山公园', cat: 'photo', day: 'day2', lat: 36.0721, lng: 120.3271, district: 'Old Town', note: 'วิวหลังคาแดงเมืองเก่า', best: 'เช้า / เย็น' },
+      { name: 'Zhongshan Road', zh: '中山路', cat: 'photo', day: 'day2', lat: 36.0670, lng: 120.3185, district: 'Old Town', note: 'ถนนหลักเมืองเก่า', best: 'ค่ำ' },
+      { name: 'Pichaiyuan', zh: '劈柴院', cat: 'food', day: 'day2', lat: 36.0695, lng: 120.3170, district: 'Old Town', note: 'food street คลาสสิก', best: 'เย็น' },
+      { name: 'Taidong Pedestrian Street', zh: '台东步行街', cat: 'food', day: 'day2', lat: 36.0906, lng: 120.3509, district: 'Shibei', note: 'night market ยอดนิยม', best: 'กลางคืน' },
 
-      { name: 'Tsingtao Brewery Museum', zh: '青岛啤酒博物馆', cat: 'photo', day: 'day2', lat: 36.0866, lng: 120.3293, district: 'Shibei', note: 'พิพิธภัณฑ์เบียร์ดังสุด', best: 'บ่าย', ig: igSearchLink('Tsingtao Brewery Museum Qingdao') },
-      { name: 'Qingdao Beer Street', zh: '登州路啤酒街', cat: 'food', day: 'day2', lat: 36.0869, lng: 120.3315, district: 'Shibei', note: 'บรรยากาศเบียร์และของกิน', best: 'ค่ำ', ig: igSearchLink('Qingdao Beer Street') },
-      { name: 'Signal Hill Park', zh: '信号山公园', cat: 'photo', day: 'day2', lat: 36.0721, lng: 120.3271, district: 'Old Town', note: 'วิวหลังคาแดงเมืองเก่า', best: 'เช้า / เย็น', ig: igSearchLink('Signal Hill Park Qingdao') },
-      { name: 'Zhongshan Road', zh: '中山路', cat: 'photo', day: 'day2', lat: 36.0670, lng: 120.3185, district: 'Old Town', note: 'ถนนหลักเมืองเก่า', best: 'ค่ำ', ig: igSearchLink('Zhongshan Road Qingdao') },
-      { name: 'Pichaiyuan', zh: '劈柴院', cat: 'food', day: 'day2', lat: 36.0695, lng: 120.3170, district: 'Old Town', note: 'food street คลาสสิก', best: 'เย็น', ig: igSearchLink('Pichaiyuan Qingdao') },
-      { name: 'Taidong Pedestrian Street', zh: '台东步行街', cat: 'food', day: 'day2', lat: 36.0906, lng: 120.3509, district: 'Shibei', note: 'night market ยอดนิยม', best: 'กลางคืน', ig: igSearchLink('Taidong Pedestrian Street Qingdao') },
+      { name: 'Qingdao Botanical Garden', zh: '青岛植物园', cat: 'photo', day: 'day3', lat: 36.0609, lng: 120.3605, district: 'Shinan', note: 'สวนเมือง เหมาะเดินช้าๆ', best: 'เช้า' },
+      { name: 'Zhanshan Temple', zh: '湛山寺', cat: 'photo', day: 'day3', lat: 36.0615, lng: 120.3668, district: 'Shinan', note: 'วัดพุทธเงียบสงบ', best: 'เช้า' },
+      { name: 'May Fourth Square', zh: '五四广场', cat: 'photo', day: 'day3', lat: 36.0649, lng: 120.3824, district: 'Modern Center', note: 'สัญลักษณ์เมืองฝั่ง modern', best: 'blue hour' },
+      { name: 'Olympic Sailing Center', zh: '奥帆中心', cat: 'photo', day: 'day3', lat: 36.0603, lng: 120.3956, district: 'Modern Center', note: 'marina และ skyline', best: 'ค่ำ' },
+      { name: 'Badaguan', zh: '八大关', cat: 'photo', day: 'day3', lat: 36.0557, lng: 120.3435, district: 'Historic Villas', note: 'วิลล่าและถนนต้นไม้', best: 'บ่าย' },
+      { name: 'Xiaoyushan Park', zh: '小鱼山公园', cat: 'photo', day: 'day3', lat: 36.0698, lng: 120.3318, district: 'Old Town View', note: 'วิวทะเล+หลังคาแดง', best: 'เช้า / เย็น' },
 
-      { name: 'Qingdao Botanical Garden', zh: '青岛植物园', cat: 'photo', day: 'day3', lat: 36.0609, lng: 120.3605, district: 'Shinan', note: 'สวนเมือง เหมาะเดินช้าๆ', best: 'เช้า', ig: igSearchLink('Qingdao Botanical Garden') },
-      { name: 'Zhanshan Temple', zh: '湛山寺', cat: 'photo', day: 'day3', lat: 36.0615, lng: 120.3668, district: 'Shinan', note: 'วัดพุทธเงียบสงบ', best: 'เช้า', ig: igSearchLink('Zhanshan Temple Qingdao') },
-      { name: 'May Fourth Square', zh: '五四广场', cat: 'photo', day: 'day3', lat: 36.0649, lng: 120.3824, district: 'Modern Center', note: 'สัญลักษณ์เมืองฝั่ง modern', best: 'blue hour', ig: igSearchLink('May Fourth Square Qingdao') },
-      { name: 'Olympic Sailing Center', zh: '奥帆中心', cat: 'photo', day: 'day3', lat: 36.0603, lng: 120.3956, district: 'Modern Center', note: 'marina และ skyline', best: 'ค่ำ', ig: igSearchLink('Olympic Sailing Center Qingdao') },
-      { name: 'Badaguan', zh: '八大关', cat: 'photo', day: 'day3', lat: 36.0557, lng: 120.3435, district: 'Historic Villas', note: 'วิลล่าและถนนต้นไม้', best: 'บ่าย', ig: igSearchLink('Badaguan Qingdao') },
-      { name: 'Xiaoyushan Park', zh: '小鱼山公园', cat: 'photo', day: 'day3', lat: 36.0698, lng: 120.3318, district: 'Old Town View', note: 'วิวทะเล+หลังคาแดง', best: 'เช้า / เย็น', ig: igSearchLink('Xiaoyushan Park Qingdao') },
+      { name: 'Zhanqiao Pier', zh: '栈桥', cat: 'photo', day: 'photo', lat: 36.0609, lng: 120.3136, district: 'Old Town Coast', note: 'ท่าเรือเก่า iconic', best: 'เช้า' },
+      { name: 'Huilan Pavilion', zh: '回澜阁', cat: 'photo', day: 'photo', lat: 36.0596, lng: 120.3140, district: 'Old Town Coast', note: 'ปลายสะพาน Zhanqiao', best: 'เช้า' },
+      { name: 'Little Qingdao', zh: '小青岛', cat: 'photo', day: 'photo', lat: 36.0609, lng: 120.3024, district: 'Island View', note: 'ประภาคารและทะเล', best: 'บ่าย' },
+      { name: 'Lu Xun Park Coast', zh: '鲁迅公园', cat: 'photo', day: 'photo', lat: 36.0642, lng: 120.3088, district: 'Coast', note: 'โขดหินติดทะเล', best: 'บ่าย' },
+      { name: 'Daxue Road', zh: '大学路', cat: 'photo', day: 'photo', lat: 36.0715, lng: 120.3250, district: 'Old Town', note: 'ผนังแดง / มุมถ่ายรูปดัง', best: 'บ่าย' },
+      { name: 'Second Bathing Beach', zh: '第二海水浴场', cat: 'photo', day: 'photo', lat: 36.0545, lng: 120.3398, district: 'Badaguan', note: 'ชายหาดกับวิลล่าเก่า', best: 'เช้า' },
+      { name: 'Third Bathing Beach', zh: '第三海水浴场', cat: 'photo', day: 'photo', lat: 36.0618, lng: 120.3728, district: 'Central Coast', note: 'ชายหาดใกล้เมืองใหม่', best: 'เย็น' },
+      { name: 'Princess House', zh: '公主楼', cat: 'photo', day: 'photo', lat: 36.0568, lng: 120.3439, district: 'Badaguan', note: 'บ้านสไตล์ fairy tale', best: 'บ่าย' },
+      { name: 'Huashi Villa', zh: '花石楼', cat: 'photo', day: 'photo', lat: 36.0558, lng: 120.3432, district: 'Badaguan', note: 'วิลล่าชายฝั่งสวยมาก', best: 'บ่าย' },
+      { name: 'Qingdao Railway Station Facade', zh: '青岛站', cat: 'photo', day: 'photo', lat: 36.0645, lng: 120.3131, district: 'Station Area', note: 'อาคารสถานีสวยคลาสสิก', best: 'เช้า' },
 
-      { name: 'Zhanqiao Pier', zh: '栈桥', cat: 'photo', day: 'photo', lat: 36.0609, lng: 120.3136, district: 'Old Town Coast', note: 'ท่าเรือเก่า iconic', best: 'เช้า', ig: igSearchLink('Zhanqiao Pier Qingdao') },
-      { name: 'Huilan Pavilion', zh: '回澜阁', cat: 'photo', day: 'photo', lat: 36.0596, lng: 120.3140, district: 'Old Town Coast', note: 'ปลายสะพาน Zhanqiao', best: 'เช้า', ig: igSearchLink('Huilan Pavilion Qingdao') },
-      { name: 'Little Qingdao', zh: '小青岛', cat: 'photo', day: 'photo', lat: 36.0609, lng: 120.3024, district: 'Island View', note: 'ประภาคารและทะเล', best: 'บ่าย', ig: igSearchLink('Little Qingdao') },
-      { name: 'Lu Xun Park Coast', zh: '鲁迅公园', cat: 'photo', day: 'photo', lat: 36.0642, lng: 120.3088, district: 'Coast', note: 'โขดหินติดทะเล', best: 'บ่าย', ig: igSearchLink('Lu Xun Park Coast Qingdao') },
-      { name: 'Daxue Road', zh: '大学路', cat: 'photo', day: 'photo', lat: 36.0715, lng: 120.3250, district: 'Old Town', note: 'ผนังแดง / มุมถ่ายรูปดัง', best: 'บ่าย', ig: igSearchLink('Daxue Road Qingdao') },
-      { name: 'Second Bathing Beach', zh: '第二海水浴场', cat: 'photo', day: 'photo', lat: 36.0545, lng: 120.3398, district: 'Badaguan', note: 'ชายหาดกับวิลล่าเก่า', best: 'เช้า', ig: igSearchLink('Second Bathing Beach Qingdao') },
-      { name: 'Third Bathing Beach', zh: '第三海水浴场', cat: 'photo', day: 'photo', lat: 36.0618, lng: 120.3728, district: 'Central Coast', note: 'ชายหาดใกล้เมืองใหม่', best: 'เย็น', ig: igSearchLink('Third Bathing Beach Qingdao') },
-      { name: 'Princess House', zh: '公主楼', cat: 'photo', day: 'photo', lat: 36.0568, lng: 120.3439, district: 'Badaguan', note: 'บ้านสไตล์ fairy tale', best: 'บ่าย', ig: igSearchLink('Princess House Qingdao') },
-      { name: 'Huashi Villa', zh: '花石楼', cat: 'photo', day: 'photo', lat: 36.0558, lng: 120.3432, district: 'Badaguan', note: 'วิลล่าชายฝั่งสวยมาก', best: 'บ่าย', ig: igSearchLink('Huashi Villa Qingdao') },
-      { name: 'Qingdao Railway Station Facade', zh: '青岛站', cat: 'photo', day: 'photo', lat: 36.0645, lng: 120.3131, district: 'Station Area', note: 'อาคารสถานีสวยคลาสสิก', best: 'เช้า', ig: igSearchLink('Qingdao Railway Station') },
-
-      { name: 'Chun He Lou', zh: '春和楼', cat: 'food', day: 'food', lat: 36.0680, lng: 120.3180, district: 'Zhongshan Road', note: 'ร้านเก่าแก่สายอาหารชานตง', best: 'กลางวัน / เย็น', ig: igSearchLink('Chun He Lou Qingdao') },
-      { name: 'Wang Jie Shaokao', zh: '王姐烧烤', cat: 'food', day: 'food', lat: 36.0689, lng: 120.3175, district: 'Old Town', note: 'ของย่างยอดนิยม', best: 'เย็น', ig: igSearchLink('Wang Jie Shaokao Qingdao') },
-      { name: 'Kaihai Seafood Dumplings', zh: '开海红岛海鲜虾水饺', cat: 'food', day: 'food', lat: 36.0580, lng: 120.3660, district: 'Zhanshan', note: 'ซีฟู้ด + เกี๊ยวกุ้ง', best: 'เย็น', ig: igSearchLink('Kaihai Seafood Dumplings Qingdao') },
-      { name: 'Pichaiyuan Food Street', zh: '劈柴院美食街', cat: 'food', day: 'food', lat: 36.0695, lng: 120.3170, district: 'Old Town', note: 'รวมหาของกินหลายร้าน', best: 'เย็น', ig: igSearchLink('Pichaiyuan Food Street Qingdao') },
-      { name: 'Taidong Night Market', zh: '台东夜市', cat: 'food', day: 'food', lat: 36.0906, lng: 120.3509, district: 'Shibei', note: 'street food หนาแน่น', best: 'ค่ำ', ig: igSearchLink('Taidong Night Market Qingdao') }
+      { name: 'Chun He Lou', zh: '春和楼', cat: 'food', day: 'food', lat: 36.0680, lng: 120.3180, district: 'Zhongshan Road', note: 'ร้านเก่าแก่สายอาหารชานตง', best: 'กลางวัน / เย็น' },
+      { name: 'Wang Jie Shaokao', zh: '王姐烧烤', cat: 'food', day: 'food', lat: 36.0689, lng: 120.3175, district: 'Old Town', note: 'ของย่างยอดนิยม', best: 'เย็น' },
+      { name: 'Kaihai Seafood Dumplings', zh: '开海红岛海鲜虾水饺', cat: 'food', day: 'food', lat: 36.0580, lng: 120.3660, district: 'Zhanshan', note: 'ซีฟู้ด + เกี๊ยวกุ้ง', best: 'เย็น' },
+      { name: 'Pichaiyuan Food Street', zh: '劈柴院美食街', cat: 'food', day: 'food', lat: 36.0695, lng: 120.3170, district: 'Old Town', note: 'รวมหาของกินหลายร้าน', best: 'เย็น' },
+      { name: 'Taidong Night Market', zh: '台东夜市', cat: 'food', day: 'food', lat: 36.0906, lng: 120.3509, district: 'Shibei', note: 'street food หนาแน่น', best: 'ค่ำ' }
     ];
 
     const photoSpots = [
@@ -682,23 +584,17 @@
     ];
 
     const foods = [
-      { name: 'Chun He Lou', area: 'Zhongshan Road', tags: ['อาหารชานตง', 'ร้านดังเก่าแก่'], map: 'Chun He Lou', text: 'เหมาะแทรกใน Day 1 หรือ Day 2 หลังเดินโซนเมืองเก่า', ig: igSearchLink('Chun He Lou Qingdao') },
-      { name: 'Wang Jie Shaokao', area: 'Old Town', tags: ['ปิ้งย่าง', 'ต่อคิว'], map: 'Wang Jie Shaokao', text: 'ของย่างแบบ local กินง่าย เหมาะช่วงเย็น', ig: igSearchLink('Wang Jie Shaokao Qingdao') },
-      { name: 'Kaihai Seafood Dumplings', area: 'Zhanshan', tags: ['ซีฟู้ด', 'เกี๊ยวกุ้ง'], map: 'Kaihai Seafood Dumplings', text: 'เหมาะกับ Day 3 หลังสวนและวัด', ig: igSearchLink('Kaihai Seafood Dumplings Qingdao') },
-      { name: 'Pichaiyuan Food Street', area: 'Old Town', tags: ['ของกินรวม', 'ถ่ายรูป'], map: 'Pichaiyuan Food Street', text: 'ถ้าอยากลองหลายอย่างในที่เดียว ให้จบที่นี่', ig: igSearchLink('Pichaiyuan Food Street Qingdao') },
-      { name: 'Taidong Night Market', area: 'Shibei', tags: ['night market', 'street food'], map: 'Taidong Night Market', text: 'เหมาะที่สุดสำหรับปิด Day 2', ig: igSearchLink('Taidong Night Market Qingdao') },
-      { name: 'Qingdao Beer Street', area: 'Dengzhou Road', tags: ['เบียร์', 'บรรยากาศ'], map: 'Qingdao Beer Street', text: 'เดินต่อจาก Beer Museum ได้เลย', ig: igSearchLink('Qingdao Beer Street') },
-      { name: 'Cafe La Mansarde', area: 'Taiping Mountain', tags: ['คาเฟ่', 'วิว'], map: 'Cafe La Mansarde', text: 'เหมาะจบ Day 1 แบบชิลและได้วิว sunset', ig: igSearchLink('Cafe La Mansarde Qingdao') }
+      { name: 'Chun He Lou', area: 'Zhongshan Road', tags: ['อาหารชานตง', 'ร้านดังเก่าแก่'], map: 'Chun He Lou', text: 'เหมาะแทรกใน Day 1 หรือ Day 2 หลังเดินโซนเมืองเก่า' },
+      { name: 'Wang Jie Shaokao', area: 'Old Town', tags: ['ปิ้งย่าง', 'ต่อคิว'], map: 'Wang Jie Shaokao', text: 'ของย่างแบบ local กินง่าย เหมาะช่วงเย็น' },
+      { name: 'Kaihai Seafood Dumplings', area: 'Zhanshan', tags: ['ซีฟู้ด', 'เกี๊ยวกุ้ง'], map: 'Kaihai Seafood Dumplings', text: 'เหมาะกับ Day 3 หลังสวนและวัด' },
+      { name: 'Pichaiyuan Food Street', area: 'Old Town', tags: ['ของกินรวม', 'ถ่ายรูป'], map: 'Pichaiyuan Food Street', text: 'ถ้าอยากลองหลายอย่างในที่เดียว ให้จบที่นี่' },
+      { name: 'Taidong Night Market', area: 'Shibei', tags: ['night market', 'street food'], map: 'Taidong Night Market', text: 'เหมาะที่สุดสำหรับปิด Day 2' },
+      { name: 'Qingdao Beer Street', area: 'Dengzhou Road', tags: ['เบียร์', 'บรรยากาศ'], map: 'Qingdao Beer Street', text: 'เดินต่อจาก Beer Museum ได้เลย' },
+      { name: 'Cafe La Mansarde', area: 'Taiping Mountain', tags: ['คาเฟ่', 'วิว'], map: 'Cafe La Mansarde', text: 'เหมาะจบ Day 1 แบบชิลและได้วิว sunset' }
     ];
 
-    /*
-      ----------------------------------------------------------
-      Day routes now start from hotel
-      ----------------------------------------------------------
-    */
     const dayRoutes = {
       day1: [
-        [hotelLat, hotelLng],
         [36.0641, 120.3202],
         [36.06797, 120.31561],
         [36.0685, 120.3194],
@@ -708,7 +604,6 @@
         [36.0812, 120.3383]
       ],
       day2: [
-        [hotelLat, hotelLng],
         [36.0866, 120.3293],
         [36.0869, 120.3315],
         [36.0721, 120.3271],
@@ -717,7 +612,6 @@
         [36.0906, 120.3509]
       ],
       day3: [
-        [hotelLat, hotelLng],
         [36.0609, 120.3605],
         [36.0615, 120.3668],
         [36.0649, 120.3824],
@@ -736,7 +630,6 @@
     const layerGroup = L.layerGroup().addTo(map);
     const routeLayers = {};
     const markerRefs = {};
-    const placeRefs = {};
 
     function iconHtml(color, label) {
       return L.divIcon({
@@ -749,7 +642,6 @@
     }
 
     function markerColor(place) {
-      if (place.cat === 'hotel') return '#dc2626';
       if (place.cat === 'food') return '#f59e0b';
       if (place.day === 'day1') return '#ef4444';
       if (place.day === 'day2') return '#2563eb';
@@ -758,40 +650,22 @@
     }
 
     function markerLabel(place) {
-      if (place.cat === 'hotel') return '🏨';
       if (place.cat === 'food') return '🍜';
       if (place.cat === 'photo') return '📸';
       return '•';
     }
 
-    function buildPopup(place) {
-      const igButton = place.ig
-        ? `<div style="margin-top:10px">
-             <a href="${place.ig}" target="_blank" rel="noopener noreferrer"
-                style="display:inline-block;background:#fdf2f8;color:#9d174d;border:1px solid #fbcfe8;border-radius:10px;padding:8px 10px;font-weight:700;font-size:12px">
-                IG
-             </a>
-           </div>`
-        : '';
-
-      return `
-        <div style="min-width:220px">
+    places.forEach(place => {
+      const marker = L.marker([place.lat, place.lng], {
+        icon: iconHtml(markerColor(place), markerLabel(place))
+      }).bindPopup(`
+        <div style="min-width:210px">
           <strong>${place.name}</strong><br>
           <span style="color:#475569">${place.zh || ''}</span><br>
           <span style="color:#64748b">${place.district} · ${place.note}</span><br>
           <span style="color:#0f172a;font-weight:600">เหมาะช่วง: ${place.best}</span>
-          ${igButton}
         </div>
-      `;
-    }
-
-    places.forEach(place => {
-      placeRefs[place.name] = place;
-
-      const marker = L.marker([place.lat, place.lng], {
-        icon: iconHtml(markerColor(place), markerLabel(place))
-      }).bindPopup(buildPopup(place));
-
+      `);
       marker.addTo(layerGroup);
       markerRefs[place.name] = marker;
     });
@@ -818,7 +692,6 @@
         <div class="actions">
           <button class="btn" data-center="${day.id}">ดูบนแผนที่</button>
           <button class="btn secondary" data-toggle="${day.id}">ซ่อน/แสดง route</button>
-          <button class="btn secondary" data-place="${hotelName}">เปิดโรงแรม</button>
         </div>
       `;
       itineraryList.appendChild(card);
@@ -839,8 +712,6 @@
 
     const photoGallery = document.getElementById('photoGallery');
     photoSpots.forEach(spot => {
-      const place = placeRefs[spot.key];
-
       const card = document.createElement('div');
       card.className = 'photo-card filter-photo';
       card.dataset.filter = 'photo';
@@ -850,10 +721,6 @@
         <div>
           <div class="photo-name">${spot.name}</div>
           <div class="photo-meta">${spot.meta}</div>
-          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn" data-place="${spot.key}" style="padding:8px 10px;font-size:12px">ดูบนแผนที่</button>
-            ${place?.ig ? `<a class="btn-link ig" href="${place.ig}" target="_blank" rel="noopener noreferrer" style="padding:8px 10px;font-size:12px">IG</a>` : ''}
-          </div>
         </div>
       `;
       photoGallery.appendChild(card);
@@ -876,7 +743,6 @@
         <div class="item-sub" style="margin-top:10px">${food.text}</div>
         <div class="actions">
           <button class="btn" data-place="${food.map}">ปักหมุดบนแผนที่</button>
-          <a class="btn-link ig" href="${food.ig}" target="_blank" rel="noopener noreferrer">IG</a>
         </div>
       `;
       foodList.appendChild(card);
@@ -911,13 +777,7 @@
 
       places.forEach(place => {
         const marker = markerRefs[place.name];
-        const visible =
-          showAll ||
-          (filter === 'photo' && place.cat === 'photo') ||
-          (filter === 'food' && place.cat === 'food') ||
-          place.day === filter ||
-          place.cat === 'hotel';
-
+        const visible = showAll || filter === 'photo' && place.cat === 'photo' || filter === 'food' && place.cat === 'food' || place.day === filter;
         if (visible && !layerGroup.hasLayer(marker)) layerGroup.addLayer(marker);
         if (!visible && layerGroup.hasLayer(marker)) layerGroup.removeLayer(marker);
       });
@@ -949,9 +809,7 @@
       }
 
       const photoCard = e.target.closest('.photo-card');
-      if (photoCard && !e.target.closest('a') && !e.target.closest('button')) {
-        focusPlace(photoCard.dataset.key);
-      }
+      if (photoCard) focusPlace(photoCard.dataset.key);
     });
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
