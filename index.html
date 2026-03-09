@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qingdao Travel Map Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: rgba(255,255,255,0.9);
+      --text: #122033;
+      --muted: #66758a;
+      --line1: #2563eb;
+      --line2: #0ea5e9;
+      --line3: #10b981;
+      --line4: #8b5cf6;
+      --line8: #f59e0b;
+      --accent: #111827;
+      --shadow: 0 12px 30px rgba(16, 24, 40, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; }
+    a { color: inherit; }
+
+    .app {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 18px 14px 42px;
+    }
+
+    .hero {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(245,247,251,0.82);
+      padding-bottom: 12px;
+    }
+
+    .topbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 4px 12px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #0f172a, #2563eb 70%, #93c5fd);
+      box-shadow: var(--shadow);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 22px;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .title p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .searchbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+      background: white;
+      border-radius: 999px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(17,24,39,0.06);
+    }
+
+    .searchbar input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 0.95rem;
+      background: transparent;
+      color: var(--text);
+    }
+
+    .chips {
+      display: flex;
+      gap: 10px;
+      overflow: auto;
+      padding: 12px 2px 0;
+      scrollbar-width: none;
+    }
+
+    .chips::-webkit-scrollbar { display: none; }
+
+    .chip {
+      border: none;
+      white-space: nowrap;
+      border-radius: 999px;
+      background: white;
+      color: var(--text);
+      padding: 11px 14px;
+      box-shadow: var(--shadow);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .chip.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.28fr 0.92fr;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(17,24,39,0.06);
+      overflow: hidden;
+    }
+
+    .map-wrap {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 82vh;
+    }
+
+    .map-head {
+      padding: 16px 18px 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .map-head h2, .section-title h2 {
+      margin: 0;
+      font-size: 1.03rem;
+      letter-spacing: -0.02em;
+    }
+
+    .map-head p, .section-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    #map {
+      width: 100%;
+      min-height: 58vh;
+      height: 100%;
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 12px 16px 18px;
+      border-top: 1px solid rgba(17,24,39,0.06);
+      background: rgba(248,250,252,0.8);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: white;
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid rgba(17,24,39,0.08);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-height: 82vh;
+    }
+
+    .section-title {
+      padding: 16px 18px 8px;
+    }
+
+    .card-list {
+      display: grid;
+      gap: 12px;
+      padding: 0 14px 14px;
+    }
+
+    .item-card {
+      background: white;
+      border-radius: 20px;
+      padding: 14px;
+      border: 1px solid rgba(17,24,39,0.06);
+      box-shadow: 0 8px 20px rgba(17,24,39,0.04);
+    }
+
+    .item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .item-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .item-sub {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      font-size: 0.77rem;
+      color: #334155;
+      font-weight: 600;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: 700;
+      cursor: pointer;
+      background: #111827;
+      color: white;
+      font-size: 0.82rem;
+    }
+
+    .btn.secondary {
+      background: #eef2ff;
+      color: #1e3a8a;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+      padding: 0 14px 14px;
+    }
+
+    .photo-card {
+      position: relative;
+      min-height: 148px;
+      border-radius: 22px;
+      overflow: hidden;
+      padding: 12px;
+      color: white;
+      display: flex;
+      align-items: end;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+
+    .photo-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15,23,42,0.05), rgba(15,23,42,0.62));
+      z-index: 0;
+    }
+
+    .photo-card > div {
+      position: relative;
+      z-index: 1;
+    }
+
+    .photo-name {
+      font-weight: 800;
+      font-size: 0.95rem;
+      line-height: 1.25;
+    }
+
+    .photo-meta {
+      font-size: 0.78rem;
+      opacity: 0.95;
+      margin-top: 4px;
+    }
+
+    .metro-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      padding: 0 14px 14px;
+    }
+
+    .metro-card {
+      background: white;
+      border-radius: 20px;
+      padding: 14px;
+      border: 1px solid rgba(17,24,39,0.06);
+    }
+
+    .line-strip {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      padding: 6px 16px 16px;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .map-wrap, .right-column { min-height: auto; }
+      #map { min-height: 55vh; }
+    }
+
+    @media (max-width: 640px) {
+      .app { padding: 10px 10px 28px; }
+      .topbar { padding: 8px 2px 10px; }
+      .title h1 { font-size: 1.02rem; }
+      .gallery { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .metro-grid { grid-template-columns: 1fr; }
+      .photo-card { min-height: 132px; }
+      .map-head { padding: 14px 14px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="hero">
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo">🗺️</div>
+          <div class="title">
+            <h1>Qingdao Travel Map Pro</h1>
+            <p>Map + Metro + 20 จุดถ่ายรูป + ร้าน local + แผน 3 วัน</p>
+          </div>
+        </div>
+      </div>
+      <div class="searchbar">
+        <span>🔎</span>
+        <input id="searchInput" type="text" placeholder="ค้นหาสถานที่ เช่น Cathedral, Taidong, Beer Museum" />
+      </div>
+      <div class="chips" id="chipBar">
+        <button class="chip active" data-filter="all">ทั้งหมด</button>
+        <button class="chip" data-filter="day1">Day 1 Old Town</button>
+        <button class="chip" data-filter="day2">Day 2 Beer + City</button>
+        <button class="chip" data-filter="day3">Day 3 Nature</button>
+        <button class="chip" data-filter="photo">Photo Spots</button>
+        <button class="chip" data-filter="food">Local Food</button>
+        <button class="chip" data-filter="metro">Metro</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <section class="panel map-wrap">
+        <div class="map-head">
+          <div>
+            <h2>Interactive Browser Map</h2>
+            <p>แตะการ์ดด้านขวาเพื่อซูมไปยังจุดนั้นบนแผนที่ได้ทันที เส้น Day 1–3 แยกสีไว้ให้แล้ว</p>
+          </div>
+          <div class="badge">📱 Mobile-first UI</div>
+        </div>
+        <div id="map"></div>
+        <div class="legend">
+          <span class="badge"><span class="dot" style="background:#ef4444"></span>Day 1</span>
+          <span class="badge"><span class="dot" style="background:#2563eb"></span>Day 2</span>
+          <span class="badge"><span class="dot" style="background:#16a34a"></span>Day 3</span>
+          <span class="badge"><span class="dot" style="background:#111827"></span>Photo Spot</span>
+          <span class="badge"><span class="dot" style="background:#f59e0b"></span>Food</span>
+        </div>
+      </section>
+
+      <div class="right-column">
+        <section class="panel" id="itineraryPanel">
+          <div class="section-title">
+            <h2>3-Day Itinerary</h2>
+            <p>จัด route ให้ต่อเนื่อง ใช้ Metro ง่าย และไม่ย้อนทาง</p>
+          </div>
+          <div class="card-list" id="itineraryList"></div>
+        </section>
+
+        <section class="panel" id="metroPanel">
+          <div class="section-title">
+            <h2>Metro Lines for Travelers</h2>
+            <p>เส้นหลักที่ใช้บ่อยสำหรับเที่ยวเมืองและเข้าออกสนามบิน</p>
+          </div>
+          <div class="metro-grid" id="metroGrid"></div>
+          <div class="footer-note">Tip: สำหรับการเดินทางจริงในจีน ให้ใช้ Amap หรือ Gaode ควบคู่กับหน้านี้เพื่อดูทางเดินแบบ real-time</div>
+        </section>
+
+        <section class="panel" id="photoPanel">
+          <div class="section-title">
+            <h2>20 Photo Spots</h2>
+            <p>จัดแบบ grid สไตล์ gallery ให้เลือกจุดถ่ายรูปได้ไว</p>
+          </div>
+          <div class="gallery" id="photoGallery"></div>
+        </section>
+
+        <section class="panel" id="foodPanel">
+          <div class="section-title">
+            <h2>Local Food & Streets</h2>
+            <p>รวมร้าน local และ food street ที่แทรกลง route ได้ง่าย</p>
+          </div>
+          <div class="card-list" id="foodList"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script>
+    const itineraries = [
+      {
+        id: 'day1',
+        title: 'Day 1 — Old Town + Sea View + Sunset',
+        subtitle: 'Railway Station → Old Town walking route → Taiping Mountain',
+        tags: ['เดินเยอะ', 'ถ่ายรูป', 'Sunset'],
+        points: ['Silver Fish Street', 'St. Michael\'s Cathedral', 'Yue Xikelai Square', 'Longjiang Road', 'Qinyu Road', 'Taiping Mountain Cableway', 'Cafe La Mansarde'],
+        center: [36.071, 120.321],
+        zoom: 14
+      },
+      {
+        id: 'day2',
+        title: 'Day 2 — Beer + City Icons + Night Market',
+        subtitle: 'Beer museum route + old city icons + Taidong street food',
+        tags: ['เบียร์', 'กลางคืน', 'กินเก่ง'],
+        points: ['Tsingtao Brewery Museum', 'Qingdao Beer Street', 'Signal Hill Park', 'Zhongshan Road', 'Pichaiyuan', 'Taidong Pedestrian Street'],
+        center: [36.081, 120.338],
+        zoom: 13
+      },
+      {
+        id: 'day3',
+        title: 'Day 3 — Garden + Temple + Coastal Classics',
+        subtitle: 'ชิลกว่าเดิม เหมาะวันสุดท้ายหรือวันอากาศดี',
+        tags: ['สวน', 'วัด', 'วิวเมือง'],
+        points: ['Qingdao Botanical Garden', 'Zhanshan Temple', 'May Fourth Square', 'Olympic Sailing Center', 'Badaguan', 'Xiaoyushan Park'],
+        center: [36.066, 120.377],
+        zoom: 12
+      }
+    ];
+
+    const metroLines = [
+      { line: 'Line 1', color: '#2563eb', text: 'วิ่งเหนือ-ใต้ผ่าน Qingdao North และโซนเมืองเก่า ใช้ร่วมกับสนามบินเมื่อเปลี่ยนจาก Line 8' },
+      { line: 'Line 2', color: '#0ea5e9', text: 'เชื่อม Zhiquan Road / May Fourth Square ฝั่งเมืองหลัก เหมาะต่อไปวิวเมืองและชายฝั่ง' },
+      { line: 'Line 3', color: '#10b981', text: 'สายเที่ยวหลักของนักท่องเที่ยว ผ่าน Qingdao Railway Station, Taidong และย่านหลักหลายจุด' },
+      { line: 'Line 4', color: '#8b5cf6', text: 'ช่วยเข้าถึง Hall of the People, Signal Hill และจุดในเขตเมืองเก่าได้สะดวกขึ้น' },
+      { line: 'Line 8', color: '#f59e0b', text: 'สายสนามบิน Jiaodong International Airport เข้าสู่ Qingdao North ได้ตรง' },
+      { line: 'Tourist Tip', color: '#111827', text: 'สำหรับทริปนี้ ใช้ Line 8 เข้าเมือง แล้วสลับ Line 1 หรือ Line 3 เป็นแกนหลักจะง่ายที่สุด' }
+    ];
+
+    const places = [
+      { name: 'Silver Fish Street', zh: '银鱼巷', cat: 'photo', day: 'day1', lat: 36.0641, lng: 120.3202, district: 'Old Town', note: 'ตรอกสวย คาเฟ่เยอะ', best: 'เช้า / เย็น' },
+      { name: 'St. Michael\'s Cathedral', zh: '圣弥厄尔教堂', cat: 'photo', day: 'day1', lat: 36.06797, lng: 120.31561, district: 'Old Town', note: 'แลนด์มาร์กสถาปัตยกรรม', best: 'เช้า' },
+      { name: 'Yue Xikelai Square', zh: '悦喜客来广场', cat: 'route', day: 'day1', lat: 36.0685, lng: 120.3194, district: 'Old Town', note: 'พักกินข้าวกลาง route', best: 'กลางวัน' },
+      { name: 'Longjiang Road', zh: '龙江路', cat: 'photo', day: 'day1', lat: 36.0727, lng: 120.3149, district: 'Old Town', note: 'กำแพง art / graffiti', best: 'บ่าย' },
+      { name: 'Qinyu Road', zh: '琴屿路', cat: 'photo', day: 'day1', lat: 36.0782, lng: 120.3107, district: 'Coast', note: 'ถนนทะเลสุดคลาสสิก', best: 'golden hour' },
+      { name: 'Taiping Mountain Cableway', zh: '太平山索道', cat: 'photo', day: 'day1', lat: 36.0775, lng: 120.3365, district: 'Hill View', note: 'วิวเมืองจากมุมสูง', best: 'sunset' },
+      { name: 'Cafe La Mansarde', zh: 'La Mansarde', cat: 'food', day: 'day1', lat: 36.0812, lng: 120.3383, district: 'Hill View', note: 'คาเฟ่วิวดี ปิดท้ายวัน', best: 'sunset' },
+
+      { name: 'Tsingtao Brewery Museum', zh: '青岛啤酒博物馆', cat: 'photo', day: 'day2', lat: 36.0866, lng: 120.3293, district: 'Shibei', note: 'พิพิธภัณฑ์เบียร์ดังสุด', best: 'บ่าย' },
+      { name: 'Qingdao Beer Street', zh: '登州路啤酒街', cat: 'food', day: 'day2', lat: 36.0869, lng: 120.3315, district: 'Shibei', note: 'บรรยากาศเบียร์และของกิน', best: 'ค่ำ' },
+      { name: 'Signal Hill Park', zh: '信号山公园', cat: 'photo', day: 'day2', lat: 36.0721, lng: 120.3271, district: 'Old Town', note: 'วิวหลังคาแดงเมืองเก่า', best: 'เช้า / เย็น' },
+      { name: 'Zhongshan Road', zh: '中山路', cat: 'photo', day: 'day2', lat: 36.0670, lng: 120.3185, district: 'Old Town', note: 'ถนนหลักเมืองเก่า', best: 'ค่ำ' },
+      { name: 'Pichaiyuan', zh: '劈柴院', cat: 'food', day: 'day2', lat: 36.0695, lng: 120.3170, district: 'Old Town', note: 'food street คลาสสิก', best: 'เย็น' },
+      { name: 'Taidong Pedestrian Street', zh: '台东步行街', cat: 'food', day: 'day2', lat: 36.0906, lng: 120.3509, district: 'Shibei', note: 'night market ยอดนิยม', best: 'กลางคืน' },
+
+      { name: 'Qingdao Botanical Garden', zh: '青岛植物园', cat: 'photo', day: 'day3', lat: 36.0609, lng: 120.3605, district: 'Shinan', note: 'สวนเมือง เหมาะเดินช้าๆ', best: 'เช้า' },
+      { name: 'Zhanshan Temple', zh: '湛山寺', cat: 'photo', day: 'day3', lat: 36.0615, lng: 120.3668, district: 'Shinan', note: 'วัดพุทธเงียบสงบ', best: 'เช้า' },
+      { name: 'May Fourth Square', zh: '五四广场', cat: 'photo', day: 'day3', lat: 36.0649, lng: 120.3824, district: 'Modern Center', note: 'สัญลักษณ์เมืองฝั่ง modern', best: 'blue hour' },
+      { name: 'Olympic Sailing Center', zh: '奥帆中心', cat: 'photo', day: 'day3', lat: 36.0603, lng: 120.3956, district: 'Modern Center', note: 'marina และ skyline', best: 'ค่ำ' },
+      { name: 'Badaguan', zh: '八大关', cat: 'photo', day: 'day3', lat: 36.0557, lng: 120.3435, district: 'Historic Villas', note: 'วิลล่าและถนนต้นไม้', best: 'บ่าย' },
+      { name: 'Xiaoyushan Park', zh: '小鱼山公园', cat: 'photo', day: 'day3', lat: 36.0698, lng: 120.3318, district: 'Old Town View', note: 'วิวทะเล+หลังคาแดง', best: 'เช้า / เย็น' },
+
+      { name: 'Zhanqiao Pier', zh: '栈桥', cat: 'photo', day: 'photo', lat: 36.0609, lng: 120.3136, district: 'Old Town Coast', note: 'ท่าเรือเก่า iconic', best: 'เช้า' },
+      { name: 'Huilan Pavilion', zh: '回澜阁', cat: 'photo', day: 'photo', lat: 36.0596, lng: 120.3140, district: 'Old Town Coast', note: 'ปลายสะพาน Zhanqiao', best: 'เช้า' },
+      { name: 'Little Qingdao', zh: '小青岛', cat: 'photo', day: 'photo', lat: 36.0609, lng: 120.3024, district: 'Island View', note: 'ประภาคารและทะเล', best: 'บ่าย' },
+      { name: 'Lu Xun Park Coast', zh: '鲁迅公园', cat: 'photo', day: 'photo', lat: 36.0642, lng: 120.3088, district: 'Coast', note: 'โขดหินติดทะเล', best: 'บ่าย' },
+      { name: 'Daxue Road', zh: '大学路', cat: 'photo', day: 'photo', lat: 36.0715, lng: 120.3250, district: 'Old Town', note: 'ผนังแดง / มุมถ่ายรูปดัง', best: 'บ่าย' },
+      { name: 'Second Bathing Beach', zh: '第二海水浴场', cat: 'photo', day: 'photo', lat: 36.0545, lng: 120.3398, district: 'Badaguan', note: 'ชายหาดกับวิลล่าเก่า', best: 'เช้า' },
+      { name: 'Third Bathing Beach', zh: '第三海水浴场', cat: 'photo', day: 'photo', lat: 36.0618, lng: 120.3728, district: 'Central Coast', note: 'ชายหาดใกล้เมืองใหม่', best: 'เย็น' },
+      { name: 'Princess House', zh: '公主楼', cat: 'photo', day: 'photo', lat: 36.0568, lng: 120.3439, district: 'Badaguan', note: 'บ้านสไตล์ fairy tale', best: 'บ่าย' },
+      { name: 'Huashi Villa', zh: '花石楼', cat: 'photo', day: 'photo', lat: 36.0558, lng: 120.3432, district: 'Badaguan', note: 'วิลล่าชายฝั่งสวยมาก', best: 'บ่าย' },
+      { name: 'Qingdao Railway Station Facade', zh: '青岛站', cat: 'photo', day: 'photo', lat: 36.0645, lng: 120.3131, district: 'Station Area', note: 'อาคารสถานีสวยคลาสสิก', best: 'เช้า' },
+
+      { name: 'Chun He Lou', zh: '春和楼', cat: 'food', day: 'food', lat: 36.0680, lng: 120.3180, district: 'Zhongshan Road', note: 'ร้านเก่าแก่สายอาหารชานตง', best: 'กลางวัน / เย็น' },
+      { name: 'Wang Jie Shaokao', zh: '王姐烧烤', cat: 'food', day: 'food', lat: 36.0689, lng: 120.3175, district: 'Old Town', note: 'ของย่างยอดนิยม', best: 'เย็น' },
+      { name: 'Kaihai Seafood Dumplings', zh: '开海红岛海鲜虾水饺', cat: 'food', day: 'food', lat: 36.0580, lng: 120.3660, district: 'Zhanshan', note: 'ซีฟู้ด + เกี๊ยวกุ้ง', best: 'เย็น' },
+      { name: 'Pichaiyuan Food Street', zh: '劈柴院美食街', cat: 'food', day: 'food', lat: 36.0695, lng: 120.3170, district: 'Old Town', note: 'รวมหาของกินหลายร้าน', best: 'เย็น' },
+      { name: 'Taidong Night Market', zh: '台东夜市', cat: 'food', day: 'food', lat: 36.0906, lng: 120.3509, district: 'Shibei', note: 'street food หนาแน่น', best: 'ค่ำ' }
+    ];
+
+    const photoSpots = [
+      { name: 'Silver Fish Street', meta: 'Old Town · คาเฟ่และตรอกสวย', key: 'Silver Fish Street', bg: 'linear-gradient(135deg,#7c3aed,#ec4899)' },
+      { name: 'St. Michael\'s Cathedral', meta: 'Old Town · โบสถ์ iconic', key: 'St. Michael\'s Cathedral', bg: 'linear-gradient(135deg,#1d4ed8,#60a5fa)' },
+      { name: 'Longjiang Road', meta: 'Street Art · mural', key: 'Longjiang Road', bg: 'linear-gradient(135deg,#f97316,#fb7185)' },
+      { name: 'Qinyu Road', meta: 'Sea View · golden hour', key: 'Qinyu Road', bg: 'linear-gradient(135deg,#0f766e,#2dd4bf)' },
+      { name: 'Taiping Mountain', meta: 'Skyline · sunset', key: 'Taiping Mountain Cableway', bg: 'linear-gradient(135deg,#111827,#6b7280)' },
+      { name: 'Signal Hill Park', meta: 'หลังคาแดง · view', key: 'Signal Hill Park', bg: 'linear-gradient(135deg,#2563eb,#34d399)' },
+      { name: 'Xiaoyushan Park', meta: 'ทะเล + เมืองเก่า', key: 'Xiaoyushan Park', bg: 'linear-gradient(135deg,#0f172a,#22c55e)' },
+      { name: 'Daxue Road', meta: 'ผนังแดง · มุมดัง', key: 'Daxue Road', bg: 'linear-gradient(135deg,#ef4444,#f59e0b)' },
+      { name: 'Zhanqiao Pier', meta: 'ท่าเรือเก่า · classic', key: 'Zhanqiao Pier', bg: 'linear-gradient(135deg,#0891b2,#38bdf8)' },
+      { name: 'Huilan Pavilion', meta: 'ปลายสะพาน · iconic', key: 'Huilan Pavilion', bg: 'linear-gradient(135deg,#334155,#94a3b8)' },
+      { name: 'Little Qingdao', meta: 'ประภาคาร · เกาะเล็ก', key: 'Little Qingdao', bg: 'linear-gradient(135deg,#0f766e,#60a5fa)' },
+      { name: 'Lu Xun Park Coast', meta: 'โขดหินทะเล', key: 'Lu Xun Park Coast', bg: 'linear-gradient(135deg,#0f172a,#0ea5e9)' },
+      { name: 'Badaguan', meta: 'วิลล่าและถนนต้นไม้', key: 'Badaguan', bg: 'linear-gradient(135deg,#166534,#86efac)' },
+      { name: 'Princess House', meta: 'fairy tale villa', key: 'Princess House', bg: 'linear-gradient(135deg,#f43f5e,#fb7185)' },
+      { name: 'Huashi Villa', meta: 'coastal villa', key: 'Huashi Villa', bg: 'linear-gradient(135deg,#52525b,#a1a1aa)' },
+      { name: 'Second Bathing Beach', meta: 'Badaguan coast', key: 'Second Bathing Beach', bg: 'linear-gradient(135deg,#1d4ed8,#93c5fd)' },
+      { name: 'Third Bathing Beach', meta: 'modern coast', key: 'Third Bathing Beach', bg: 'linear-gradient(135deg,#0284c7,#67e8f9)' },
+      { name: 'May Fourth Square', meta: 'modern Qingdao', key: 'May Fourth Square', bg: 'linear-gradient(135deg,#ef4444,#111827)' },
+      { name: 'Olympic Sailing Center', meta: 'marina skyline', key: 'Olympic Sailing Center', bg: 'linear-gradient(135deg,#0f766e,#22c55e)' },
+      { name: 'Qingdao Railway Station', meta: 'facade classic', key: 'Qingdao Railway Station Facade', bg: 'linear-gradient(135deg,#374151,#f59e0b)' }
+    ];
+
+    const foods = [
+      { name: 'Chun He Lou', area: 'Zhongshan Road', tags: ['อาหารชานตง', 'ร้านดังเก่าแก่'], map: 'Chun He Lou', text: 'เหมาะแทรกใน Day 1 หรือ Day 2 หลังเดินโซนเมืองเก่า' },
+      { name: 'Wang Jie Shaokao', area: 'Old Town', tags: ['ปิ้งย่าง', 'ต่อคิว'], map: 'Wang Jie Shaokao', text: 'ของย่างแบบ local กินง่าย เหมาะช่วงเย็น' },
+      { name: 'Kaihai Seafood Dumplings', area: 'Zhanshan', tags: ['ซีฟู้ด', 'เกี๊ยวกุ้ง'], map: 'Kaihai Seafood Dumplings', text: 'เหมาะกับ Day 3 หลังสวนและวัด' },
+      { name: 'Pichaiyuan Food Street', area: 'Old Town', tags: ['ของกินรวม', 'ถ่ายรูป'], map: 'Pichaiyuan Food Street', text: 'ถ้าอยากลองหลายอย่างในที่เดียว ให้จบที่นี่' },
+      { name: 'Taidong Night Market', area: 'Shibei', tags: ['night market', 'street food'], map: 'Taidong Night Market', text: 'เหมาะที่สุดสำหรับปิด Day 2' },
+      { name: 'Qingdao Beer Street', area: 'Dengzhou Road', tags: ['เบียร์', 'บรรยากาศ'], map: 'Qingdao Beer Street', text: 'เดินต่อจาก Beer Museum ได้เลย' },
+      { name: 'Cafe La Mansarde', area: 'Taiping Mountain', tags: ['คาเฟ่', 'วิว'], map: 'Cafe La Mansarde', text: 'เหมาะจบ Day 1 แบบชิลและได้วิว sunset' }
+    ];
+
+    const dayRoutes = {
+      day1: [
+        [36.0641, 120.3202],
+        [36.06797, 120.31561],
+        [36.0685, 120.3194],
+        [36.0727, 120.3149],
+        [36.0782, 120.3107],
+        [36.0775, 120.3365],
+        [36.0812, 120.3383]
+      ],
+      day2: [
+        [36.0866, 120.3293],
+        [36.0869, 120.3315],
+        [36.0721, 120.3271],
+        [36.0670, 120.3185],
+        [36.0695, 120.3170],
+        [36.0906, 120.3509]
+      ],
+      day3: [
+        [36.0609, 120.3605],
+        [36.0615, 120.3668],
+        [36.0649, 120.3824],
+        [36.0603, 120.3956],
+        [36.0557, 120.3435],
+        [36.0698, 120.3318]
+      ]
+    };
+
+    const map = L.map('map', { zoomControl: true }).setView([36.071, 120.339], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const layerGroup = L.layerGroup().addTo(map);
+    const routeLayers = {};
+    const markerRefs = {};
+
+    function iconHtml(color, label) {
+      return L.divIcon({
+        className: '',
+        html: `<div style="width:28px;height:28px;border-radius:999px;background:${color};display:grid;place-items:center;color:white;font-weight:800;font-size:12px;border:2px solid white;box-shadow:0 6px 16px rgba(0,0,0,.18)">${label}</div>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
+        popupAnchor: [0, -10]
+      });
+    }
+
+    function markerColor(place) {
+      if (place.cat === 'food') return '#f59e0b';
+      if (place.day === 'day1') return '#ef4444';
+      if (place.day === 'day2') return '#2563eb';
+      if (place.day === 'day3') return '#16a34a';
+      return '#111827';
+    }
+
+    function markerLabel(place) {
+      if (place.cat === 'food') return '🍜';
+      if (place.cat === 'photo') return '📸';
+      return '•';
+    }
+
+    places.forEach(place => {
+      const marker = L.marker([place.lat, place.lng], {
+        icon: iconHtml(markerColor(place), markerLabel(place))
+      }).bindPopup(`
+        <div style="min-width:210px">
+          <strong>${place.name}</strong><br>
+          <span style="color:#475569">${place.zh || ''}</span><br>
+          <span style="color:#64748b">${place.district} · ${place.note}</span><br>
+          <span style="color:#0f172a;font-weight:600">เหมาะช่วง: ${place.best}</span>
+        </div>
+      `);
+      marker.addTo(layerGroup);
+      markerRefs[place.name] = marker;
+    });
+
+    routeLayers.day1 = L.polyline(dayRoutes.day1, { color: '#ef4444', weight: 5, opacity: 0.9 }).addTo(map);
+    routeLayers.day2 = L.polyline(dayRoutes.day2, { color: '#2563eb', weight: 5, opacity: 0.85, dashArray: '10 8' }).addTo(map);
+    routeLayers.day3 = L.polyline(dayRoutes.day3, { color: '#16a34a', weight: 5, opacity: 0.85, dashArray: '6 8' }).addTo(map);
+
+    const itineraryList = document.getElementById('itineraryList');
+    itineraries.forEach(day => {
+      const card = document.createElement('div');
+      card.className = 'item-card filter-day';
+      card.dataset.filter = day.id;
+      card.innerHTML = `
+        <div class="item-top">
+          <div>
+            <div class="item-title">${day.title}</div>
+            <div class="item-sub">${day.subtitle}</div>
+          </div>
+          <div class="pill">${day.points.length} จุด</div>
+        </div>
+        <div class="pill-row">${day.tags.map(t => `<span class="pill">${t}</span>`).join('')}</div>
+        <div class="item-sub" style="margin-top:10px">${day.points.join(' → ')}</div>
+        <div class="actions">
+          <button class="btn" data-center="${day.id}">ดูบนแผนที่</button>
+          <button class="btn secondary" data-toggle="${day.id}">ซ่อน/แสดง route</button>
+        </div>
+      `;
+      itineraryList.appendChild(card);
+    });
+
+    const metroGrid = document.getElementById('metroGrid');
+    metroLines.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'metro-card filter-metro';
+      card.dataset.filter = 'metro';
+      card.innerHTML = `
+        <div class="line-strip" style="background:${item.color}"></div>
+        <div class="item-title">${item.line}</div>
+        <div class="item-sub">${item.text}</div>
+      `;
+      metroGrid.appendChild(card);
+    });
+
+    const photoGallery = document.getElementById('photoGallery');
+    photoSpots.forEach(spot => {
+      const card = document.createElement('div');
+      card.className = 'photo-card filter-photo';
+      card.dataset.filter = 'photo';
+      card.dataset.key = spot.key;
+      card.style.background = spot.bg;
+      card.innerHTML = `
+        <div>
+          <div class="photo-name">${spot.name}</div>
+          <div class="photo-meta">${spot.meta}</div>
+        </div>
+      `;
+      photoGallery.appendChild(card);
+    });
+
+    const foodList = document.getElementById('foodList');
+    foods.forEach(food => {
+      const card = document.createElement('div');
+      card.className = 'item-card filter-food';
+      card.dataset.filter = 'food';
+      card.innerHTML = `
+        <div class="item-top">
+          <div>
+            <div class="item-title">${food.name}</div>
+            <div class="item-sub">${food.area}</div>
+          </div>
+          <div class="pill">🍜 local</div>
+        </div>
+        <div class="pill-row">${food.tags.map(t => `<span class="pill">${t}</span>`).join('')}</div>
+        <div class="item-sub" style="margin-top:10px">${food.text}</div>
+        <div class="actions">
+          <button class="btn" data-place="${food.map}">ปักหมุดบนแผนที่</button>
+        </div>
+      `;
+      foodList.appendChild(card);
+    });
+
+    function focusPlace(name, zoom = 16) {
+      const marker = markerRefs[name];
+      if (!marker) return;
+      const latLng = marker.getLatLng();
+      map.setView(latLng, zoom, { animate: true });
+      marker.openPopup();
+    }
+
+    function updateFilter(filter) {
+      document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.filter === filter));
+
+      const showAll = filter === 'all';
+      document.getElementById('itineraryPanel').classList.toggle('hidden', !(showAll || ['day1','day2','day3'].includes(filter)));
+      document.getElementById('metroPanel').classList.toggle('hidden', !(showAll || filter === 'metro'));
+      document.getElementById('photoPanel').classList.toggle('hidden', !(showAll || filter === 'photo'));
+      document.getElementById('foodPanel').classList.toggle('hidden', !(showAll || filter === 'food'));
+
+      document.querySelectorAll('#itineraryList .item-card').forEach(el => {
+        el.classList.toggle('hidden', !(showAll || el.dataset.filter === filter));
+      });
+
+      Object.entries(routeLayers).forEach(([key, line]) => {
+        const visible = showAll || key === filter;
+        if (visible && !map.hasLayer(line)) line.addTo(map);
+        if (!visible && map.hasLayer(line)) map.removeLayer(line);
+      });
+
+      places.forEach(place => {
+        const marker = markerRefs[place.name];
+        const visible = showAll || filter === 'photo' && place.cat === 'photo' || filter === 'food' && place.cat === 'food' || place.day === filter;
+        if (visible && !layerGroup.hasLayer(marker)) layerGroup.addLayer(marker);
+        if (!visible && layerGroup.hasLayer(marker)) layerGroup.removeLayer(marker);
+      });
+    }
+
+    document.getElementById('chipBar').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      updateFilter(chip.dataset.filter);
+    });
+
+    document.addEventListener('click', (e) => {
+      const centerBtn = e.target.closest('[data-center]');
+      if (centerBtn) {
+        const key = centerBtn.dataset.center;
+        const day = itineraries.find(d => d.id === key);
+        if (day) map.setView(day.center, day.zoom, { animate: true });
+      }
+
+      const placeBtn = e.target.closest('[data-place]');
+      if (placeBtn) {
+        focusPlace(placeBtn.dataset.place);
+      }
+
+      const toggleBtn = e.target.closest('[data-toggle]');
+      if (toggleBtn) {
+        const line = routeLayers[toggleBtn.dataset.toggle];
+        if (map.hasLayer(line)) map.removeLayer(line); else line.addTo(map);
+      }
+
+      const photoCard = e.target.closest('.photo-card');
+      if (photoCard) focusPlace(photoCard.dataset.key);
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      if (!q) return;
+      const match = places.find(p => [p.name, p.zh, p.note, p.district].join(' ').toLowerCase().includes(q));
+      if (match) focusPlace(match.name, 15);
+    });
+
+    updateFilter('all');
+  </script>
+</body>
+</html>
