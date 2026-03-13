@@ -33,8 +33,8 @@
       --teal-soft: #ccfbf1;
       --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
       --radius: 18px;
-      --sidebar-width: 280px;
-      --sidebar-mobile-width: min(88vw, 320px);
+      --sidebar-width: 320px;
+      --sidebar-mobile-width: min(88vw, 340px);
     }
 
     body {
@@ -44,7 +44,7 @@
       line-height: 1.6;
     }
 
-    body.sidebar-open-mobile {
+    body.sidebar-open {
       overflow: hidden;
     }
 
@@ -53,6 +53,83 @@
       margin: 0 auto;
       display: grid;
       gap: 18px;
+    }
+
+    .topbar {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 14px;
+    }
+
+    .topbar-left {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .topbar-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.3;
+    }
+
+    .topbar-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .hamburger-btn {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: #111827;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: 0.2s ease;
+    }
+
+    .hamburger-btn:hover {
+      background: #f9fafb;
+    }
+
+    .hamburger-icon {
+      position: relative;
+      width: 18px;
+      height: 14px;
+      display: inline-block;
+    }
+
+    .hamburger-icon span {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #111827;
+      border-radius: 999px;
+    }
+
+    .hamburger-icon span:nth-child(1) {
+      top: 0;
+    }
+
+    .hamburger-icon span:nth-child(2) {
+      top: 6px;
+    }
+
+    .hamburger-icon span:nth-child(3) {
+      top: 12px;
     }
 
     .hero {
@@ -79,19 +156,6 @@
       gap: 8px;
       flex-wrap: wrap;
       margin-top: 14px;
-    }
-
-    .page-layout {
-      display: grid;
-      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
-      gap: 18px;
-      align-items: start;
-    }
-
-    .sidebar-desktop {
-      display: block;
-      position: sticky;
-      top: 24px;
     }
 
     .main-content {
@@ -296,33 +360,63 @@
       border-color: #d1d5db;
     }
 
-    .btn-toggle-active {
-      background: var(--teal-soft);
-      color: var(--teal);
+    .btn-format {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .btn-json-load {
+      background: #ecfeff;
+      color: #0f766e;
       border-color: #99f6e4;
     }
 
-    .btn-toggle-inactive {
-      background: var(--red-soft);
-      color: var(--red);
-      border-color: #fecaca;
-    }
-
-    .mobile-filter-bar {
-      display: none;
-    }
-
-    .sidebar-toggle {
-      width: 100%;
-      background: var(--dark);
+    .btn-json-save {
+      background: #111827;
       color: #ffffff;
-      border: 1px solid var(--dark);
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: var(--shadow);
+      border-color: #111827;
+    }
+
+    .btn-paste {
+      background: #ecfdf5;
+      color: #047857;
+      border-color: #a7f3d0;
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.56);
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .sidebar-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sidebar-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      max-width: 100%;
+      height: 100vh;
+      background: var(--bg);
+      z-index: 9999;
+      overflow-y: auto;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      box-shadow: 20px 0 40px rgba(0, 0, 0, 0.18);
+      padding: 18px;
+    }
+
+    .sidebar-drawer.show {
+      transform: translateX(0);
     }
 
     .sidebar-menu {
@@ -334,6 +428,13 @@
       display: grid;
       gap: 4px;
       margin-bottom: 2px;
+    }
+
+    .sidebar-menu-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     .sidebar-menu-header h3 {
@@ -408,30 +509,76 @@
       color: #111827;
     }
 
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      width: fit-content;
-      min-height: 28px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      margin-top: 8px;
-    }
-
-    .status-pill.active {
-      background: var(--teal-soft);
-      color: var(--teal);
-    }
-
-    .status-pill.inactive {
-      background: var(--red-soft);
-      color: var(--red);
-    }
-
     .place-inactive {
       opacity: 0.72;
+    }
+
+    .toggle-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 30px;
+      display: inline-block;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      background: #d1d5db;
+      border-radius: 999px;
+      transition: 0.2s ease;
+      border: 1px solid #cbd5e1;
+    }
+
+    .toggle-slider::before {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 3px;
+      top: 3px;
+      background: #ffffff;
+      border-radius: 999px;
+      transition: 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background: #10b981;
+      border-color: #10b981;
+    }
+
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(22px);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .toggle-label.active {
+      color: #047857;
+    }
+
+    .toggle-label.inactive {
+      color: #b91c1c;
     }
 
     .footer-note {
@@ -455,7 +602,7 @@
       pointer-events: none;
       transform: translateY(10px);
       transition: all 0.2s ease;
-      z-index: 9999;
+      z-index: 10001;
     }
 
     .toast.show {
@@ -615,62 +762,79 @@
       justify-content: flex-end;
     }
 
-    .mobile-sidebar-overlay {
-      display: none;
+    .json-editor-wrap {
+      display: grid;
+      gap: 12px;
     }
 
-    .mobile-sidebar-drawer {
-      display: none;
+    .json-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    @media (max-width: 960px) {
-      .page-layout {
-        grid-template-columns: 1fr;
-      }
+    .json-textarea {
+      width: 100%;
+      min-height: 420px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.55;
+      background: #0f172a;
+      color: #e5e7eb;
+      outline: none;
+      font-family: Consolas, Monaco, monospace;
+    }
 
-      .sidebar-desktop {
-        display: none;
-      }
+    .json-textarea:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
 
-      .mobile-filter-bar {
-        display: block;
-      }
+    .json-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
 
-      .mobile-sidebar-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(17, 24, 39, 0.56);
-        z-index: 9998;
-      }
+    .json-status {
+      font-size: 13px;
+      font-weight: 700;
+    }
 
-      .mobile-sidebar-overlay.show {
-        display: block;
-      }
+    .json-status.ok {
+      color: #047857;
+    }
 
-      .mobile-sidebar-drawer {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
+    .json-status.error {
+      color: #b91c1c;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar-drawer {
         width: var(--sidebar-mobile-width);
-        height: 100vh;
-        background: var(--bg);
-        z-index: 9999;
-        overflow-y: auto;
-        transform: translateX(-100%);
-        transition: transform 0.25s ease;
-        box-shadow: 20px 0 40px rgba(0, 0, 0, 0.18);
-        padding: 18px;
-      }
-
-      .mobile-sidebar-drawer.show {
-        transform: translateX(0);
       }
     }
 
     @media (max-width: 640px) {
       body {
         padding: 14px;
+      }
+
+      .topbar {
+        padding: 12px 14px;
+      }
+
+      .topbar-title {
+        font-size: 16px;
+      }
+
+      .topbar-subtitle {
+        font-size: 12px;
       }
 
       .hero {
@@ -687,7 +851,8 @@
 
       .action-row,
       .top-actions,
-      .modal-actions {
+      .modal-actions,
+      .json-toolbar {
         flex-direction: column;
       }
 
@@ -706,18 +871,42 @@
         padding-left: 16px;
         padding-right: 16px;
       }
+
+      .json-textarea {
+        min-height: 340px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <header class="topbar">
+      <button
+        class="hamburger-btn"
+        type="button"
+        onclick="toggleSidebar()"
+        aria-label="เปิดเมนู"
+        title="เปิดเมนู"
+      >
+        <span class="hamburger-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+
+      <div class="topbar-left">
+        <div class="topbar-title">Qingdao Travel Plan</div>
+        <div class="topbar-subtitle">แสดงข้อมูลจาก Supabase และแก้ไข JSON ทั้งก้อนได้</div>
+      </div>
+    </header>
+
     <section class="hero">
       <h1>Qingdao Travel Plan</h1>
       <p>
-        แผนเที่ยว Qingdao แบบอ่านง่าย รวมจุดเที่ยวประจำวัน จุดถ่ายรูป ของกิน
-        แนวทางการเดินทางในเมือง เพิ่มลิงก์รูปจากหน้าจอได้ และมีปุ่มเปิด Google Photo,
-        Instagram และ Amap สำหรับแต่ละสถานที่ กดที่รูปเพื่อเปิด modal แล้วใส่ URL รูปได้ทันที
-        พร้อมระบบตั้งค่าสถานที่เป็น Active / Inactive และบันทึกกลับ Supabase ได้ทันที
+        หน้าเดียวสำหรับดูแผนเที่ยว Qingdao แบบอ่านง่าย แก้รูปแต่ละสถานที่ เปิดลิงก์ค้นหารูป
+        เปิด Amap ตั้งค่า Active / Inactive และมี Raw JSON Editor สำหรับโหลด แก้ วาง และบันทึก JSON
+        ทั้งก้อนกลับไปที่ Supabase ได้ทันที
       </p>
 
       <div class="top-actions">
@@ -726,11 +915,11 @@
         </button>
 
         <button class="btn btn-patch" type="button" onclick="patchJsonInBrowser()">
-          Patch JSON in JS
+          Patch JSON in Browser
         </button>
 
         <button class="btn btn-save" type="button" onclick="savePatchedJsonToSupabase()">
-          Save updated JSON to Supabase
+          Save Current Data to Supabase
         </button>
       </div>
     </section>
@@ -748,108 +937,109 @@
     </section>
 
     <div id="appContent" class="hidden">
-      <div class="mobile-filter-bar">
-        <button
-          id="sidebarToggleButton"
-          class="sidebar-toggle"
-          type="button"
-          onclick="toggleMobileSidebar()"
-        >
-          เปิดเมนูเลือกวัน
-        </button>
-      </div>
+      <main class="main-content">
+        <section class="card">
+          <div class="card-body">
+            <h2 class="section-title">Raw JSON Editor</h2>
+            <p class="section-subtitle">
+              โหลด JSON ปัจจุบันจาก Supabase มาแก้ไขได้ทั้งก้อน แล้วกดบันทึกกลับไปที่คอลัมน์ <code>data</code>
+            </p>
 
-      <div class="page-layout">
-        <aside class="sidebar-desktop">
-          <section class="card">
-            <div class="card-body">
-              <div class="sidebar-menu">
-                <div class="sidebar-menu-header">
-                  <h3>Filter by Day</h3>
-                  <p>เลือกวันจากเมนูด้านซ้ายเพื่อกรองข้อมูลทั้งหน้า</p>
-                </div>
+            <div class="json-editor-wrap">
+              <div class="json-toolbar">
+                <button class="btn btn-json-load" type="button" onclick="loadJsonIntoEditorFromAppData()">
+                  Load Current JSON
+                </button>
 
-                <div id="daySidebarMenuListDesktop" class="sidebar-menu-list"></div>
+                <button class="btn btn-format" type="button" onclick="formatJsonEditor()">
+                  Format JSON
+                </button>
 
-                <div class="sidebar-summary">
-                  <div class="sidebar-summary-row">
-                    <span>Selected</span>
-                    <strong id="selectedDayLabelDesktop">All Days</strong>
-                  </div>
-                  <div class="sidebar-summary-row">
-                    <span>Itineraries</span>
-                    <strong id="selectedDayItineraryCountDesktop">0</strong>
-                  </div>
-                  <div class="sidebar-summary-row">
-                    <span>Places</span>
-                    <strong id="selectedDayPlaceCountDesktop">0</strong>
-                  </div>
-                </div>
+                <button class="btn btn-copy" type="button" onclick="copyJsonEditorContent()">
+                  Copy JSON
+                </button>
+
+                <button class="btn btn-paste" type="button" onclick="pasteJsonEditorContent()">
+                  Paste JSON
+                </button>
+
+                <button class="btn btn-json-save" type="button" onclick="saveEntireJsonFromEditorToSupabase()">
+                  Save Whole JSON to Supabase
+                </button>
               </div>
-            </div>
-          </section>
-        </aside>
 
-        <main class="main-content">
-          <section class="card">
-            <div class="card-body">
-              <h2 class="section-title">ภาพรวมทริป</h2>
-              <p class="section-subtitle">สรุปหมวดสถานที่หลักของทริป</p>
-              <div class="tag-row" id="summaryTags"></div>
-            </div>
-          </section>
+              <div class="json-meta">
+                <span id="jsonEditorStatus" class="json-status ok">JSON พร้อมใช้งาน</span>
+                <span>Slug: <strong>qingdao-plan</strong></span>
+                <span>Table: <strong>travel_plans</strong></span>
+              </div>
 
-          <section class="card">
-            <div class="card-body">
-              <h2 class="section-title">Itinerary</h2>
-              <p class="section-subtitle">แผนเที่ยวรายวัน</p>
-              <div id="itineraryList" class="timeline"></div>
+              <textarea
+                id="rawJsonEditor"
+                class="json-textarea"
+                spellcheck="false"
+                placeholder="JSON data จาก Supabase จะแสดงตรงนี้"
+                oninput="validateJsonEditorRealtime()"
+              ></textarea>
             </div>
-          </section>
-
-          <div class="footer-note">
-            หน้าเว็บนี้โหลดข้อมูลจาก Supabase โดยใช้ <code>slug = qingdao-plan</code>
           </div>
-        </main>
-      </div>
+        </section>
+
+        <section class="card">
+          <div class="card-body">
+            <h2 class="section-title">ภาพรวมทริป</h2>
+            <p class="section-subtitle">สรุปหมวดสถานที่หลักของทริป</p>
+            <div class="tag-row" id="summaryTags"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-body">
+            <h2 class="section-title">Itinerary</h2>
+            <p class="section-subtitle">แผนเที่ยวรายวัน</p>
+            <div id="itineraryList" class="timeline"></div>
+          </div>
+        </section>
+
+        <div class="footer-note">
+          หน้าเว็บนี้โหลดข้อมูลจาก Supabase โดยใช้ <code>slug = qingdao-plan</code>
+        </div>
+      </main>
     </div>
   </div>
 
-  <div
-    id="mobileSidebarOverlay"
-    class="mobile-sidebar-overlay"
-    onclick="closeMobileSidebar()"
-  ></div>
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
-  <aside id="mobileSidebarDrawer" class="mobile-sidebar-drawer">
+  <aside id="sidebarDrawer" class="sidebar-drawer">
     <section class="card">
       <div class="card-body">
         <div class="sidebar-menu">
           <div class="sidebar-menu-header">
-            <h3>Filter by Day</h3>
+            <div class="sidebar-menu-header-top">
+              <h3>Filter by Day</h3>
+              <button class="btn btn-close" type="button" onclick="closeSidebar()">
+                ปิด
+              </button>
+            </div>
             <p>เลือกวันเพื่อกรองข้อมูลทั้งหน้า</p>
           </div>
 
-          <div id="daySidebarMenuListMobile" class="sidebar-menu-list"></div>
+          <div id="daySidebarMenuList" class="sidebar-menu-list"></div>
 
           <div class="sidebar-summary">
             <div class="sidebar-summary-row">
               <span>Selected</span>
-              <strong id="selectedDayLabelMobile">All Days</strong>
+              <strong id="selectedDayLabel">All Days</strong>
             </div>
             <div class="sidebar-summary-row">
               <span>Itineraries</span>
-              <strong id="selectedDayItineraryCountMobile">0</strong>
+              <strong id="selectedDayItineraryCount">0</strong>
             </div>
             <div class="sidebar-summary-row">
               <span>Places</span>
-              <strong id="selectedDayPlaceCountMobile">0</strong>
+              <strong id="selectedDayPlaceCount">0</strong>
             </div>
           </div>
-
-          <button class="btn btn-close" type="button" onclick="closeMobileSidebar()">
-            ปิดเมนู
-          </button>
         </div>
       </div>
     </section>
@@ -914,7 +1104,7 @@
 
     let appData = null;
     let selectedDayKey = "all";
-    let isMobileSidebarOpen = false;
+    let isSidebarOpen = false;
 
     const imageModalState = {
       type: "",
@@ -934,6 +1124,7 @@
           if (name === "Tsingtao BreweryMuseum") {
             return "Tsingtao Brewery Museum";
           }
+
           return name;
         });
       }
@@ -972,7 +1163,6 @@
 
     function showErrorState(message) {
       const errorElement = document.getElementById("errorState");
-
       errorElement.textContent = message || "โหลดข้อมูลจาก Supabase ไม่สำเร็จ";
 
       document.getElementById("loadingState").classList.add("hidden");
@@ -997,7 +1187,6 @@
 
     function showToast(message) {
       const toastElement = document.getElementById("toast");
-
       toastElement.textContent = message;
       toastElement.classList.add("show");
 
@@ -1046,6 +1235,181 @@
       }
 
       appData = normalizeAppData(planRow.data);
+    }
+
+    function escapeForJs(text) {
+      return String(text)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/\n/g, " ");
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function getRawJsonEditorElement() {
+      return document.getElementById("rawJsonEditor");
+    }
+
+    function getJsonEditorStatusElement() {
+      return document.getElementById("jsonEditorStatus");
+    }
+
+    function setJsonEditorStatus(message, isError) {
+      const statusElement = getJsonEditorStatusElement();
+
+      if (!statusElement) {
+        return;
+      }
+
+      statusElement.textContent = message || "";
+
+      if (isError) {
+        statusElement.classList.remove("ok");
+        statusElement.classList.add("error");
+      } else {
+        statusElement.classList.remove("error");
+        statusElement.classList.add("ok");
+      }
+    }
+
+    function getPrettyJsonString(value) {
+      return JSON.stringify(value, null, 2);
+    }
+
+    function loadJsonIntoEditorFromAppData() {
+      if (!appData) {
+        setJsonEditorStatus("ยังไม่มีข้อมูล JSON", true);
+        showToast("ยังไม่มีข้อมูล JSON");
+        return;
+      }
+
+      const editor = getRawJsonEditorElement();
+      editor.value = getPrettyJsonString(appData);
+      setJsonEditorStatus("โหลด JSON ปัจจุบันแล้ว", false);
+    }
+
+    function validateJsonEditorRealtime() {
+      const editor = getRawJsonEditorElement();
+      const text = editor.value.trim();
+
+      if (!text) {
+        setJsonEditorStatus("JSON ว่างอยู่", true);
+        return;
+      }
+
+      try {
+        JSON.parse(text);
+        setJsonEditorStatus("JSON ถูกต้อง", false);
+      } catch (error) {
+        setJsonEditorStatus("JSON ไม่ถูกต้อง: " + error.message, true);
+      }
+    }
+
+    function formatJsonEditor() {
+      try {
+        const editor = getRawJsonEditorElement();
+        const parsed = JSON.parse(editor.value || "{}");
+        editor.value = JSON.stringify(parsed, null, 2);
+        setJsonEditorStatus("จัดรูปแบบ JSON แล้ว", false);
+        showToast("Format JSON แล้ว");
+      } catch (error) {
+        console.error("formatJsonEditor error:", error);
+        setJsonEditorStatus("Format ไม่สำเร็จ: " + error.message, true);
+        showToast("JSON ไม่ถูกต้อง");
+      }
+    }
+
+    async function copyJsonEditorContent() {
+      const editor = getRawJsonEditorElement();
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(editor.value);
+        } else {
+          editor.select();
+          document.execCommand("copy");
+          window.getSelection().removeAllRanges();
+        }
+
+        showToast("คัดลอก JSON แล้ว");
+      } catch (error) {
+        console.error("copyJsonEditorContent error:", error);
+        showToast("คัดลอก JSON ไม่สำเร็จ");
+      }
+    }
+
+   async function pasteJsonEditorContent() {
+  const editor = getRawJsonEditorElement();
+
+  try {
+    if (!navigator.clipboard || !window.isSecureContext) {
+      setJsonEditorStatus("Browser นี้ไม่รองรับ Clipboard Paste อัตโนมัติ", true);
+      showToast("Paste อัตโนมัติไม่ได้ใน browser นี้");
+      return;
+    }
+
+    const clipboardText = await navigator.clipboard.readText();
+
+    editor.value = "";
+
+    if (!clipboardText) {
+      setJsonEditorStatus("Clipboard ว่าง", true);
+      showToast("ไม่มีข้อความใน clipboard");
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(clipboardText);
+      editor.value = JSON.stringify(parsed, null, 2);
+      setJsonEditorStatus("วางและจัดรูปแบบ JSON แล้ว", false);
+      showToast("ล้างของเก่าและวาง JSON แล้ว");
+    } catch (jsonError) {
+      editor.value = clipboardText.trim();
+      validateJsonEditorRealtime();
+      showToast("ล้างของเก่าและวางข้อความแล้ว");
+    }
+  } catch (error) {
+    console.error("pasteJsonEditorContent error:", error);
+    setJsonEditorStatus("Paste ไม่สำเร็จ: " + (error.message || "Unknown error"), true);
+    showToast("Paste JSON ไม่สำเร็จ");
+  }
+}
+
+
+    async function saveEntireJsonFromEditorToSupabase() {
+      try {
+        const editor = getRawJsonEditorElement();
+        const rawText = editor.value.trim();
+
+        if (!rawText) {
+          setJsonEditorStatus("JSON ว่าง ไม่สามารถบันทึกได้", true);
+          showToast("JSON ว่าง");
+          return;
+        }
+
+        const parsedJson = JSON.parse(rawText);
+        const normalizedJson = normalizeAppData(parsedJson);
+
+        await updatePlanDataInSupabase(normalizedJson);
+
+        appData = normalizedJson;
+        renderApp();
+        loadJsonIntoEditorFromAppData();
+
+        setJsonEditorStatus("บันทึก JSON ทั้งก้อนลง Supabase สำเร็จ", false);
+        showToast("บันทึก JSON ทั้งก้อนแล้ว");
+      } catch (error) {
+        console.error("saveEntireJsonFromEditorToSupabase error:", error);
+        setJsonEditorStatus("บันทึกไม่สำเร็จ: " + (error.message || "Unknown error"), true);
+        showToast("บันทึก JSON ไม่สำเร็จ");
+      }
     }
 
     function getPlaceByName(name) {
@@ -1203,28 +1567,13 @@
 
         await updatePlanDataInSupabase(appData);
         renderApp();
+        loadJsonIntoEditorFromAppData();
         closeImageModal();
         showToast("บันทึกลิงก์รูปลง Supabase แล้ว");
       } catch (error) {
         console.error("saveModalImageToSupabase error:", error);
         showToast("บันทึกลิงก์รูปไม่สำเร็จ");
       }
-    }
-
-    function escapeForJs(text) {
-      return String(text)
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'")
-        .replace(/\n/g, " ");
-    }
-
-    function escapeHtml(text) {
-      return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
     }
 
     function createImageHtml(place, modalAction) {
@@ -1247,7 +1596,6 @@
           await navigator.clipboard.writeText(text);
         } else {
           const textarea = document.createElement("textarea");
-
           textarea.value = text;
           textarea.style.position = "fixed";
           textarea.style.left = "-9999px";
@@ -1281,12 +1629,23 @@
       return "https://uri.amap.com/marker?position=" + place.lng + "," + place.lat + "&name=" + placeName;
     }
 
-    function createStatusPill(place) {
+    function createActiveToggle(place) {
       const active = isPlaceActive(place);
 
       return `
-        <div class="status-pill ${active ? "active" : "inactive"}">
-          ${active ? "Active" : "Inactive"}
+        <div class="toggle-wrap">
+          <label class="toggle-switch">
+            <input
+              type="checkbox"
+              ${active ? "checked" : ""}
+              onchange="togglePlaceActive('${escapeForJs(place.name)}')"
+            />
+            <span class="toggle-slider"></span>
+          </label>
+
+          <span class="toggle-label ${active ? "active" : "inactive"}">
+            ${active ? "Active" : "Inactive"}
+          </span>
         </div>
       `;
     }
@@ -1296,7 +1655,6 @@
       const googlePhotosLink = buildGooglePhotosLink(place);
       const instagramLink = buildInstagramSearchLink(place);
       const amapLink = buildAmapLink(place);
-      const active = isPlaceActive(place);
 
       return `
         <div class="action-row">
@@ -1315,15 +1673,9 @@
           <a class="btn btn-map" href="${amapLink}" target="_blank" rel="noopener noreferrer">
             เปิด Amap
           </a>
-
-          <button
-            class="btn ${active ? "btn-toggle-inactive" : "btn-toggle-active"}"
-            type="button"
-            onclick="togglePlaceActive('${escapeForJs(place.name)}')"
-          >
-            ${active ? "Set Inactive" : "Set Active"}
-          </button>
         </div>
+
+        ${createActiveToggle(place)}
       `;
     }
 
@@ -1404,46 +1756,25 @@
       };
     }
 
-    function isMobileLayout() {
-      return window.innerWidth <= 960;
+    function openSidebar() {
+      isSidebarOpen = true;
+      document.body.classList.add("sidebar-open");
+      document.getElementById("sidebarOverlay").classList.add("show");
+      document.getElementById("sidebarDrawer").classList.add("show");
     }
 
-    function openMobileSidebar() {
-      if (!isMobileLayout()) {
-        return;
-      }
-
-      isMobileSidebarOpen = true;
-      document.body.classList.add("sidebar-open-mobile");
-      document.getElementById("mobileSidebarOverlay").classList.add("show");
-      document.getElementById("mobileSidebarDrawer").classList.add("show");
-      document.getElementById("sidebarToggleButton").textContent = "ปิดเมนูเลือกวัน";
+    function closeSidebar() {
+      isSidebarOpen = false;
+      document.body.classList.remove("sidebar-open");
+      document.getElementById("sidebarOverlay").classList.remove("show");
+      document.getElementById("sidebarDrawer").classList.remove("show");
     }
 
-    function closeMobileSidebar() {
-      isMobileSidebarOpen = false;
-      document.body.classList.remove("sidebar-open-mobile");
-      document.getElementById("mobileSidebarOverlay").classList.remove("show");
-      document.getElementById("mobileSidebarDrawer").classList.remove("show");
-
-      const toggleButton = document.getElementById("sidebarToggleButton");
-
-      if (toggleButton) {
-        toggleButton.textContent = "เปิดเมนูเลือกวัน";
-      }
-    }
-
-    function toggleMobileSidebar() {
-      if (isMobileSidebarOpen) {
-        closeMobileSidebar();
+    function toggleSidebar() {
+      if (isSidebarOpen) {
+        closeSidebar();
       } else {
-        openMobileSidebar();
-      }
-    }
-
-    function syncResponsiveState() {
-      if (!isMobileLayout()) {
-        closeMobileSidebar();
+        openSidebar();
       }
     }
 
@@ -1451,10 +1782,7 @@
       selectedDayKey = dayKey;
       renderSidebarMenus();
       renderItineraries();
-
-      if (isMobileLayout()) {
-        closeMobileSidebar();
-      }
+      closeSidebar();
     }
 
     function createSidebarMenuHtml() {
@@ -1494,21 +1822,13 @@
     }
 
     function renderSidebarMenus() {
-      const desktopMenu = document.getElementById("daySidebarMenuListDesktop");
-      const mobileMenu = document.getElementById("daySidebarMenuListMobile");
-      const menuHtml = createSidebarMenuHtml();
+      const menuElement = document.getElementById("daySidebarMenuList");
       const stats = getSelectedDayStats();
 
-      desktopMenu.innerHTML = menuHtml;
-      mobileMenu.innerHTML = menuHtml;
-
-      document.getElementById("selectedDayLabelDesktop").textContent = stats.label;
-      document.getElementById("selectedDayItineraryCountDesktop").textContent = stats.itineraryCount;
-      document.getElementById("selectedDayPlaceCountDesktop").textContent = stats.placeCount;
-
-      document.getElementById("selectedDayLabelMobile").textContent = stats.label;
-      document.getElementById("selectedDayItineraryCountMobile").textContent = stats.itineraryCount;
-      document.getElementById("selectedDayPlaceCountMobile").textContent = stats.placeCount;
+      menuElement.innerHTML = createSidebarMenuHtml();
+      document.getElementById("selectedDayLabel").textContent = stats.label;
+      document.getElementById("selectedDayItineraryCount").textContent = stats.itineraryCount;
+      document.getElementById("selectedDayPlaceCount").textContent = stats.placeCount;
     }
 
     function renderSummaryTags() {
@@ -1567,7 +1887,6 @@
               `
               : ""
           }
-          ${createStatusPill(place)}
           ${createActionButtons(place)}
         </div>
       `;
@@ -1648,42 +1967,27 @@
 
     function patchPlaceImages() {
       const imageMap = {
-        "Silver Fish Street": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
-        "St. Michael's Cathedral": "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=80",
-        "Yue Xikelai Square": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80",
-        "Longjiang Road": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?auto=format&fit=crop&w=1200&q=80",
-        "Qinyu Road": "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80",
-        "Taiping Mountain Cableway": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80",
-        "Cafe La Mansarde": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80",
-        "Tsingtao Brewery Museum": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1200&q=80",
-        "Qingdao Beer Street": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80",
-        "Signal Hill Park": "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80",
-        "Zhongshan Road": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1200&q=80",
-        "Pichaiyuan": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
-        "Taidong Pedestrian Street": "https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=1200&q=80",
-        "Qingdao Botanical Garden": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80",
-        "Zhanshan Temple": "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80",
-        "May Fourth Square": "https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1200&q=80",
-        "Olympic Sailing Center": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
-        "Badaguan": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
-        "Xiaoyushan Park": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80",
-        "Zhanqiao Pier": "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80",
-        "Huilan Pavilion": "https://images.unsplash.com/photo-1468413253725-0d5181091126?auto=format&fit=crop&w=1200&q=80",
-        "Little Qingdao": "https://images.unsplash.com/photo-1468581264429-2548ef9eb732?auto=format&fit=crop&w=1200&q=80",
-        "Lu Xun Park Coast": "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=1200&q=80",
-        "Daxue Road": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80",
-        "Second Bathing Beach": "https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=1200&q=80",
-        "Third Bathing Beach": "https://images.unsplash.com/photo-1501959915551-4e8b96f9f47c?auto=format&fit=crop&w=1200&q=80",
-        "Princess House": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
-        "Huashi Villa": "https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=1200&q=80",
-        "Qingdao Railway Station Facade": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1200&q=80",
-        "Sha Zi Kou Village": "https://images.unsplash.com/photo-1468413253725-0d5181091126?auto=format&fit=crop&w=1200&q=80",
-        "Laoshan Scenic Area": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
-        "Chun He Lou": "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1200&q=80",
-        "Wang Jie Shaokao": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=1200&q=80",
-        "Kaihai Seafood Dumplings": "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80",
-        "Pichaiyuan Food Street": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
-        "Taidong Night Market": "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=1200&q=80"
+        "Silver Fish Street": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLUvx3DceOIYIKPCDw9ZBsAt8z_1QILCSDQw&s",
+        "FUFULAND": "",
+        "St. Michael's Cathedral": "https://www.settour.com.tw/ss_img/poi/20200819/6ddf0848-3266-49c0-a80d-1075f489d3d4.jpg",
+        "Longjiang Road": "https://img.guanhai.com.cn/a/10001/202306/3cfd0c7794b9e2e6853377bd146c2d12.jpeg",
+        "Qinyu Road": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Qs0pno8YvCUgUNn6iv2zPmz4ieZ65m-Tuw&s",
+        "Taiping Mountain Cableway": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl2utT-oYQ-w9d1E6bPX1FVuYJ83tWR2cEDw&s",
+        "Cafe La Mansarde": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuWHUk4I7fQcNb2sdsbBfLb7c8dEJQD-4k_A&s",
+        "Tsingtao Brewery Museum": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPrlV7Cg-RlIOtDewD6YYv9yeQpxHM3fVg0Q&s",
+        "Qingdao Beer Street": "https://news.qingdaonews.com/images/2024-07/13/4f4d6313-1159-4e5e-a38b-b7eb7b98bd1b.jpg.2",
+        "Signal Hill Park": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS79Lrl9LST2-YbGlqbSQtJw0Yx7hnUBQamTQ&s",
+        "Zhongshan Road": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy5XEwAJHtJvDVu7gniJ891jE9tMS344HtVA&s",
+        "Pichaiyuan": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROANkNJzjS-h6KHecw-i0JtxBAX_WJx3XX3Q&s",
+        "Taidong Pedestrian Street": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl91ehhKAXAPuESGJr3KselHc98sWAR4QKJg&s",
+        "Qingdao Botanical Garden": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR51baFVrxyYIZJR119UV2tIfimgzS7dI4N1Q&s",
+        "Zhanshan Temple": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsHBbOP_CTednlNd1YmiJ2_Cz_7t48wwZ7MA&s",
+        "May Fourth Square": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqa9iQoEhiis0NEh32d0AUvze3U8pq4NqQTQ&s",
+        "Olympic Sailing Center": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRanNuZLWtPHa75RXNOmjg1ohypOgzoditJYw&s",
+        "Badaguan": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi3dlrbYZAAq0wCWeSc97Z7AvY3BEfmzl8AA&s",
+        "Xiaoyushan Park": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS9zxam0hqzXsbk7K9PRcpn-iKsffZQMcWrA&s",
+        "Sha Zi Kou Village": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEVwmib6N332ci958qaC96iVNmrZMAbZBjgg&s",
+        "Laoshan Scenic Area": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT66TljbCQhg6g07CwXJ9oHmUYygv3NEQ9wwA&s"
       };
 
       Object.keys(imageMap).forEach(function(placeName) {
@@ -1747,6 +2051,7 @@
       patchPlaceImages();
 
       renderApp();
+      loadJsonIntoEditorFromAppData();
       showToast("แก้ JSON ใน browser แล้ว");
     }
 
@@ -1758,7 +2063,8 @@
         }
 
         await updatePlanDataInSupabase(appData);
-        showToast("บันทึก JSON ที่แก้แล้วกลับ Supabase สำเร็จ");
+        loadJsonIntoEditorFromAppData();
+        showToast("บันทึกข้อมูลปัจจุบันกลับ Supabase สำเร็จ");
       } catch (error) {
         console.error("savePatchedJsonToSupabase error:", error);
         showToast("บันทึกกลับ Supabase ไม่สำเร็จ");
@@ -1783,6 +2089,7 @@
 
         await updatePlanDataInSupabase(appData);
         renderApp();
+        loadJsonIntoEditorFromAppData();
         showToast(place.active ? "ตั้งค่าเป็น Active แล้ว" : "ตั้งค่าเป็น Inactive แล้ว");
       } catch (error) {
         console.error("togglePlaceActive error:", error);
@@ -1794,7 +2101,6 @@
       renderSidebarMenus();
       renderSummaryTags();
       renderItineraries();
-      syncResponsiveState();
     }
 
     async function init() {
@@ -1809,6 +2115,7 @@
 
         renderApp();
         showAppState();
+        loadJsonIntoEditorFromAppData();
       } catch (error) {
         console.error("init error:", error);
         showErrorState("โหลดข้อมูลจาก Supabase ไม่สำเร็จ: " + (error.message || "Unknown error"));
@@ -1820,8 +2127,17 @@
       showToast("โหลดข้อมูลใหม่แล้ว");
     }
 
-    function handleWindowResize() {
-      syncResponsiveState();
+    function handleKeydown(event) {
+      if (event.key === "Escape") {
+        if (document.getElementById("imageModal").classList.contains("show")) {
+          closeImageModal();
+          return;
+        }
+
+        if (isSidebarOpen) {
+          closeSidebar();
+        }
+      }
     }
 
     window.copyText = copyText;
@@ -1836,11 +2152,17 @@
     window.clearModalImage = clearModalImage;
     window.saveModalImageToSupabase = saveModalImageToSupabase;
     window.setSelectedDay = setSelectedDay;
-    window.toggleMobileSidebar = toggleMobileSidebar;
-    window.closeMobileSidebar = closeMobileSidebar;
     window.togglePlaceActive = togglePlaceActive;
+    window.toggleSidebar = toggleSidebar;
+    window.closeSidebar = closeSidebar;
+    window.loadJsonIntoEditorFromAppData = loadJsonIntoEditorFromAppData;
+    window.validateJsonEditorRealtime = validateJsonEditorRealtime;
+    window.formatJsonEditor = formatJsonEditor;
+    window.copyJsonEditorContent = copyJsonEditorContent;
+    window.pasteJsonEditorContent = pasteJsonEditorContent;
+    window.saveEntireJsonFromEditorToSupabase = saveEntireJsonFromEditorToSupabase;
 
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener("keydown", handleKeydown);
 
     init();
   </script>
