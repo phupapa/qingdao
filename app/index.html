@@ -24,10 +24,17 @@
       --green-soft: #dcfce7;
       --orange: #ea580c;
       --orange-soft: #ffedd5;
+      --purple: #7c3aed;
+      --purple-soft: #ede9fe;
+      --dark: #111827;
+      --red: #dc2626;
       --red-soft: #fee2e2;
-      --yellow-soft: #fef3c7;
+      --teal: #0f766e;
+      --teal-soft: #ccfbf1;
       --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
       --radius: 18px;
+      --sidebar-width: 280px;
+      --sidebar-mobile-width: min(88vw, 320px);
     }
 
     body {
@@ -37,8 +44,12 @@
       line-height: 1.6;
     }
 
+    body.sidebar-open-mobile {
+      overflow: hidden;
+    }
+
     .container {
-      max-width: 1160px;
+      max-width: 1400px;
       margin: 0 auto;
       display: grid;
       gap: 18px;
@@ -60,13 +71,33 @@
     .hero p {
       font-size: 14px;
       opacity: 0.96;
-      max-width: 760px;
+      max-width: 980px;
     }
 
-    .grid {
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .page-layout {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
       gap: 18px;
+      align-items: start;
+    }
+
+    .sidebar-desktop {
+      display: block;
+      position: sticky;
+      top: 24px;
+    }
+
+    .main-content {
+      display: grid;
+      gap: 18px;
+      min-width: 0;
     }
 
     .card {
@@ -91,32 +122,6 @@
       font-size: 13px;
       color: var(--muted);
       margin-bottom: 14px;
-    }
-
-    .hotel-box {
-      display: grid;
-      gap: 10px;
-      background: #f9fafb;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 16px;
-    }
-
-    .hotel-box h3 {
-      font-size: 18px;
-      color: #111827;
-    }
-
-    .hotel-zh {
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .hotel-meta {
-      display: grid;
-      gap: 8px;
-      font-size: 14px;
-      color: #374151;
     }
 
     .tag-row {
@@ -255,69 +260,178 @@
       border-color: #fed7aa;
     }
 
-    .list-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+    .btn-ig {
+      background: var(--purple-soft);
+      color: var(--purple);
+      border-color: #ddd6fe;
     }
 
-    .mini-card {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #f9fafb;
-      padding: 14px;
+    .btn-reload {
+      background: var(--dark);
+      color: #ffffff;
+      border-color: var(--dark);
     }
 
-    .mini-card h4 {
-      font-size: 15px;
-      margin-bottom: 4px;
-      color: #111827;
+    .btn-save {
+      background: #065f46;
+      color: #ffffff;
+      border-color: #065f46;
     }
 
-    .mini-card .zh {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 6px;
+    .btn-patch {
+      background: var(--purple);
+      color: #ffffff;
+      border-color: var(--purple);
     }
 
-    .mini-card p {
-      font-size: 13px;
+    .btn-clear {
+      background: #f3f4f6;
       color: #374151;
-      margin-bottom: 8px;
+      border-color: #d1d5db;
     }
 
-    .mini-meta {
-      font-size: 12px;
-      color: var(--muted);
+    .btn-close {
+      background: #f3f4f6;
+      color: #374151;
+      border-color: #d1d5db;
     }
 
-    .transport-list {
+    .btn-toggle-active {
+      background: var(--teal-soft);
+      color: var(--teal);
+      border-color: #99f6e4;
+    }
+
+    .btn-toggle-inactive {
+      background: var(--red-soft);
+      color: var(--red);
+      border-color: #fecaca;
+    }
+
+    .mobile-filter-bar {
+      display: none;
+    }
+
+    .sidebar-toggle {
+      width: 100%;
+      background: var(--dark);
+      color: #ffffff;
+      border: 1px solid var(--dark);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar-menu {
       display: grid;
       gap: 10px;
     }
 
-    .transport-item {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 14px;
-      background: #f9fafb;
+    .sidebar-menu-header {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 2px;
     }
 
-    .transport-item h4 {
-      font-size: 14px;
-      margin-bottom: 6px;
+    .sidebar-menu-header h3 {
+      font-size: 18px;
       color: #111827;
     }
 
-    .transport-item p {
+    .sidebar-menu-header p {
       font-size: 13px;
-      color: #374151;
-      margin-bottom: 4px;
+      color: var(--muted);
     }
 
-    .transport-item .transport-note {
+    .sidebar-menu-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .sidebar-menu-item {
+      width: 100%;
+      text-align: left;
+      border: 1px solid #dbeafe;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      display: grid;
+      gap: 2px;
+    }
+
+    .sidebar-menu-item:hover {
+      transform: translateY(-1px);
+    }
+
+    .sidebar-menu-item.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+
+    .sidebar-menu-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .sidebar-menu-item-subtitle {
       font-size: 12px;
-      color: var(--muted);
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+
+    .sidebar-summary {
+      border: 1px solid var(--line);
+      background: #f9fafb;
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .sidebar-summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 13px;
+      color: #374151;
+    }
+
+    .sidebar-summary-row strong {
+      color: #111827;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .status-pill.active {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .status-pill.inactive {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .place-inactive {
+      opacity: 0.72;
     }
 
     .footer-note {
@@ -349,9 +463,208 @@
       transform: translateY(0);
     }
 
-    @media (max-width: 900px) {
-      .grid {
+    .loading-box,
+    .error-box,
+    .empty-box {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .loading-box {
+      color: #374151;
+    }
+
+    .error-box {
+      border-color: #fecaca;
+      background: var(--red-soft);
+      color: #7f1d1d;
+    }
+
+    .empty-box {
+      color: #374151;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .place-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      border: 1px solid var(--line);
+      background: #f3f4f6;
+      display: block;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .place-image:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .image-hint {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: -4px;
+      margin-bottom: 8px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.56);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 10000;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 720px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-title-wrap h3 {
+      font-size: 18px;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .modal-title-wrap p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .modal-body {
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .modal-preview {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #f3f4f6;
+      display: block;
+    }
+
+    .modal-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .modal-field input {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 14px;
+      color: #111827;
+      outline: none;
+    }
+
+    .modal-field input:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .modal-help {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .modal-actions {
+      padding: 0 20px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .mobile-sidebar-overlay {
+      display: none;
+    }
+
+    .mobile-sidebar-drawer {
+      display: none;
+    }
+
+    @media (max-width: 960px) {
+      .page-layout {
         grid-template-columns: 1fr;
+      }
+
+      .sidebar-desktop {
+        display: none;
+      }
+
+      .mobile-filter-bar {
+        display: block;
+      }
+
+      .mobile-sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(17, 24, 39, 0.56);
+        z-index: 9998;
+      }
+
+      .mobile-sidebar-overlay.show {
+        display: block;
+      }
+
+      .mobile-sidebar-drawer {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: var(--sidebar-mobile-width);
+        height: 100vh;
+        background: var(--bg);
+        z-index: 9999;
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        box-shadow: 20px 0 40px rgba(0, 0, 0, 0.18);
+        padding: 18px;
+      }
+
+      .mobile-sidebar-drawer.show {
+        transform: translateX(0);
       }
     }
 
@@ -372,16 +685,26 @@
         padding: 16px;
       }
 
-      .list-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .action-row {
+      .action-row,
+      .top-actions,
+      .modal-actions {
         flex-direction: column;
       }
 
       .btn {
         width: 100%;
+      }
+
+      .place-image,
+      .modal-preview {
+        height: 180px;
+      }
+
+      .modal-header,
+      .modal-body,
+      .modal-actions {
+        padding-left: 16px;
+        padding-right: 16px;
       }
     }
   </style>
@@ -391,1038 +714,501 @@
     <section class="hero">
       <h1>Qingdao Travel Plan</h1>
       <p>
-        แผนเที่ยว Qingdao แบบอ่านง่าย รวมโรงแรม จุดเที่ยวประจำวัน จุดถ่ายรูป ของกิน
-        และแนวทางการเดินทางในเมือง พร้อมปุ่ม Copy ภาษาจีน, เปิด Google Photos และเปิด Amap
+        แผนเที่ยว Qingdao แบบอ่านง่าย รวมจุดเที่ยวประจำวัน จุดถ่ายรูป ของกิน
+        แนวทางการเดินทางในเมือง เพิ่มลิงก์รูปจากหน้าจอได้ และมีปุ่มเปิด Google Photo,
+        Instagram และ Amap สำหรับแต่ละสถานที่ กดที่รูปเพื่อเปิด modal แล้วใส่ URL รูปได้ทันที
+        พร้อมระบบตั้งค่าสถานที่เป็น Active / Inactive และบันทึกกลับ Supabase ได้ทันที
       </p>
-    </section>
 
-    <div class="grid">
-      <section class="card">
-        <div class="card-body">
-          <h2 class="section-title">ที่พักหลัก</h2>
-          <p class="section-subtitle">จุดเริ่มต้นของทุกวัน</p>
-          <div id="hotelCard" class="hotel-box"></div>
-        </div>
-      </section>
+      <div class="top-actions">
+        <button class="btn btn-reload" type="button" onclick="reloadAppData()">
+          Reload from Supabase
+        </button>
 
-      <section class="card">
-        <div class="card-body">
-          <h2 class="section-title">ภาพรวมทริป</h2>
-          <p class="section-subtitle">สรุปเส้นทางหลักที่วางไว้</p>
-          <div class="tag-row" id="summaryTags"></div>
-        </div>
-      </section>
-    </div>
+        <button class="btn btn-patch" type="button" onclick="patchJsonInBrowser()">
+          Patch JSON in JS
+        </button>
 
-    <section class="card">
-      <div class="card-body">
-        <h2 class="section-title">Itinerary</h2>
-        <p class="section-subtitle">แผนเที่ยวรายวัน</p>
-        <div id="itineraryList" class="timeline"></div>
+        <button class="btn btn-save" type="button" onclick="savePatchedJsonToSupabase()">
+          Save updated JSON to Supabase
+        </button>
       </div>
     </section>
 
-    <div class="grid">
-      <section class="card">
-        <div class="card-body">
-          <h2 class="section-title">Photo Spots</h2>
-          <p class="section-subtitle">จุดถ่ายรูปน่าแวะ</p>
-          <div id="photoList" class="list-grid"></div>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-body">
-          <h2 class="section-title">Food Spots</h2>
-          <p class="section-subtitle">ร้านและโซนของกิน</p>
-          <div id="foodList" class="list-grid"></div>
-        </div>
-      </section>
-    </div>
-
-    <section class="card">
-      <div class="card-body">
-        <h2 class="section-title">Transport Guide</h2>
-        <p class="section-subtitle">สรุปการเดินทางเบื้องต้นสำหรับแต่ละจุดสำคัญ</p>
-        <div id="transportList" class="transport-list"></div>
-      </div>
+    <section id="loadingState" class="loading-box">
+      กำลังโหลดข้อมูลจาก Supabase...
     </section>
 
-    <div class="footer-note">
-      ใช้งานไฟล์นี้ได้ทันที และสามารถแก้ไขข้อมูลใน <code>window.APP_DATA</code> เพื่ออัปเดตทั้งหน้าอัตโนมัติ
+    <section id="errorState" class="error-box hidden">
+      โหลดข้อมูลจาก Supabase ไม่สำเร็จ
+    </section>
+
+    <section id="emptyState" class="empty-box hidden">
+      ไม่พบข้อมูลในตาราง <code>travel_plans</code> สำหรับ <code>slug = qingdao-plan</code>
+    </section>
+
+    <div id="appContent" class="hidden">
+      <div class="mobile-filter-bar">
+        <button
+          id="sidebarToggleButton"
+          class="sidebar-toggle"
+          type="button"
+          onclick="toggleMobileSidebar()"
+        >
+          เปิดเมนูเลือกวัน
+        </button>
+      </div>
+
+      <div class="page-layout">
+        <aside class="sidebar-desktop">
+          <section class="card">
+            <div class="card-body">
+              <div class="sidebar-menu">
+                <div class="sidebar-menu-header">
+                  <h3>Filter by Day</h3>
+                  <p>เลือกวันจากเมนูด้านซ้ายเพื่อกรองข้อมูลทั้งหน้า</p>
+                </div>
+
+                <div id="daySidebarMenuListDesktop" class="sidebar-menu-list"></div>
+
+                <div class="sidebar-summary">
+                  <div class="sidebar-summary-row">
+                    <span>Selected</span>
+                    <strong id="selectedDayLabelDesktop">All Days</strong>
+                  </div>
+                  <div class="sidebar-summary-row">
+                    <span>Itineraries</span>
+                    <strong id="selectedDayItineraryCountDesktop">0</strong>
+                  </div>
+                  <div class="sidebar-summary-row">
+                    <span>Places</span>
+                    <strong id="selectedDayPlaceCountDesktop">0</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <main class="main-content">
+          <section class="card">
+            <div class="card-body">
+              <h2 class="section-title">ภาพรวมทริป</h2>
+              <p class="section-subtitle">สรุปหมวดสถานที่หลักของทริป</p>
+              <div class="tag-row" id="summaryTags"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-body">
+              <h2 class="section-title">Itinerary</h2>
+              <p class="section-subtitle">แผนเที่ยวรายวัน</p>
+              <div id="itineraryList" class="timeline"></div>
+            </div>
+          </section>
+
+          <div class="footer-note">
+            หน้าเว็บนี้โหลดข้อมูลจาก Supabase โดยใช้ <code>slug = qingdao-plan</code>
+          </div>
+        </main>
+      </div>
     </div>
   </div>
 
+  <div
+    id="mobileSidebarOverlay"
+    class="mobile-sidebar-overlay"
+    onclick="closeMobileSidebar()"
+  ></div>
+
+  <aside id="mobileSidebarDrawer" class="mobile-sidebar-drawer">
+    <section class="card">
+      <div class="card-body">
+        <div class="sidebar-menu">
+          <div class="sidebar-menu-header">
+            <h3>Filter by Day</h3>
+            <p>เลือกวันเพื่อกรองข้อมูลทั้งหน้า</p>
+          </div>
+
+          <div id="daySidebarMenuListMobile" class="sidebar-menu-list"></div>
+
+          <div class="sidebar-summary">
+            <div class="sidebar-summary-row">
+              <span>Selected</span>
+              <strong id="selectedDayLabelMobile">All Days</strong>
+            </div>
+            <div class="sidebar-summary-row">
+              <span>Itineraries</span>
+              <strong id="selectedDayItineraryCountMobile">0</strong>
+            </div>
+            <div class="sidebar-summary-row">
+              <span>Places</span>
+              <strong id="selectedDayPlaceCountMobile">0</strong>
+            </div>
+          </div>
+
+          <button class="btn btn-close" type="button" onclick="closeMobileSidebar()">
+            ปิดเมนู
+          </button>
+        </div>
+      </div>
+    </section>
+  </aside>
+
   <div id="toast" class="toast"></div>
 
+  <div id="imageModal" class="modal" onclick="handleModalBackdropClick(event)">
+    <div class="modal-dialog" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 id="modalTitle">แก้ลิงก์รูป</h3>
+          <p id="modalSubtitle">ใส่ URL รูปแล้วบันทึกกลับ Supabase</p>
+        </div>
+
+        <button class="btn btn-close" type="button" onclick="closeImageModal()">
+          ปิด
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <img id="modalPreview" class="modal-preview" src="" alt="Preview" />
+
+        <div class="modal-field">
+          <label for="modalImageUrl">ลิงก์รูป</label>
+          <input
+            id="modalImageUrl"
+            type="text"
+            placeholder="ใส่ลิงก์รูป เช่น https://..."
+            oninput="handleModalUrlInput(this.value)"
+          />
+          <div class="modal-help">
+            ใช้ลิงก์รูปที่เปิดได้โดยตรง เช่น .jpg .png .webp หรือ public URL จาก Supabase Storage
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-clear" type="button" onclick="clearModalImage()">
+          Clear
+        </button>
+        <button class="btn btn-save" type="button" onclick="saveModalImageToSupabase()">
+          Save Image
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
-    window.APP_DATA = {
-      hotel: {
-        name: "Manxin Hotel Qingdao Zhanqiao Railway Station",
-        zh: "青岛栈桥火车站漫心酒店",
-        lat: 36.0652,
-        lng: 120.3162,
-        district: "Jiaozhou Road / Railway Station Area",
-        note: "จุดเริ่มต้นทุกวัน",
-        description: "โรงแรมที่พักหลัก ใกล้ Qingdao Railway Station ใช้เป็นจุดเริ่มต้นของทุกวัน",
-        best: "ออกเดินทางตอนเช้า"
-      },
-
-      transportGuide: {
-        "Manxin Hotel Qingdao Zhanqiao Railway Station": {
-          mode: "start",
-          summary: "Trip starting point",
-          station: "Qingdao Railway Station",
-          line: "Line 1 / Line 3",
-          exit: "Walk from hotel",
-          note: "Very close to Qingdao Railway Station"
-        },
-
-        "Silver Fish Street": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "-",
-          line: "-",
-          exit: "-",
-          note: "Very close to hotel"
-        },
-
-        "St. Michael's Cathedral": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "-",
-          line: "-",
-          exit: "-",
-          note: "Inside old town route"
-        },
-
-        "Yue Xikelai Square": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "-",
-          line: "-",
-          exit: "-",
-          note: "Inside old town route"
-        },
-
-        "Longjiang Road": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "-",
-          line: "-",
-          exit: "-",
-          note: "Easy after Cathedral / Daxue Road"
-        },
-
-        "Qinyu Road": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "-",
-          line: "-",
-          exit: "-",
-          note: "Good if you enjoy coastal walking"
-        },
-
-        "Taiping Mountain Cableway": {
-          mode: "metro-walk",
-          summary: "Metro + short walk or taxi",
-          station: "Hall of the People / Huiquan Square",
-          line: "Line 3 / Line 4",
-          exit: "Check local exit signs",
-          note: "Farther than old town walking area"
-        },
-
-        "Cafe La Mansarde": {
-          mode: "metro-walk",
-          summary: "Metro + short walk or taxi",
-          station: "Hall of the People / Huiquan Square",
-          line: "Line 3 / Line 4",
-          exit: "Check local exit signs",
-          note: "Good after Taiping Mountain"
-        },
-
-        "Tsingtao Brewery Museum": {
-          mode: "metro-walk",
-          summary: "Recommended by metro",
-          station: "Taidong",
-          line: "Line 1 / Line 2",
-          exit: "E",
-          note: "Very close to Taidong area"
-        },
-
-        "Qingdao Beer Street": {
-          mode: "metro-walk",
-          summary: "Recommended by metro",
-          station: "Taidong",
-          line: "Line 1 / Line 2",
-          exit: "E",
-          note: "Walk from station into food and beer zone"
-        },
-
-        "Signal Hill Park": {
-          mode: "walk",
-          summary: "Walkable or short metro ride",
-          station: "Hall of the People / Xinhaoshan",
-          line: "Line 3 / Line 4",
-          exit: "Check local exit signs",
-          note: "Can walk if you enjoy city walk"
-        },
-
-        "Zhongshan Road": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "Zhongshan Road",
-          line: "Line 1",
-          exit: "D",
-          note: "Very easy from hotel"
-        },
-
-        "Pichaiyuan": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "Zhongshan Road",
-          line: "Line 1",
-          exit: "D",
-          note: "Or use metro and walk from station"
-        },
-
-        "Taidong Pedestrian Street": {
-          mode: "metro",
-          summary: "Recommended by metro",
-          station: "Taidong",
-          line: "Line 1 / Line 2",
-          exit: "E",
-          note: "Best for evening route"
-        },
-
-        "Qingdao Botanical Garden": {
-          mode: "metro-walk",
-          summary: "Metro + walk",
-          station: "Zhiquan Road / Yan'an 3rd Road",
-          line: "Line 2 / Line 3",
-          exit: "Check local exit signs",
-          note: "Best in the morning"
-        },
-
-        "Zhanshan Temple": {
-          mode: "metro-walk",
-          summary: "Metro + walk",
-          station: "Zhiquan Road / Yan'an 3rd Road",
-          line: "Line 2 / Line 3",
-          exit: "Check local exit signs",
-          note: "Easy pair with Botanical Garden"
-        },
-
-        "May Fourth Square": {
-          mode: "metro",
-          summary: "Recommended by metro",
-          station: "May Fourth Square",
-          line: "Line 2 / Line 3",
-          exit: "D",
-          note: "Best access to modern Qingdao center"
-        },
-
-        "Olympic Sailing Center": {
-          mode: "metro-walk",
-          summary: "Recommended by metro",
-          station: "Fushansuo",
-          line: "Line 2",
-          exit: "D",
-          note: "Another option is from May Fourth Square"
-        },
-
-        "Badaguan": {
-          mode: "metro-walk",
-          summary: "Recommended by metro or long walk",
-          station: "Huiquan Square",
-          line: "Line 3",
-          exit: "C",
-          note: "Best entry to main Badaguan zone"
-        },
-
-        "Xiaoyushan Park": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "-",
-          line: "-",
-          exit: "-",
-          note: "Good for city walk"
-        },
-
-        "Zhanqiao Pier": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "Qingdao Station",
-          line: "Line 1 / Line 3",
-          exit: "G",
-          note: "Or metro if returning from elsewhere"
-        },
-
-        "Huilan Pavilion": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "Qingdao Station",
-          line: "Line 1 / Line 3",
-          exit: "G",
-          note: "Continue from Zhanqiao Pier"
-        },
-
-        "Little Qingdao": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "-",
-          line: "-",
-          exit: "-",
-          note: "Nice coastal walking route"
-        },
-
-        "Lu Xun Park Coast": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "-",
-          line: "-",
-          exit: "-",
-          note: "Easy coast walk"
-        },
-
-        "Daxue Road": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "-",
-          line: "-",
-          exit: "-",
-          note: "Works well with Longjiang Road"
-        },
-
-        "Second Bathing Beach": {
-          mode: "metro-walk",
-          summary: "Metro or short taxi",
-          station: "Huiquan Square / Zhongshan Park",
-          line: "Line 3",
-          exit: "C",
-          note: "Farther from hotel"
-        },
-
-        "Third Bathing Beach": {
-          mode: "metro-walk",
-          summary: "Recommended by metro",
-          station: "May Fourth Square / Fushansuo",
-          line: "Line 2 / Line 3",
-          exit: "D",
-          note: "Good for evening"
-        },
-
-        "Princess House": {
-          mode: "metro-walk",
-          summary: "Metro or short taxi",
-          station: "Huiquan Square / Zhongshan Park",
-          line: "Line 3",
-          exit: "C",
-          note: "Pair with Huashi Villa"
-        },
-
-        "Huashi Villa": {
-          mode: "metro-walk",
-          summary: "Metro or short taxi",
-          station: "Huiquan Square / Zhongshan Park",
-          line: "Line 3",
-          exit: "C",
-          note: "In the same Badaguan zone"
-        },
-
-        "Qingdao Railway Station Facade": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "Qingdao Station",
-          line: "Line 1 / Line 3",
-          exit: "Directly by station",
-          note: "Very close to hotel"
-        },
-
-        "Chun He Lou": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "Zhongshan Road",
-          line: "Line 1",
-          exit: "D",
-          note: "Or metro to Zhongshan Road"
-        },
-
-        "Wang Jie Shaokao": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "Zhongshan Road / Taidong",
-          line: "Line 1 / Line 2",
-          exit: "Depends on branch",
-          note: "Old town side is easy by foot"
-        },
-
-        "Kaihai Seafood Dumplings": {
-          mode: "metro-walk",
-          summary: "Recommended by metro",
-          station: "Zhiquan Road / Yan'an 3rd Road",
-          line: "Line 2 / Line 3",
-          exit: "Check local exit signs",
-          note: "Good after Day 3 route"
-        },
-
-        "Pichaiyuan Food Street": {
-          mode: "walk",
-          summary: "Walkable",
-          station: "Zhongshan Road",
-          line: "Line 1",
-          exit: "D",
-          note: "Many local snacks together"
-        },
-
-        "Taidong Night Market": {
-          mode: "metro",
-          summary: "Recommended by metro",
-          station: "Taidong",
-          line: "Line 1 / Line 2",
-          exit: "E",
-          note: "Best for night market"
-        }
-      },
-
-      itineraries: [
-        {
-          id: "day1",
-          title: "Day 1 — Old Town + Sea View + Sunset",
-          subtitle: "Manxin Hotel Qingdao Zhanqiao Railway Station → Old Town walking route → Taiping Mountain",
-          description: "เที่ยวโซนเมืองเก่า เดินถ่ายรูปตามถนนสวย ๆ แล้วขึ้นจุดชมวิวช่วงเย็น",
-          color: "#ef4444",
-          points: [
-            "Manxin Hotel Qingdao Zhanqiao Railway Station",
-            "Silver Fish Street",
-            "St. Michael's Cathedral",
-            "Yue Xikelai Square",
-            "Longjiang Road",
-            "Qinyu Road",
-            "Taiping Mountain Cableway",
-            "Cafe La Mansarde"
-          ],
-          center: [36.071, 120.321],
-          zoom: 14
-        },
-
-        {
-          id: "day2",
-          title: "Day 2 — Beer + City Icons + Night Market",
-          subtitle: "Manxin Hotel Qingdao Zhanqiao Railway Station → Beer museum route + old city icons + Taidong street food",
-          description: "เน้นพิพิธภัณฑ์เบียร์ แลนด์มาร์กเมือง และปิดท้ายด้วยของกินตอนกลางคืน",
-          color: "#2563eb",
-          points: [
-            "Manxin Hotel Qingdao Zhanqiao Railway Station",
-            "Tsingtao Brewery Museum",
-            "Qingdao Beer Street",
-            "Signal Hill Park",
-            "Zhongshan Road",
-            "Pichaiyuan",
-            "Taidong Pedestrian Street"
-          ],
-          center: [36.081, 120.338],
-          zoom: 13
-        },
-
-        {
-          id: "day3",
-          title: "Day 3 — Garden + Temple + Coastal Classics",
-          subtitle: "Manxin Hotel Qingdao Zhanqiao Railway Station → Garden + Temple + coastal classics",
-          description: "เที่ยวสวน วัด จุดชมวิวริมทะเล และโซนเมืองสมัยใหม่ของ Qingdao",
-          color: "#16a34a",
-          points: [
-            "Manxin Hotel Qingdao Zhanqiao Railway Station",
-            "Qingdao Botanical Garden",
-            "Zhanshan Temple",
-            "May Fourth Square",
-            "Olympic Sailing Center",
-            "Badaguan",
-            "Xiaoyushan Park"
-          ],
-          center: [36.066, 120.377],
-          zoom: 12
-        }
-      ],
-
-      places: [
-        {
-          name: "Manxin Hotel Qingdao Zhanqiao Railway Station",
-          zh: "青岛栈桥火车站漫心酒店",
-          cat: "hotel",
-          day: "hotel",
-          lat: 36.0652,
-          lng: 120.3162,
-          district: "Jiaozhou Road / Railway Station Area",
-          note: "จุดเริ่มต้นทุกวัน",
-          description: "โรงแรมที่พักหลัก ใกล้สถานีรถไฟ Qingdao เดินทางสะดวก",
-          best: "ออกเดินทางตอนเช้า"
-        },
-
-        {
-          name: "Silver Fish Street",
-          zh: "银鱼巷",
-          cat: "photo",
-          day: "day1",
-          lat: 36.0641,
-          lng: 120.3202,
-          district: "Old Town",
-          note: "Beautiful lane with cafes",
-          description: "ตรอกสวยในเมืองเก่า มีคาเฟ่และมุมถ่ายรูปบรรยากาศดี",
-          best: "Morning / Evening"
-        },
-
-        {
-          name: "St. Michael's Cathedral",
-          zh: "圣弥厄尔教堂",
-          cat: "photo",
-          day: "day1",
-          lat: 36.06797,
-          lng: 120.31561,
-          district: "Old Town",
-          note: "Historic cathedral",
-          description: "โบสถ์คาทอลิกเก่าแก่ เป็นหนึ่งในแลนด์มาร์กสำคัญของ Qingdao",
-          best: "Morning"
-        },
-
-        {
-          name: "Yue Xikelai Square",
-          zh: "悦喜客来广场",
-          cat: "route",
-          day: "day1",
-          lat: 36.0685,
-          lng: 120.3194,
-          district: "Old Town",
-          note: "Mid-route break point",
-          description: "จุดพักระหว่างทางในโซนเมืองเก่า แวะนั่งพักหรือเดินต่อเส้นทางได้ง่าย",
-          best: "Daytime"
-        },
-
-        {
-          name: "Longjiang Road",
-          zh: "龙江路",
-          cat: "photo",
-          day: "day1",
-          lat: 36.0727,
-          lng: 120.3149,
-          district: "Old Town",
-          note: "Street art / mural zone",
-          description: "ถนนสายถ่ายรูปที่มีสตรีทอาร์ตและมุมกำแพงสวย ๆ",
-          best: "Afternoon"
-        },
-
-        {
-          name: "Qinyu Road",
-          zh: "琴屿路",
-          cat: "photo",
-          day: "day1",
-          lat: 36.0782,
-          lng: 120.3107,
-          district: "Coast",
-          note: "Classic seaside road",
-          description: "ถนนริมทะเลยอดนิยม เหมาะกับเดินเล่นชมวิวทะเลและถ่ายรูป",
-          best: "Golden hour"
-        },
-
-        {
-          name: "Taiping Mountain Cableway",
-          zh: "太平山索道",
-          cat: "photo",
-          day: "day1",
-          lat: 36.0775,
-          lng: 120.3365,
-          district: "Hill View",
-          note: "Skyline viewpoint",
-          description: "กระเช้าขึ้นเขาเพื่อชมวิวเมือง Qingdao จากมุมสูง",
-          best: "Sunset"
-        },
-
-        {
-          name: "Cafe La Mansarde",
-          zh: "La Mansarde",
-          cat: "food",
-          day: "day1",
-          lat: 36.0812,
-          lng: 120.3383,
-          district: "Hill View",
-          note: "Cafe with a nice view",
-          description: "คาเฟ่วิวดี เหมาะนั่งพักและดูพระอาทิตย์ตกหลังขึ้นเขา",
-          best: "Sunset"
-        },
-
-        {
-          name: "Tsingtao Brewery Museum",
-          zh: "青岛啤酒博物馆",
-          cat: "photo",
-          day: "day2",
-          lat: 36.0866,
-          lng: 120.3293,
-          district: "Shibei",
-          note: "Most famous beer museum",
-          description: "พิพิธภัณฑ์เบียร์ชื่อดังของ Qingdao เรียนรู้ประวัติและวัฒนธรรมเบียร์เมืองนี้",
-          best: "Afternoon"
-        },
-
-        {
-          name: "Qingdao Beer Street",
-          zh: "登州路啤酒街",
-          cat: "food",
-          day: "day2",
-          lat: 36.0869,
-          lng: 120.3315,
-          district: "Shibei",
-          note: "Beer and food atmosphere",
-          description: "ถนนสายเบียร์และอาหาร บรรยากาศคึกคัก เหมาะกับช่วงเย็นถึงกลางคืน",
-          best: "Night"
-        },
-
-        {
-          name: "Signal Hill Park",
-          zh: "信号山公园",
-          cat: "photo",
-          day: "day2",
-          lat: 36.0721,
-          lng: 120.3271,
-          district: "Old Town",
-          note: "Red roof city view",
-          description: "สวนจุดชมวิวที่เห็นหลังคาแดงของเมืองเก่า Qingdao ได้สวยมาก",
-          best: "Morning / Evening"
-        },
-
-        {
-          name: "Zhongshan Road",
-          zh: "中山路",
-          cat: "photo",
-          day: "day2",
-          lat: 36.067,
-          lng: 120.3185,
-          district: "Old Town",
-          note: "Main old town street",
-          description: "ถนนหลักในเมืองเก่า เดินง่าย มีร้านค้า อาคารเก่า และบรรยากาศท้องถิ่น",
-          best: "Night"
-        },
-
-        {
-          name: "Pichaiyuan",
-          zh: "劈柴院",
-          cat: "food",
-          day: "day2",
-          lat: 36.0695,
-          lng: 120.317,
-          district: "Old Town",
-          note: "Classic food street",
-          description: "ย่านอาหารเก่าชื่อดังของ Qingdao รวมของกินท้องถิ่นไว้เยอะมาก",
-          best: "Evening"
-        },
-
-        {
-          name: "Taidong Pedestrian Street",
-          zh: "台东步行街",
-          cat: "food",
-          day: "day2",
-          lat: 36.0906,
-          lng: 120.3509,
-          district: "Shibei",
-          note: "Popular night market area",
-          description: "ถนนคนเดินและย่านของกินยอดนิยม เหมาะกับเดินเล่นตอนกลางคืน",
-          best: "Night"
-        },
-
-        {
-          name: "Qingdao Botanical Garden",
-          zh: "青岛植物园",
-          cat: "photo",
-          day: "day3",
-          lat: 36.0609,
-          lng: 120.3605,
-          district: "Shinan",
-          note: "Relaxing city garden",
-          description: "สวนพฤกษศาสตร์ในเมือง บรรยากาศเงียบสงบ เหมาะเริ่มต้นวันแบบสบาย ๆ",
-          best: "Morning"
-        },
-
-        {
-          name: "Zhanshan Temple",
-          zh: "湛山寺",
-          cat: "photo",
-          day: "day3",
-          lat: 36.0615,
-          lng: 120.3668,
-          district: "Shinan",
-          note: "Peaceful Buddhist temple",
-          description: "วัดพุทธบรรยากาศสงบ สวยเรียบง่าย เหมาะเดินชมและพักใจ",
-          best: "Morning"
-        },
-
-        {
-          name: "May Fourth Square",
-          zh: "五四广场",
-          cat: "photo",
-          day: "day3",
-          lat: 36.0649,
-          lng: 120.3824,
-          district: "Modern Center",
-          note: "Modern Qingdao icon",
-          description: "จัตุรัสสัญลักษณ์ของ Qingdao โซนเมืองใหม่ริมทะเล",
-          best: "Blue hour"
-        },
-
-        {
-          name: "Olympic Sailing Center",
-          zh: "奥帆中心",
-          cat: "photo",
-          day: "day3",
-          lat: 36.0603,
-          lng: 120.3956,
-          district: "Modern Center",
-          note: "Marina and skyline",
-          description: "ท่าจอดเรือและแลนด์มาร์กริมทะเล เห็นวิวเมืองสมัยใหม่ชัดเจน",
-          best: "Night"
-        },
-
-        {
-          name: "Badaguan",
-          zh: "八大关",
-          cat: "photo",
-          day: "day3",
-          lat: 36.0557,
-          lng: 120.3435,
-          district: "Historic Villas",
-          note: "Tree-lined villa district",
-          description: "ย่านวิลล่าเก่า ถนนร่มรื่น มีบ้านสวยและบรรยากาศคลาสสิก",
-          best: "Afternoon"
-        },
-
-        {
-          name: "Xiaoyushan Park",
-          zh: "小鱼山公园",
-          cat: "photo",
-          day: "day3",
-          lat: 36.0698,
-          lng: 120.3318,
-          district: "Old Town View",
-          note: "Sea + red roof panorama",
-          description: "สวนจุดชมวิวที่เห็นทะเลและหลังคาแดงของเมืองเก่าจากมุมสูง",
-          best: "Morning / Evening"
-        },
-
-        {
-          name: "Zhanqiao Pier",
-          zh: "栈桥",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0609,
-          lng: 120.3136,
-          district: "Old Town Coast",
-          note: "Classic pier landmark",
-          description: "สะพานท่าเรือชื่อดังของ Qingdao เป็นแลนด์มาร์กคลาสสิกที่ต้องแวะ",
-          best: "Morning"
-        },
-
-        {
-          name: "Huilan Pavilion",
-          zh: "回澜阁",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0596,
-          lng: 120.314,
-          district: "Old Town Coast",
-          note: "End pavilion at Zhanqiao",
-          description: "ศาลาปลายสะพาน Zhanqiao จุดถ่ายรูปสำคัญริมทะเล",
-          best: "Morning"
-        },
-
-        {
-          name: "Little Qingdao",
-          zh: "小青岛",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0609,
-          lng: 120.3024,
-          district: "Island View",
-          note: "Lighthouse and sea view",
-          description: "เกาะเล็กใกล้ฝั่ง มีประภาคารและวิวทะเลสวย",
-          best: "Afternoon"
-        },
-
-        {
-          name: "Lu Xun Park Coast",
-          zh: "鲁迅公园",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0642,
-          lng: 120.3088,
-          district: "Coast",
-          note: "Rocky coast view",
-          description: "สวนริมทะเลที่มีโขดหินและวิวชายฝั่งสวยมาก",
-          best: "Afternoon"
-        },
-
-        {
-          name: "Daxue Road",
-          zh: "大学路",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0715,
-          lng: 120.325,
-          district: "Old Town",
-          note: "Famous red wall photo spot",
-          description: "ถนนดังสำหรับถ่ายรูป มีกำแพงแดงและต้นไม้เป็นเอกลักษณ์",
-          best: "Afternoon"
-        },
-
-        {
-          name: "Second Bathing Beach",
-          zh: "第二海水浴场",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0545,
-          lng: 120.3398,
-          district: "Badaguan",
-          note: "Beach with old villas",
-          description: "ชายหาดสวยในโซน Badaguan ใกล้วิลล่าเก่าและบรรยากาศดี",
-          best: "Morning"
-        },
-
-        {
-          name: "Third Bathing Beach",
-          zh: "第三海水浴场",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0618,
-          lng: 120.3728,
-          district: "Central Coast",
-          note: "Beach near modern center",
-          description: "ชายหาดใกล้โซนเมืองใหม่ เหมาะเดินเล่นช่วงเย็น",
-          best: "Evening"
-        },
-
-        {
-          name: "Princess House",
-          zh: "公主楼",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0568,
-          lng: 120.3439,
-          district: "Badaguan",
-          note: "Fairy tale style house",
-          description: "บ้านสไตล์เทพนิยายในย่าน Badaguan ถ่ายรูปสวยมาก",
-          best: "Afternoon"
-        },
-
-        {
-          name: "Huashi Villa",
-          zh: "花石楼",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0558,
-          lng: 120.3432,
-          district: "Badaguan",
-          note: "Beautiful coastal villa",
-          description: "วิลล่าหินสวยริมทะเล เป็นอีกจุดเด่นของย่าน Badaguan",
-          best: "Afternoon"
-        },
-
-        {
-          name: "Qingdao Railway Station Facade",
-          zh: "青岛站",
-          cat: "photo",
-          day: "photo",
-          lat: 36.0645,
-          lng: 120.3131,
-          district: "Station Area",
-          note: "Classic station facade",
-          description: "หน้าสถานีรถไฟ Qingdao อาคารสวยคลาสสิก ใกล้โรงแรมมาก",
-          best: "Morning"
-        },
-
-        {
-          name: "Chun He Lou",
-          zh: "春和楼",
-          cat: "food",
-          day: "food",
-          lat: 36.068,
-          lng: 120.318,
-          district: "Zhongshan Road",
-          note: "Historic Shandong cuisine",
-          description: "ร้านอาหารเก่าแก่ชื่อดัง เหมาะลองอาหารสไตล์ซานตง",
-          best: "Lunch / Dinner"
-        },
-
-        {
-          name: "Wang Jie Shaokao",
-          zh: "王姐烧烤",
-          cat: "food",
-          day: "food",
-          lat: 36.0689,
-          lng: 120.3175,
-          district: "Old Town",
-          note: "Popular grilled food",
-          description: "ร้านปิ้งย่างยอดนิยมของ Qingdao เหมาะแวะกินตอนเย็น",
-          best: "Evening"
-        },
-
-        {
-          name: "Kaihai Seafood Dumplings",
-          zh: "开海红岛海鲜虾水饺",
-          cat: "food",
-          day: "food",
-          lat: 36.058,
-          lng: 120.366,
-          district: "Zhanshan",
-          note: "Seafood + shrimp dumplings",
-          description: "ร้านดังเรื่องซีฟู้ดและเกี๊ยวกุ้ง เหมาะมื้อเย็น",
-          best: "Dinner"
-        },
-
-        {
-          name: "Pichaiyuan Food Street",
-          zh: "劈柴院美食街",
-          cat: "food",
-          day: "food",
-          lat: 36.0695,
-          lng: 120.317,
-          district: "Old Town",
-          note: "Many local snacks in one place",
-          description: "ถนนอาหารที่รวมของกินท้องถิ่นหลายแบบไว้ในจุดเดียว",
-          best: "Evening"
-        },
-
-        {
-          name: "Taidong Night Market",
-          zh: "台东夜市",
-          cat: "food",
-          day: "food",
-          lat: 36.0906,
-          lng: 120.3509,
-          district: "Shibei",
-          note: "Dense street food zone",
-          description: "ตลาดกลางคืนยอดนิยม ของกินแน่น เดินสนุก บรรยากาศคึกคัก",
-          best: "Night"
-        }
-      ],
-
-      dayRoutes: {
-        day1: [
-          [36.0652, 120.3162],
-          [36.0641, 120.3202],
-          [36.06797, 120.31561],
-          [36.0685, 120.3194],
-          [36.0727, 120.3149],
-          [36.0782, 120.3107],
-          [36.0775, 120.3365],
-          [36.0812, 120.3383]
-        ],
-
-        day2: [
-          [36.0652, 120.3162],
-          [36.0866, 120.3293],
-          [36.0869, 120.3315],
-          [36.0721, 120.3271],
-          [36.067, 120.3185],
-          [36.0695, 120.317],
-          [36.0906, 120.3509]
-        ],
-
-        day3: [
-          [36.0652, 120.3162],
-          [36.0609, 120.3605],
-          [36.0615, 120.3668],
-          [36.0649, 120.3824],
-          [36.0603, 120.3956],
-          [36.0557, 120.3435],
-          [36.0698, 120.3318]
-        ]
-      },
-
-      photoPlaces: [
-        "Zhanqiao Pier",
-        "Huilan Pavilion",
-        "Little Qingdao",
-        "Lu Xun Park Coast",
-        "Daxue Road",
-        "Second Bathing Beach",
-        "Third Bathing Beach",
-        "Princess House",
-        "Huashi Villa",
-        "Qingdao Railway Station Facade"
-      ],
-
-      foodPlaces: [
-        "Chun He Lou",
-        "Wang Jie Shaokao",
-        "Kaihai Seafood Dumplings",
-        "Pichaiyuan Food Street",
-        "Taidong Night Market",
-        "Qingdao Beer Street",
-        "Cafe La Mansarde"
-      ]
+    const SUPABASE_URL = "https://bygchycydfylicenhjka.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_vaC0uTF1WyCq9KtYewZH6Q_NhgXcxbN";
+    const SUPABASE_TABLE = "travel_plans";
+    const PLAN_SLUG = "qingdao-plan";
+    const PLAN_TITLE = "Qingdao Travel Plan";
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+    let appData = null;
+    let selectedDayKey = "all";
+    let isMobileSidebarOpen = false;
+
+    const imageModalState = {
+      type: "",
+      placeName: "",
+      inputValue: ""
     };
 
-    const appData = window.APP_DATA;
+    function deepClone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
 
-    function getPlaceByName(name) {
-      return appData.places.find(function(place) {
-        return place.name === name;
-      });
+    function normalizeAppData(data) {
+      const clonedData = deepClone(data);
+
+      if (Array.isArray(clonedData.photoPlaces)) {
+        clonedData.photoPlaces = clonedData.photoPlaces.map(function(name) {
+          if (name === "Tsingtao BreweryMuseum") {
+            return "Tsingtao Brewery Museum";
+          }
+          return name;
+        });
+      }
+
+      if (clonedData.hotel && !Object.prototype.hasOwnProperty.call(clonedData.hotel, "image")) {
+        clonedData.hotel.image = "";
+      }
+
+      if (clonedData.hotel && !Object.prototype.hasOwnProperty.call(clonedData.hotel, "active")) {
+        clonedData.hotel.active = true;
+      }
+
+      if (Array.isArray(clonedData.places)) {
+        clonedData.places = clonedData.places.map(function(place) {
+          if (!Object.prototype.hasOwnProperty.call(place, "image")) {
+            place.image = "";
+          }
+
+          if (!Object.prototype.hasOwnProperty.call(place, "active")) {
+            place.active = true;
+          }
+
+          return place;
+        });
+      }
+
+      return clonedData;
+    }
+
+    function showLoadingState() {
+      document.getElementById("loadingState").classList.remove("hidden");
+      document.getElementById("errorState").classList.add("hidden");
+      document.getElementById("emptyState").classList.add("hidden");
+      document.getElementById("appContent").classList.add("hidden");
+    }
+
+    function showErrorState(message) {
+      const errorElement = document.getElementById("errorState");
+
+      errorElement.textContent = message || "โหลดข้อมูลจาก Supabase ไม่สำเร็จ";
+
+      document.getElementById("loadingState").classList.add("hidden");
+      document.getElementById("errorState").classList.remove("hidden");
+      document.getElementById("emptyState").classList.add("hidden");
+      document.getElementById("appContent").classList.add("hidden");
+    }
+
+    function showEmptyState() {
+      document.getElementById("loadingState").classList.add("hidden");
+      document.getElementById("errorState").classList.add("hidden");
+      document.getElementById("emptyState").classList.remove("hidden");
+      document.getElementById("appContent").classList.add("hidden");
+    }
+
+    function showAppState() {
+      document.getElementById("loadingState").classList.add("hidden");
+      document.getElementById("errorState").classList.add("hidden");
+      document.getElementById("emptyState").classList.add("hidden");
+      document.getElementById("appContent").classList.remove("hidden");
     }
 
     function showToast(message) {
-      const toast = document.getElementById("toast");
-      toast.textContent = message;
-      toast.classList.add("show");
+      const toastElement = document.getElementById("toast");
+
+      toastElement.textContent = message;
+      toastElement.classList.add("show");
 
       clearTimeout(showToast.timer);
+
       showToast.timer = setTimeout(function() {
-        toast.classList.remove("show");
+        toastElement.classList.remove("show");
       }, 1800);
     }
 
-    async function copyText(text) {
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-        } else {
-          const textarea = document.createElement("textarea");
-          textarea.value = text;
-          textarea.style.position = "fixed";
-          textarea.style.left = "-9999px";
-          document.body.appendChild(textarea);
-          textarea.focus();
-          textarea.select();
-          document.execCommand("copy");
-          document.body.removeChild(textarea);
-        }
+    async function getPlanFromSupabase() {
+      const response = await supabaseClient
+        .from(SUPABASE_TABLE)
+        .select("id, slug, title, data")
+        .eq("slug", PLAN_SLUG)
+        .maybeSingle();
 
-        showToast("คัดลอกภาษาจีนแล้ว");
-      } catch (error) {
-        showToast("คัดลอกไม่สำเร็จ");
+      if (response.error) {
+        throw response.error;
+      }
+
+      return response.data;
+    }
+
+    async function updatePlanDataInSupabase(payload) {
+      const response = await supabaseClient
+        .from(SUPABASE_TABLE)
+        .update({
+          title: PLAN_TITLE,
+          data: payload,
+          updated_at: new Date().toISOString()
+        })
+        .eq("slug", PLAN_SLUG);
+
+      if (response.error) {
+        throw response.error;
       }
     }
 
-    function buildGooglePhotosLink(place) {
-      const query = encodeURIComponent(place.zh || place.name);
-      return "https://www.google.com/search?tbm=isch&q=" + query;
+    async function loadAppData() {
+      const planRow = await getPlanFromSupabase();
+
+      if (!planRow || !planRow.data) {
+        appData = null;
+        return;
+      }
+
+      appData = normalizeAppData(planRow.data);
     }
 
-    function buildAmapLink(place) {
-      return "https://uri.amap.com/marker?position=" + place.lng + "," + place.lat + "&name=" + encodeURIComponent(place.zh || place.name);
+    function getPlaceByName(name) {
+      if (!appData || !Array.isArray(appData.places)) {
+        return null;
+      }
+
+      return appData.places.find(function(place) {
+        return place.name === name;
+      }) || null;
     }
 
-    function createActionButtons(place) {
-      return `
-        <div class="action-row">
-          <button class="btn btn-copy" type="button" onclick="copyText('${escapeForJs(place.zh || place.name)}')">
-            Copy ภาษาจีน
-          </button>
-          <a class="btn btn-photo" href="${buildGooglePhotosLink(place)}" target="_blank" rel="noopener noreferrer">
-            เปิด Google Photos
-          </a>
-          <a class="btn btn-map" href="${buildAmapLink(place)}" target="_blank" rel="noopener noreferrer">
-            เปิด Amap
-          </a>
-        </div>
-      `;
+    function isPlaceActive(place) {
+      if (!place) {
+        return false;
+      }
+
+      return place.active !== false;
+    }
+
+    function getActivePlaceByName(name) {
+      const place = getPlaceByName(name);
+
+      if (!isPlaceActive(place)) {
+        return null;
+      }
+
+      return place;
+    }
+
+    function getImageUrl(place) {
+      if (place && place.image) {
+        return place.image;
+      }
+
+      const label = encodeURIComponent(place && place.name ? place.name : "No Image");
+      return "https://via.placeholder.com/800x500?text=" + label;
+    }
+
+    function getCurrentModalPreviewUrl() {
+      if (imageModalState.inputValue && imageModalState.inputValue.trim()) {
+        return imageModalState.inputValue.trim();
+      }
+
+      if (imageModalState.type === "hotel" && appData && appData.hotel) {
+        return getImageUrl(appData.hotel);
+      }
+
+      if (imageModalState.type === "place") {
+        const place = getPlaceByName(imageModalState.placeName);
+
+        if (place) {
+          return getImageUrl(place);
+        }
+      }
+
+      return "https://via.placeholder.com/800x500?text=No+Image";
+    }
+
+    function updateModalPreview() {
+      const previewImage = document.getElementById("modalPreview");
+
+      if (!previewImage) {
+        return;
+      }
+
+      previewImage.src = getCurrentModalPreviewUrl();
+    }
+
+    function openHotelImageModal() {
+      if (!appData || !appData.hotel) {
+        return;
+      }
+
+      imageModalState.type = "hotel";
+      imageModalState.placeName = "";
+      imageModalState.inputValue = appData.hotel.image || "";
+
+      document.getElementById("modalTitle").textContent = "แก้ลิงก์รูปโรงแรม";
+      document.getElementById("modalSubtitle").textContent = appData.hotel.name || "Hotel";
+      document.getElementById("modalImageUrl").value = imageModalState.inputValue;
+
+      updateModalPreview();
+      document.getElementById("imageModal").classList.add("show");
+    }
+
+    function openPlaceImageModal(placeName) {
+      const place = getPlaceByName(placeName);
+
+      if (!place) {
+        showToast("ไม่พบสถานที่");
+        return;
+      }
+
+      imageModalState.type = "place";
+      imageModalState.placeName = placeName;
+      imageModalState.inputValue = place.image || "";
+
+      document.getElementById("modalTitle").textContent = "แก้ลิงก์รูปสถานที่";
+      document.getElementById("modalSubtitle").textContent = place.name || "Place";
+      document.getElementById("modalImageUrl").value = imageModalState.inputValue;
+
+      updateModalPreview();
+      document.getElementById("imageModal").classList.add("show");
+    }
+
+    function closeImageModal() {
+      document.getElementById("imageModal").classList.remove("show");
+      imageModalState.type = "";
+      imageModalState.placeName = "";
+      imageModalState.inputValue = "";
+    }
+
+    function handleModalBackdropClick(event) {
+      if (event.target.id === "imageModal") {
+        closeImageModal();
+      }
+    }
+
+    function handleModalUrlInput(value) {
+      imageModalState.inputValue = value;
+      updateModalPreview();
+    }
+
+    function clearModalImage() {
+      imageModalState.inputValue = "";
+      document.getElementById("modalImageUrl").value = "";
+      updateModalPreview();
+    }
+
+    async function saveModalImageToSupabase() {
+      try {
+        if (!appData) {
+          showToast("ยังไม่มีข้อมูล");
+          return;
+        }
+
+        const imageUrl = imageModalState.inputValue.trim();
+
+        if (imageModalState.type === "hotel") {
+          appData.hotel.image = imageUrl;
+        } else if (imageModalState.type === "place") {
+          const place = getPlaceByName(imageModalState.placeName);
+
+          if (!place) {
+            showToast("ไม่พบสถานที่");
+            return;
+          }
+
+          place.image = imageUrl;
+        } else {
+          showToast("ไม่พบรายการที่กำลังแก้");
+          return;
+        }
+
+        await updatePlanDataInSupabase(appData);
+        renderApp();
+        closeImageModal();
+        showToast("บันทึกลิงก์รูปลง Supabase แล้ว");
+      } catch (error) {
+        console.error("saveModalImageToSupabase error:", error);
+        showToast("บันทึกลิงก์รูปไม่สำเร็จ");
+      }
     }
 
     function escapeForJs(text) {
@@ -1432,107 +1218,408 @@
         .replace(/\n/g, " ");
     }
 
-    function renderHotel() {
-      const hotel = appData.hotel;
-      const hotelCard = document.getElementById("hotelCard");
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-      hotelCard.innerHTML = `
-        <h3>${hotel.name}</h3>
-        <div class="hotel-zh">${hotel.zh}</div>
-        <div class="hotel-meta">
-          <div><strong>District:</strong> ${hotel.district}</div>
-          <div><strong>Note:</strong> ${hotel.note}</div>
-          <div><strong>Description:</strong> ${hotel.description}</div>
-          <div><strong>Best time:</strong> ${hotel.best}</div>
-          <div><strong>Coordinates:</strong> ${hotel.lat}, ${hotel.lng}</div>
-        </div>
-        <div class="tag-row">
-          <span class="tag">Hotel</span>
-          <span class="tag">Start Point</span>
-          <span class="tag">Railway Station Area</span>
-        </div>
-        ${createActionButtons(hotel)}
+    function createImageHtml(place, modalAction) {
+      const safeAction = modalAction || "";
+
+      return `
+        <img
+          class="place-image"
+          src="${getImageUrl(place)}"
+          alt="${escapeHtml(place.name || "Place")}"
+          loading="lazy"
+          onclick="${safeAction}"
+        />
       `;
+    }
+
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+
+        showToast("คัดลอกภาษาจีนแล้ว");
+      } catch (error) {
+        console.error("copyText error:", error);
+        showToast("คัดลอกไม่สำเร็จ");
+      }
+    }
+
+    function buildGooglePhotosLink(place) {
+      const query = encodeURIComponent((place.zh || place.name) + " ig");
+      return "https://www.google.com/search?tbm=isch&q=" + query;
+    }
+
+    function buildInstagramSearchLink(place) {
+      const keyword = encodeURIComponent((place.name || "") + " Qingdao");
+      return "https://www.instagram.com/explore/search/keyword/?q=" + keyword;
+    }
+
+    function buildAmapLink(place) {
+      const placeName = encodeURIComponent(place.zh || place.name);
+      return "https://uri.amap.com/marker?position=" + place.lng + "," + place.lat + "&name=" + placeName;
+    }
+
+    function createStatusPill(place) {
+      const active = isPlaceActive(place);
+
+      return `
+        <div class="status-pill ${active ? "active" : "inactive"}">
+          ${active ? "Active" : "Inactive"}
+        </div>
+      `;
+    }
+
+    function createActionButtons(place) {
+      const chineseText = escapeForJs(place.zh || place.name);
+      const googlePhotosLink = buildGooglePhotosLink(place);
+      const instagramLink = buildInstagramSearchLink(place);
+      const amapLink = buildAmapLink(place);
+      const active = isPlaceActive(place);
+
+      return `
+        <div class="action-row">
+          <button class="btn btn-copy" type="button" onclick="copyText('${chineseText}')">
+            Copy ภาษาจีน
+          </button>
+
+          <a class="btn btn-photo" href="${googlePhotosLink}" target="_blank" rel="noopener noreferrer">
+            เปิด Google Photo
+          </a>
+
+          <a class="btn btn-ig" href="${instagramLink}" target="_blank" rel="noopener noreferrer">
+            เปิด IG
+          </a>
+
+          <a class="btn btn-map" href="${amapLink}" target="_blank" rel="noopener noreferrer">
+            เปิด Amap
+          </a>
+
+          <button
+            class="btn ${active ? "btn-toggle-inactive" : "btn-toggle-active"}"
+            type="button"
+            onclick="togglePlaceActive('${escapeForJs(place.name)}')"
+          >
+            ${active ? "Set Inactive" : "Set Active"}
+          </button>
+        </div>
+      `;
+    }
+
+    function getSafeItineraries() {
+      if (!appData || !Array.isArray(appData.itineraries)) {
+        return [];
+      }
+
+      return appData.itineraries;
+    }
+
+    function getDayKeyByIndex(index) {
+      return "day-" + (index + 1);
+    }
+
+    function getSelectedDayLabel() {
+      if (selectedDayKey === "all") {
+        return "All Days";
+      }
+
+      const itineraries = getSafeItineraries();
+      const selectedIndex = Number(String(selectedDayKey).replace("day-", "")) - 1;
+      const selectedItinerary = itineraries[selectedIndex];
+
+      if (!selectedItinerary) {
+        return "All Days";
+      }
+
+      return selectedItinerary.title || ("Day " + (selectedIndex + 1));
+    }
+
+    function getFilteredItineraries() {
+      const itineraries = getSafeItineraries();
+
+      if (selectedDayKey === "all") {
+        return itineraries;
+      }
+
+      return itineraries.filter(function(item, index) {
+        return getDayKeyByIndex(index) === selectedDayKey;
+      });
+    }
+
+    function getSelectedDayPointNames() {
+      const pointSet = new Set();
+      const filteredItineraries = getFilteredItineraries();
+
+      filteredItineraries.forEach(function(itinerary) {
+        const points = Array.isArray(itinerary.points) ? itinerary.points : [];
+
+        points.forEach(function(pointName) {
+          pointSet.add(pointName);
+        });
+      });
+
+      return pointSet;
+    }
+
+    function getSelectedDayPlaceCount() {
+      if (selectedDayKey === "all") {
+        if (!appData || !Array.isArray(appData.places)) {
+          return 0;
+        }
+
+        return appData.places.filter(function(place) {
+          return isPlaceActive(place);
+        }).length;
+      }
+
+      return getSelectedDayPointNames().size;
+    }
+
+    function getSelectedDayStats() {
+      return {
+        label: getSelectedDayLabel(),
+        itineraryCount: getFilteredItineraries().length,
+        placeCount: getSelectedDayPlaceCount()
+      };
+    }
+
+    function isMobileLayout() {
+      return window.innerWidth <= 960;
+    }
+
+    function openMobileSidebar() {
+      if (!isMobileLayout()) {
+        return;
+      }
+
+      isMobileSidebarOpen = true;
+      document.body.classList.add("sidebar-open-mobile");
+      document.getElementById("mobileSidebarOverlay").classList.add("show");
+      document.getElementById("mobileSidebarDrawer").classList.add("show");
+      document.getElementById("sidebarToggleButton").textContent = "ปิดเมนูเลือกวัน";
+    }
+
+    function closeMobileSidebar() {
+      isMobileSidebarOpen = false;
+      document.body.classList.remove("sidebar-open-mobile");
+      document.getElementById("mobileSidebarOverlay").classList.remove("show");
+      document.getElementById("mobileSidebarDrawer").classList.remove("show");
+
+      const toggleButton = document.getElementById("sidebarToggleButton");
+
+      if (toggleButton) {
+        toggleButton.textContent = "เปิดเมนูเลือกวัน";
+      }
+    }
+
+    function toggleMobileSidebar() {
+      if (isMobileSidebarOpen) {
+        closeMobileSidebar();
+      } else {
+        openMobileSidebar();
+      }
+    }
+
+    function syncResponsiveState() {
+      if (!isMobileLayout()) {
+        closeMobileSidebar();
+      }
+    }
+
+    function setSelectedDay(dayKey) {
+      selectedDayKey = dayKey;
+      renderSidebarMenus();
+      renderItineraries();
+
+      if (isMobileLayout()) {
+        closeMobileSidebar();
+      }
+    }
+
+    function createSidebarMenuHtml() {
+      const itineraries = getSafeItineraries();
+
+      let html = `
+        <button
+          type="button"
+          class="sidebar-menu-item ${selectedDayKey === "all" ? "active" : ""}"
+          onclick="setSelectedDay('all')"
+        >
+          <span class="sidebar-menu-item-title">All Days</span>
+          <span class="sidebar-menu-item-subtitle">แสดงข้อมูลทั้งหมดของทั้งทริป</span>
+        </button>
+      `;
+
+      html += itineraries
+        .map(function(itinerary, index) {
+          const dayKey = getDayKeyByIndex(index);
+          const title = itinerary.title || ("Day " + (index + 1));
+          const subtitle = itinerary.subtitle || "เที่ยวตามแผนของวันนั้น";
+
+          return `
+            <button
+              type="button"
+              class="sidebar-menu-item ${selectedDayKey === dayKey ? "active" : ""}"
+              onclick="setSelectedDay('${dayKey}')"
+            >
+              <span class="sidebar-menu-item-title">${title}</span>
+              <span class="sidebar-menu-item-subtitle">${subtitle}</span>
+            </button>
+          `;
+        })
+        .join("");
+
+      return html;
+    }
+
+    function renderSidebarMenus() {
+      const desktopMenu = document.getElementById("daySidebarMenuListDesktop");
+      const mobileMenu = document.getElementById("daySidebarMenuListMobile");
+      const menuHtml = createSidebarMenuHtml();
+      const stats = getSelectedDayStats();
+
+      desktopMenu.innerHTML = menuHtml;
+      mobileMenu.innerHTML = menuHtml;
+
+      document.getElementById("selectedDayLabelDesktop").textContent = stats.label;
+      document.getElementById("selectedDayItineraryCountDesktop").textContent = stats.itineraryCount;
+      document.getElementById("selectedDayPlaceCountDesktop").textContent = stats.placeCount;
+
+      document.getElementById("selectedDayLabelMobile").textContent = stats.label;
+      document.getElementById("selectedDayItineraryCountMobile").textContent = stats.itineraryCount;
+      document.getElementById("selectedDayPlaceCountMobile").textContent = stats.placeCount;
     }
 
     function renderSummaryTags() {
       const summaryTags = document.getElementById("summaryTags");
+      const itineraries = Array.isArray(appData.itineraries) ? appData.itineraries : [];
+      const photoPlaces = Array.isArray(appData.photoPlaces) ? appData.photoPlaces : [];
+      const foodPlaces = Array.isArray(appData.foodPlaces) ? appData.foodPlaces : [];
+
       const tags = [
-        "3 Days",
-        appData.photoPlaces.length + " Photo Spots",
-        appData.foodPlaces.length + " Food Spots",
-        appData.itineraries.length + " Main Routes",
+        itineraries.length + " Days",
+        photoPlaces.length + " Photo Spots",
+        foodPlaces.length + " Food Spots",
         "Old Town",
         "Sea View",
-        "Cafe",
+        "Laoshan",
         "Beer",
         "Night Market"
       ];
 
       summaryTags.innerHTML = tags
         .map(function(tag) {
-          return `<span class="tag">${tag}</span>`;
+          return '<span class="tag">' + tag + "</span>";
         })
         .join("");
     }
 
+    function createMissingPlaceCard(pointName) {
+      return `
+        <div class="point-item">
+          <strong>${pointName}</strong>
+          <p>ยังไม่มีรายละเอียดเพิ่มเติม</p>
+        </div>
+      `;
+    }
+
+    function createItineraryPointCard(place) {
+      const transportGuide = appData && appData.transportGuide ? appData.transportGuide : {};
+      const transport = transportGuide[place.name] || null;
+
+      return `
+        <div class="point-item ${isPlaceActive(place) ? "" : "place-inactive"}">
+          ${createImageHtml(place, "openPlaceImageModal('" + escapeForJs(place.name) + "')")}
+          <div class="image-hint">กดที่รูปเพื่อแก้ URL รูป</div>
+          <strong>${place.name}</strong>
+          <small>${place.zh || "-"}</small>
+          <p>${place.description || "-"}</p>
+          <div class="meta-line">
+            เขต: ${place.district || "-"} · เวลาที่เหมาะ: ${place.best || "-"}
+          </div>
+          ${
+            transport
+              ? `
+                <div class="meta-line">
+                  การเดินทาง: ${transport.summary || "-"} · สถานี: ${transport.station || "-"} · สาย: ${transport.line || "-"}
+                </div>
+              `
+              : ""
+          }
+          ${createStatusPill(place)}
+          ${createActionButtons(place)}
+        </div>
+      `;
+    }
+
     function renderItineraries() {
       const itineraryList = document.getElementById("itineraryList");
+      const itineraries = getFilteredItineraries();
 
-      itineraryList.innerHTML = appData.itineraries
+      if (!itineraries.length) {
+        itineraryList.innerHTML = `
+          <div class="point-item">
+            <strong>ไม่พบแผนเที่ยวของวันที่เลือก</strong>
+            <p>ลองเปลี่ยนเป็น All Days</p>
+          </div>
+        `;
+        return;
+      }
+
+      itineraryList.innerHTML = itineraries
         .map(function(itinerary) {
-          const pointItems = itinerary.points
+          const points = Array.isArray(itinerary.points) ? itinerary.points : [];
+
+          const pointItemsHtml = points
             .map(function(pointName) {
-              const place = getPlaceByName(pointName);
+              const place = getActivePlaceByName(pointName);
 
               if (!place) {
-                return `
-                  <div class="point-item">
-                    <strong>${pointName}</strong>
-                    <p>ยังไม่มีรายละเอียดเพิ่มเติม</p>
-                  </div>
-                `;
+                return createMissingPlaceCard(pointName);
               }
 
-              const transport = appData.transportGuide[place.name] || null;
-
-              return `
-                <div class="point-item">
-                  <strong>${place.name}</strong>
-                  <small>${place.zh}</small>
-                  <p>${place.description}</p>
-                  <div class="meta-line">
-                    เขต: ${place.district} · เวลาที่เหมาะ: ${place.best}
-                  </div>
-                  ${
-                    transport
-                      ? `
-                        <div class="meta-line">
-                          การเดินทาง: ${transport.summary} · สถานี: ${transport.station} · สาย: ${transport.line}
-                        </div>
-                      `
-                      : ""
-                  }
-                  ${createActionButtons(place)}
-                </div>
-              `;
+              return createItineraryPointCard(place);
             })
             .join("");
 
           return `
             <div class="day-card">
-              <div class="day-head" style="background:${itinerary.color}">
-                <h3>${itinerary.title}</h3>
-                <p>${itinerary.subtitle}</p>
+              <div class="day-head" style="background:${itinerary.color || "#2563eb"}">
+                <h3>${itinerary.title || "-"}</h3>
+                <p>${itinerary.subtitle || "-"}</p>
               </div>
+
               <div class="day-body">
-                <p>${itinerary.description}</p>
+                <p>${itinerary.description || "-"}</p>
+
                 <div class="meta-line">
-                  Center: ${itinerary.center[0]}, ${itinerary.center[1]} · Zoom: ${itinerary.zoom}
+                  Center: ${itinerary.center ? itinerary.center[0] : "-"},
+                  ${itinerary.center ? itinerary.center[1] : "-"}
+                  · Zoom: ${itinerary.zoom || "-"}
                 </div>
-                <div class="point-list">
-                  ${pointItems}
-                </div>
+
+                <div class="point-list">${pointItemsHtml}</div>
               </div>
             </div>
           `;
@@ -1540,78 +1627,222 @@
         .join("");
     }
 
-    function renderMiniPlaceList(targetId, names) {
-      const target = document.getElementById(targetId);
+    function setPlaceImage(placeName, imageUrl) {
+      const place = getPlaceByName(placeName);
 
-      target.innerHTML = names
-        .map(function(name) {
-          const place = getPlaceByName(name);
+      if (!place) {
+        return;
+      }
 
-          if (!place) {
-            return `
-              <div class="mini-card">
-                <h4>${name}</h4>
-                <p>ไม่พบรายละเอียด</p>
-              </div>
-            `;
+      place.image = imageUrl;
+    }
+
+    function patchHotelImage() {
+      if (!appData || !appData.hotel) {
+        return;
+      }
+
+      appData.hotel.image =
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80";
+    }
+
+    function patchPlaceImages() {
+      const imageMap = {
+        "Silver Fish Street": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+        "St. Michael's Cathedral": "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=80",
+        "Yue Xikelai Square": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80",
+        "Longjiang Road": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?auto=format&fit=crop&w=1200&q=80",
+        "Qinyu Road": "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80",
+        "Taiping Mountain Cableway": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80",
+        "Cafe La Mansarde": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80",
+        "Tsingtao Brewery Museum": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1200&q=80",
+        "Qingdao Beer Street": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80",
+        "Signal Hill Park": "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80",
+        "Zhongshan Road": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1200&q=80",
+        "Pichaiyuan": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
+        "Taidong Pedestrian Street": "https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=1200&q=80",
+        "Qingdao Botanical Garden": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80",
+        "Zhanshan Temple": "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80",
+        "May Fourth Square": "https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1200&q=80",
+        "Olympic Sailing Center": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+        "Badaguan": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+        "Xiaoyushan Park": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80",
+        "Zhanqiao Pier": "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80",
+        "Huilan Pavilion": "https://images.unsplash.com/photo-1468413253725-0d5181091126?auto=format&fit=crop&w=1200&q=80",
+        "Little Qingdao": "https://images.unsplash.com/photo-1468581264429-2548ef9eb732?auto=format&fit=crop&w=1200&q=80",
+        "Lu Xun Park Coast": "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=1200&q=80",
+        "Daxue Road": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80",
+        "Second Bathing Beach": "https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=1200&q=80",
+        "Third Bathing Beach": "https://images.unsplash.com/photo-1501959915551-4e8b96f9f47c?auto=format&fit=crop&w=1200&q=80",
+        "Princess House": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "Huashi Villa": "https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=1200&q=80",
+        "Qingdao Railway Station Facade": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1200&q=80",
+        "Sha Zi Kou Village": "https://images.unsplash.com/photo-1468413253725-0d5181091126?auto=format&fit=crop&w=1200&q=80",
+        "Laoshan Scenic Area": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
+        "Chun He Lou": "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1200&q=80",
+        "Wang Jie Shaokao": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=1200&q=80",
+        "Kaihai Seafood Dumplings": "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80",
+        "Pichaiyuan Food Street": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
+        "Taidong Night Market": "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=1200&q=80"
+      };
+
+      Object.keys(imageMap).forEach(function(placeName) {
+        setPlaceImage(placeName, imageMap[placeName]);
+      });
+    }
+
+    function patchWrongNamesInJson() {
+      if (!appData) {
+        return;
+      }
+
+      if (Array.isArray(appData.photoPlaces)) {
+        appData.photoPlaces = appData.photoPlaces.map(function(name) {
+          if (name === "Tsingtao BreweryMuseum") {
+            return "Tsingtao Brewery Museum";
           }
 
-          return `
-            <div class="mini-card">
-              <h4>${place.name}</h4>
-              <div class="zh">${place.zh}</div>
-              <p>${place.description}</p>
-              <div class="mini-meta">เขต: ${place.district}</div>
-              <div class="mini-meta">เวลาที่เหมาะ: ${place.best}</div>
-              ${createActionButtons(place)}
-            </div>
-          `;
-        })
-        .join("");
+          return name;
+        });
+      }
     }
 
-    function renderTransportGuide() {
-      const transportList = document.getElementById("transportList");
-      const transportNames = Object.keys(appData.transportGuide);
+    function patchMissingImageFieldForAllPlaces() {
+      if (!appData) {
+        return;
+      }
 
-      transportList.innerHTML = transportNames
-        .map(function(name) {
-          const transport = appData.transportGuide[name];
-          const place = getPlaceByName(name) || {
-            name: name,
-            zh: name,
-            lat: appData.hotel.lat,
-            lng: appData.hotel.lng
-          };
+      if (appData.hotel && !Object.prototype.hasOwnProperty.call(appData.hotel, "image")) {
+        appData.hotel.image = "";
+      }
 
-          return `
-            <div class="transport-item">
-              <h4>${name}</h4>
-              <p><strong>Mode:</strong> ${transport.mode}</p>
-              <p><strong>Summary:</strong> ${transport.summary}</p>
-              <p><strong>Station:</strong> ${transport.station}</p>
-              <p><strong>Line:</strong> ${transport.line}</p>
-              <p><strong>Exit:</strong> ${transport.exit}</p>
-              <div class="transport-note">${transport.note}</div>
-              ${createActionButtons(place)}
-            </div>
-          `;
-        })
-        .join("");
+      if (appData.hotel && !Object.prototype.hasOwnProperty.call(appData.hotel, "active")) {
+        appData.hotel.active = true;
+      }
+
+      if (Array.isArray(appData.places)) {
+        appData.places = appData.places.map(function(place) {
+          if (!Object.prototype.hasOwnProperty.call(place, "image")) {
+            place.image = "";
+          }
+
+          if (!Object.prototype.hasOwnProperty.call(place, "active")) {
+            place.active = true;
+          }
+
+          return place;
+        });
+      }
     }
 
-    function init() {
-      renderHotel();
+    function patchJsonInBrowser() {
+      if (!appData) {
+        showToast("ยังไม่มีข้อมูลให้แก้");
+        return;
+      }
+
+      patchWrongNamesInJson();
+      patchMissingImageFieldForAllPlaces();
+      patchHotelImage();
+      patchPlaceImages();
+
+      renderApp();
+      showToast("แก้ JSON ใน browser แล้ว");
+    }
+
+    async function savePatchedJsonToSupabase() {
+      try {
+        if (!appData) {
+          showToast("ยังไม่มีข้อมูลให้บันทึก");
+          return;
+        }
+
+        await updatePlanDataInSupabase(appData);
+        showToast("บันทึก JSON ที่แก้แล้วกลับ Supabase สำเร็จ");
+      } catch (error) {
+        console.error("savePatchedJsonToSupabase error:", error);
+        showToast("บันทึกกลับ Supabase ไม่สำเร็จ");
+      }
+    }
+
+    async function togglePlaceActive(placeName) {
+      try {
+        if (!appData || !Array.isArray(appData.places)) {
+          showToast("ยังไม่มีข้อมูล");
+          return;
+        }
+
+        const place = getPlaceByName(placeName);
+
+        if (!place) {
+          showToast("ไม่พบสถานที่");
+          return;
+        }
+
+        place.active = place.active === false ? true : false;
+
+        await updatePlanDataInSupabase(appData);
+        renderApp();
+        showToast(place.active ? "ตั้งค่าเป็น Active แล้ว" : "ตั้งค่าเป็น Inactive แล้ว");
+      } catch (error) {
+        console.error("togglePlaceActive error:", error);
+        showToast("อัปเดตสถานะไม่สำเร็จ");
+      }
+    }
+
+    function renderApp() {
+      renderSidebarMenus();
       renderSummaryTags();
       renderItineraries();
-      renderMiniPlaceList("photoList", appData.photoPlaces);
-      renderMiniPlaceList("foodList", appData.foodPlaces);
-      renderTransportGuide();
+      syncResponsiveState();
     }
 
-    init();
+    async function init() {
+      try {
+        showLoadingState();
+        await loadAppData();
+
+        if (!appData) {
+          showEmptyState();
+          return;
+        }
+
+        renderApp();
+        showAppState();
+      } catch (error) {
+        console.error("init error:", error);
+        showErrorState("โหลดข้อมูลจาก Supabase ไม่สำเร็จ: " + (error.message || "Unknown error"));
+      }
+    }
+
+    async function reloadAppData() {
+      await init();
+      showToast("โหลดข้อมูลใหม่แล้ว");
+    }
+
+    function handleWindowResize() {
+      syncResponsiveState();
+    }
 
     window.copyText = copyText;
+    window.reloadAppData = reloadAppData;
+    window.patchJsonInBrowser = patchJsonInBrowser;
+    window.savePatchedJsonToSupabase = savePatchedJsonToSupabase;
+    window.openHotelImageModal = openHotelImageModal;
+    window.openPlaceImageModal = openPlaceImageModal;
+    window.closeImageModal = closeImageModal;
+    window.handleModalBackdropClick = handleModalBackdropClick;
+    window.handleModalUrlInput = handleModalUrlInput;
+    window.clearModalImage = clearModalImage;
+    window.saveModalImageToSupabase = saveModalImageToSupabase;
+    window.setSelectedDay = setSelectedDay;
+    window.toggleMobileSidebar = toggleMobileSidebar;
+    window.closeMobileSidebar = closeMobileSidebar;
+    window.togglePlaceActive = togglePlaceActive;
+
+    window.addEventListener("resize", handleWindowResize);
+
+    init();
   </script>
 </body>
 </html>
