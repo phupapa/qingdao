@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qingdao Travel Plan</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    :root {
+      --bg: #f3f6fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+      --orange: #ea580c;
+      --orange-soft: #ffedd5;
+      --red-soft: #fee2e2;
+      --yellow-soft: #fef3c7;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      --radius: 18px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0ea5e9, #2563eb);
+      color: #ffffff;
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      opacity: 0.96;
+      max-width: 760px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .hotel-box {
+      display: grid;
+      gap: 10px;
+      background: #f9fafb;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .hotel-box h3 {
+      font-size: 18px;
+      color: #111827;
+    }
+
+    .hotel-zh {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .hotel-meta {
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .day-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .day-head {
+      padding: 16px 18px;
+      color: #ffffff;
+    }
+
+    .day-head h3 {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .day-head p {
+      font-size: 13px;
+      opacity: 0.95;
+    }
+
+    .day-body {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .point-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .point-item {
+      border: 1px solid var(--line);
+      background: #f9fafb;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .point-item strong {
+      display: block;
+      font-size: 15px;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .point-item small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .point-item p {
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .meta-line {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: 0.2s ease;
+      background: #ffffff;
+      color: #111827;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-copy {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border-color: #bfdbfe;
+    }
+
+    .btn-photo {
+      background: var(--green-soft);
+      color: var(--green);
+      border-color: #bbf7d0;
+    }
+
+    .btn-map {
+      background: var(--orange-soft);
+      color: var(--orange);
+      border-color: #fed7aa;
+    }
+
+    .list-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .mini-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f9fafb;
+      padding: 14px;
+    }
+
+    .mini-card h4 {
+      font-size: 15px;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+
+    .mini-card .zh {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .mini-card p {
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .mini-meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .transport-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .transport-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #f9fafb;
+    }
+
+    .transport-item h4 {
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+
+    .transport-item p {
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+
+    .transport-item .transport-note {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 8px 0 4px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #111827;
+      color: #ffffff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: all 0.2s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 14px;
+      }
+
+      .hero {
+        padding: 22px 18px;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .card-body {
+        padding: 16px;
+      }
+
+      .list-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>Qingdao Travel Plan</h1>
+      <p>
+        แผนเที่ยว Qingdao แบบอ่านง่าย รวมโรงแรม จุดเที่ยวประจำวัน จุดถ่ายรูป ของกิน
+        และแนวทางการเดินทางในเมือง พร้อมปุ่ม Copy ภาษาจีน, เปิด Google Photos และเปิด Amap
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-body">
+          <h2 class="section-title">ที่พักหลัก</h2>
+          <p class="section-subtitle">จุดเริ่มต้นของทุกวัน</p>
+          <div id="hotelCard" class="hotel-box"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-body">
+          <h2 class="section-title">ภาพรวมทริป</h2>
+          <p class="section-subtitle">สรุปเส้นทางหลักที่วางไว้</p>
+          <div class="tag-row" id="summaryTags"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-body">
+        <h2 class="section-title">Itinerary</h2>
+        <p class="section-subtitle">แผนเที่ยวรายวัน</p>
+        <div id="itineraryList" class="timeline"></div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-body">
+          <h2 class="section-title">Photo Spots</h2>
+          <p class="section-subtitle">จุดถ่ายรูปน่าแวะ</p>
+          <div id="photoList" class="list-grid"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-body">
+          <h2 class="section-title">Food Spots</h2>
+          <p class="section-subtitle">ร้านและโซนของกิน</p>
+          <div id="foodList" class="list-grid"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-body">
+        <h2 class="section-title">Transport Guide</h2>
+        <p class="section-subtitle">สรุปการเดินทางเบื้องต้นสำหรับแต่ละจุดสำคัญ</p>
+        <div id="transportList" class="transport-list"></div>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      ใช้งานไฟล์นี้ได้ทันที และสามารถแก้ไขข้อมูลใน <code>window.APP_DATA</code> เพื่ออัปเดตทั้งหน้าอัตโนมัติ
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    window.APP_DATA = {
+      hotel: {
+        name: "Manxin Hotel Qingdao Zhanqiao Railway Station",
+        zh: "青岛栈桥火车站漫心酒店",
+        lat: 36.0652,
+        lng: 120.3162,
+        district: "Jiaozhou Road / Railway Station Area",
+        note: "จุดเริ่มต้นทุกวัน",
+        description: "โรงแรมที่พักหลัก ใกล้ Qingdao Railway Station ใช้เป็นจุดเริ่มต้นของทุกวัน",
+        best: "ออกเดินทางตอนเช้า"
+      },
+
+      transportGuide: {
+        "Manxin Hotel Qingdao Zhanqiao Railway Station": {
+          mode: "start",
+          summary: "Trip starting point",
+          station: "Qingdao Railway Station",
+          line: "Line 1 / Line 3",
+          exit: "Walk from hotel",
+          note: "Very close to Qingdao Railway Station"
+        },
+
+        "Silver Fish Street": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "-",
+          line: "-",
+          exit: "-",
+          note: "Very close to hotel"
+        },
+
+        "St. Michael's Cathedral": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "-",
+          line: "-",
+          exit: "-",
+          note: "Inside old town route"
+        },
+
+        "Yue Xikelai Square": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "-",
+          line: "-",
+          exit: "-",
+          note: "Inside old town route"
+        },
+
+        "Longjiang Road": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "-",
+          line: "-",
+          exit: "-",
+          note: "Easy after Cathedral / Daxue Road"
+        },
+
+        "Qinyu Road": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "-",
+          line: "-",
+          exit: "-",
+          note: "Good if you enjoy coastal walking"
+        },
+
+        "Taiping Mountain Cableway": {
+          mode: "metro-walk",
+          summary: "Metro + short walk or taxi",
+          station: "Hall of the People / Huiquan Square",
+          line: "Line 3 / Line 4",
+          exit: "Check local exit signs",
+          note: "Farther than old town walking area"
+        },
+
+        "Cafe La Mansarde": {
+          mode: "metro-walk",
+          summary: "Metro + short walk or taxi",
+          station: "Hall of the People / Huiquan Square",
+          line: "Line 3 / Line 4",
+          exit: "Check local exit signs",
+          note: "Good after Taiping Mountain"
+        },
+
+        "Tsingtao Brewery Museum": {
+          mode: "metro-walk",
+          summary: "Recommended by metro",
+          station: "Taidong",
+          line: "Line 1 / Line 2",
+          exit: "E",
+          note: "Very close to Taidong area"
+        },
+
+        "Qingdao Beer Street": {
+          mode: "metro-walk",
+          summary: "Recommended by metro",
+          station: "Taidong",
+          line: "Line 1 / Line 2",
+          exit: "E",
+          note: "Walk from station into food and beer zone"
+        },
+
+        "Signal Hill Park": {
+          mode: "walk",
+          summary: "Walkable or short metro ride",
+          station: "Hall of the People / Xinhaoshan",
+          line: "Line 3 / Line 4",
+          exit: "Check local exit signs",
+          note: "Can walk if you enjoy city walk"
+        },
+
+        "Zhongshan Road": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "Zhongshan Road",
+          line: "Line 1",
+          exit: "D",
+          note: "Very easy from hotel"
+        },
+
+        "Pichaiyuan": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "Zhongshan Road",
+          line: "Line 1",
+          exit: "D",
+          note: "Or use metro and walk from station"
+        },
+
+        "Taidong Pedestrian Street": {
+          mode: "metro",
+          summary: "Recommended by metro",
+          station: "Taidong",
+          line: "Line 1 / Line 2",
+          exit: "E",
+          note: "Best for evening route"
+        },
+
+        "Qingdao Botanical Garden": {
+          mode: "metro-walk",
+          summary: "Metro + walk",
+          station: "Zhiquan Road / Yan'an 3rd Road",
+          line: "Line 2 / Line 3",
+          exit: "Check local exit signs",
+          note: "Best in the morning"
+        },
+
+        "Zhanshan Temple": {
+          mode: "metro-walk",
+          summary: "Metro + walk",
+          station: "Zhiquan Road / Yan'an 3rd Road",
+          line: "Line 2 / Line 3",
+          exit: "Check local exit signs",
+          note: "Easy pair with Botanical Garden"
+        },
+
+        "May Fourth Square": {
+          mode: "metro",
+          summary: "Recommended by metro",
+          station: "May Fourth Square",
+          line: "Line 2 / Line 3",
+          exit: "D",
+          note: "Best access to modern Qingdao center"
+        },
+
+        "Olympic Sailing Center": {
+          mode: "metro-walk",
+          summary: "Recommended by metro",
+          station: "Fushansuo",
+          line: "Line 2",
+          exit: "D",
+          note: "Another option is from May Fourth Square"
+        },
+
+        "Badaguan": {
+          mode: "metro-walk",
+          summary: "Recommended by metro or long walk",
+          station: "Huiquan Square",
+          line: "Line 3",
+          exit: "C",
+          note: "Best entry to main Badaguan zone"
+        },
+
+        "Xiaoyushan Park": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "-",
+          line: "-",
+          exit: "-",
+          note: "Good for city walk"
+        },
+
+        "Zhanqiao Pier": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "Qingdao Station",
+          line: "Line 1 / Line 3",
+          exit: "G",
+          note: "Or metro if returning from elsewhere"
+        },
+
+        "Huilan Pavilion": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "Qingdao Station",
+          line: "Line 1 / Line 3",
+          exit: "G",
+          note: "Continue from Zhanqiao Pier"
+        },
+
+        "Little Qingdao": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "-",
+          line: "-",
+          exit: "-",
+          note: "Nice coastal walking route"
+        },
+
+        "Lu Xun Park Coast": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "-",
+          line: "-",
+          exit: "-",
+          note: "Easy coast walk"
+        },
+
+        "Daxue Road": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "-",
+          line: "-",
+          exit: "-",
+          note: "Works well with Longjiang Road"
+        },
+
+        "Second Bathing Beach": {
+          mode: "metro-walk",
+          summary: "Metro or short taxi",
+          station: "Huiquan Square / Zhongshan Park",
+          line: "Line 3",
+          exit: "C",
+          note: "Farther from hotel"
+        },
+
+        "Third Bathing Beach": {
+          mode: "metro-walk",
+          summary: "Recommended by metro",
+          station: "May Fourth Square / Fushansuo",
+          line: "Line 2 / Line 3",
+          exit: "D",
+          note: "Good for evening"
+        },
+
+        "Princess House": {
+          mode: "metro-walk",
+          summary: "Metro or short taxi",
+          station: "Huiquan Square / Zhongshan Park",
+          line: "Line 3",
+          exit: "C",
+          note: "Pair with Huashi Villa"
+        },
+
+        "Huashi Villa": {
+          mode: "metro-walk",
+          summary: "Metro or short taxi",
+          station: "Huiquan Square / Zhongshan Park",
+          line: "Line 3",
+          exit: "C",
+          note: "In the same Badaguan zone"
+        },
+
+        "Qingdao Railway Station Facade": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "Qingdao Station",
+          line: "Line 1 / Line 3",
+          exit: "Directly by station",
+          note: "Very close to hotel"
+        },
+
+        "Chun He Lou": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "Zhongshan Road",
+          line: "Line 1",
+          exit: "D",
+          note: "Or metro to Zhongshan Road"
+        },
+
+        "Wang Jie Shaokao": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "Zhongshan Road / Taidong",
+          line: "Line 1 / Line 2",
+          exit: "Depends on branch",
+          note: "Old town side is easy by foot"
+        },
+
+        "Kaihai Seafood Dumplings": {
+          mode: "metro-walk",
+          summary: "Recommended by metro",
+          station: "Zhiquan Road / Yan'an 3rd Road",
+          line: "Line 2 / Line 3",
+          exit: "Check local exit signs",
+          note: "Good after Day 3 route"
+        },
+
+        "Pichaiyuan Food Street": {
+          mode: "walk",
+          summary: "Walkable",
+          station: "Zhongshan Road",
+          line: "Line 1",
+          exit: "D",
+          note: "Many local snacks together"
+        },
+
+        "Taidong Night Market": {
+          mode: "metro",
+          summary: "Recommended by metro",
+          station: "Taidong",
+          line: "Line 1 / Line 2",
+          exit: "E",
+          note: "Best for night market"
+        }
+      },
+
+      itineraries: [
+        {
+          id: "day1",
+          title: "Day 1 — Old Town + Sea View + Sunset",
+          subtitle: "Manxin Hotel Qingdao Zhanqiao Railway Station → Old Town walking route → Taiping Mountain",
+          description: "เที่ยวโซนเมืองเก่า เดินถ่ายรูปตามถนนสวย ๆ แล้วขึ้นจุดชมวิวช่วงเย็น",
+          color: "#ef4444",
+          points: [
+            "Manxin Hotel Qingdao Zhanqiao Railway Station",
+            "Silver Fish Street",
+            "St. Michael's Cathedral",
+            "Yue Xikelai Square",
+            "Longjiang Road",
+            "Qinyu Road",
+            "Taiping Mountain Cableway",
+            "Cafe La Mansarde"
+          ],
+          center: [36.071, 120.321],
+          zoom: 14
+        },
+
+        {
+          id: "day2",
+          title: "Day 2 — Beer + City Icons + Night Market",
+          subtitle: "Manxin Hotel Qingdao Zhanqiao Railway Station → Beer museum route + old city icons + Taidong street food",
+          description: "เน้นพิพิธภัณฑ์เบียร์ แลนด์มาร์กเมือง และปิดท้ายด้วยของกินตอนกลางคืน",
+          color: "#2563eb",
+          points: [
+            "Manxin Hotel Qingdao Zhanqiao Railway Station",
+            "Tsingtao Brewery Museum",
+            "Qingdao Beer Street",
+            "Signal Hill Park",
+            "Zhongshan Road",
+            "Pichaiyuan",
+            "Taidong Pedestrian Street"
+          ],
+          center: [36.081, 120.338],
+          zoom: 13
+        },
+
+        {
+          id: "day3",
+          title: "Day 3 — Garden + Temple + Coastal Classics",
+          subtitle: "Manxin Hotel Qingdao Zhanqiao Railway Station → Garden + Temple + coastal classics",
+          description: "เที่ยวสวน วัด จุดชมวิวริมทะเล และโซนเมืองสมัยใหม่ของ Qingdao",
+          color: "#16a34a",
+          points: [
+            "Manxin Hotel Qingdao Zhanqiao Railway Station",
+            "Qingdao Botanical Garden",
+            "Zhanshan Temple",
+            "May Fourth Square",
+            "Olympic Sailing Center",
+            "Badaguan",
+            "Xiaoyushan Park"
+          ],
+          center: [36.066, 120.377],
+          zoom: 12
+        }
+      ],
+
+      places: [
+        {
+          name: "Manxin Hotel Qingdao Zhanqiao Railway Station",
+          zh: "青岛栈桥火车站漫心酒店",
+          cat: "hotel",
+          day: "hotel",
+          lat: 36.0652,
+          lng: 120.3162,
+          district: "Jiaozhou Road / Railway Station Area",
+          note: "จุดเริ่มต้นทุกวัน",
+          description: "โรงแรมที่พักหลัก ใกล้สถานีรถไฟ Qingdao เดินทางสะดวก",
+          best: "ออกเดินทางตอนเช้า"
+        },
+
+        {
+          name: "Silver Fish Street",
+          zh: "银鱼巷",
+          cat: "photo",
+          day: "day1",
+          lat: 36.0641,
+          lng: 120.3202,
+          district: "Old Town",
+          note: "Beautiful lane with cafes",
+          description: "ตรอกสวยในเมืองเก่า มีคาเฟ่และมุมถ่ายรูปบรรยากาศดี",
+          best: "Morning / Evening"
+        },
+
+        {
+          name: "St. Michael's Cathedral",
+          zh: "圣弥厄尔教堂",
+          cat: "photo",
+          day: "day1",
+          lat: 36.06797,
+          lng: 120.31561,
+          district: "Old Town",
+          note: "Historic cathedral",
+          description: "โบสถ์คาทอลิกเก่าแก่ เป็นหนึ่งในแลนด์มาร์กสำคัญของ Qingdao",
+          best: "Morning"
+        },
+
+        {
+          name: "Yue Xikelai Square",
+          zh: "悦喜客来广场",
+          cat: "route",
+          day: "day1",
+          lat: 36.0685,
+          lng: 120.3194,
+          district: "Old Town",
+          note: "Mid-route break point",
+          description: "จุดพักระหว่างทางในโซนเมืองเก่า แวะนั่งพักหรือเดินต่อเส้นทางได้ง่าย",
+          best: "Daytime"
+        },
+
+        {
+          name: "Longjiang Road",
+          zh: "龙江路",
+          cat: "photo",
+          day: "day1",
+          lat: 36.0727,
+          lng: 120.3149,
+          district: "Old Town",
+          note: "Street art / mural zone",
+          description: "ถนนสายถ่ายรูปที่มีสตรีทอาร์ตและมุมกำแพงสวย ๆ",
+          best: "Afternoon"
+        },
+
+        {
+          name: "Qinyu Road",
+          zh: "琴屿路",
+          cat: "photo",
+          day: "day1",
+          lat: 36.0782,
+          lng: 120.3107,
+          district: "Coast",
+          note: "Classic seaside road",
+          description: "ถนนริมทะเลยอดนิยม เหมาะกับเดินเล่นชมวิวทะเลและถ่ายรูป",
+          best: "Golden hour"
+        },
+
+        {
+          name: "Taiping Mountain Cableway",
+          zh: "太平山索道",
+          cat: "photo",
+          day: "day1",
+          lat: 36.0775,
+          lng: 120.3365,
+          district: "Hill View",
+          note: "Skyline viewpoint",
+          description: "กระเช้าขึ้นเขาเพื่อชมวิวเมือง Qingdao จากมุมสูง",
+          best: "Sunset"
+        },
+
+        {
+          name: "Cafe La Mansarde",
+          zh: "La Mansarde",
+          cat: "food",
+          day: "day1",
+          lat: 36.0812,
+          lng: 120.3383,
+          district: "Hill View",
+          note: "Cafe with a nice view",
+          description: "คาเฟ่วิวดี เหมาะนั่งพักและดูพระอาทิตย์ตกหลังขึ้นเขา",
+          best: "Sunset"
+        },
+
+        {
+          name: "Tsingtao Brewery Museum",
+          zh: "青岛啤酒博物馆",
+          cat: "photo",
+          day: "day2",
+          lat: 36.0866,
+          lng: 120.3293,
+          district: "Shibei",
+          note: "Most famous beer museum",
+          description: "พิพิธภัณฑ์เบียร์ชื่อดังของ Qingdao เรียนรู้ประวัติและวัฒนธรรมเบียร์เมืองนี้",
+          best: "Afternoon"
+        },
+
+        {
+          name: "Qingdao Beer Street",
+          zh: "登州路啤酒街",
+          cat: "food",
+          day: "day2",
+          lat: 36.0869,
+          lng: 120.3315,
+          district: "Shibei",
+          note: "Beer and food atmosphere",
+          description: "ถนนสายเบียร์และอาหาร บรรยากาศคึกคัก เหมาะกับช่วงเย็นถึงกลางคืน",
+          best: "Night"
+        },
+
+        {
+          name: "Signal Hill Park",
+          zh: "信号山公园",
+          cat: "photo",
+          day: "day2",
+          lat: 36.0721,
+          lng: 120.3271,
+          district: "Old Town",
+          note: "Red roof city view",
+          description: "สวนจุดชมวิวที่เห็นหลังคาแดงของเมืองเก่า Qingdao ได้สวยมาก",
+          best: "Morning / Evening"
+        },
+
+        {
+          name: "Zhongshan Road",
+          zh: "中山路",
+          cat: "photo",
+          day: "day2",
+          lat: 36.067,
+          lng: 120.3185,
+          district: "Old Town",
+          note: "Main old town street",
+          description: "ถนนหลักในเมืองเก่า เดินง่าย มีร้านค้า อาคารเก่า และบรรยากาศท้องถิ่น",
+          best: "Night"
+        },
+
+        {
+          name: "Pichaiyuan",
+          zh: "劈柴院",
+          cat: "food",
+          day: "day2",
+          lat: 36.0695,
+          lng: 120.317,
+          district: "Old Town",
+          note: "Classic food street",
+          description: "ย่านอาหารเก่าชื่อดังของ Qingdao รวมของกินท้องถิ่นไว้เยอะมาก",
+          best: "Evening"
+        },
+
+        {
+          name: "Taidong Pedestrian Street",
+          zh: "台东步行街",
+          cat: "food",
+          day: "day2",
+          lat: 36.0906,
+          lng: 120.3509,
+          district: "Shibei",
+          note: "Popular night market area",
+          description: "ถนนคนเดินและย่านของกินยอดนิยม เหมาะกับเดินเล่นตอนกลางคืน",
+          best: "Night"
+        },
+
+        {
+          name: "Qingdao Botanical Garden",
+          zh: "青岛植物园",
+          cat: "photo",
+          day: "day3",
+          lat: 36.0609,
+          lng: 120.3605,
+          district: "Shinan",
+          note: "Relaxing city garden",
+          description: "สวนพฤกษศาสตร์ในเมือง บรรยากาศเงียบสงบ เหมาะเริ่มต้นวันแบบสบาย ๆ",
+          best: "Morning"
+        },
+
+        {
+          name: "Zhanshan Temple",
+          zh: "湛山寺",
+          cat: "photo",
+          day: "day3",
+          lat: 36.0615,
+          lng: 120.3668,
+          district: "Shinan",
+          note: "Peaceful Buddhist temple",
+          description: "วัดพุทธบรรยากาศสงบ สวยเรียบง่าย เหมาะเดินชมและพักใจ",
+          best: "Morning"
+        },
+
+        {
+          name: "May Fourth Square",
+          zh: "五四广场",
+          cat: "photo",
+          day: "day3",
+          lat: 36.0649,
+          lng: 120.3824,
+          district: "Modern Center",
+          note: "Modern Qingdao icon",
+          description: "จัตุรัสสัญลักษณ์ของ Qingdao โซนเมืองใหม่ริมทะเล",
+          best: "Blue hour"
+        },
+
+        {
+          name: "Olympic Sailing Center",
+          zh: "奥帆中心",
+          cat: "photo",
+          day: "day3",
+          lat: 36.0603,
+          lng: 120.3956,
+          district: "Modern Center",
+          note: "Marina and skyline",
+          description: "ท่าจอดเรือและแลนด์มาร์กริมทะเล เห็นวิวเมืองสมัยใหม่ชัดเจน",
+          best: "Night"
+        },
+
+        {
+          name: "Badaguan",
+          zh: "八大关",
+          cat: "photo",
+          day: "day3",
+          lat: 36.0557,
+          lng: 120.3435,
+          district: "Historic Villas",
+          note: "Tree-lined villa district",
+          description: "ย่านวิลล่าเก่า ถนนร่มรื่น มีบ้านสวยและบรรยากาศคลาสสิก",
+          best: "Afternoon"
+        },
+
+        {
+          name: "Xiaoyushan Park",
+          zh: "小鱼山公园",
+          cat: "photo",
+          day: "day3",
+          lat: 36.0698,
+          lng: 120.3318,
+          district: "Old Town View",
+          note: "Sea + red roof panorama",
+          description: "สวนจุดชมวิวที่เห็นทะเลและหลังคาแดงของเมืองเก่าจากมุมสูง",
+          best: "Morning / Evening"
+        },
+
+        {
+          name: "Zhanqiao Pier",
+          zh: "栈桥",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0609,
+          lng: 120.3136,
+          district: "Old Town Coast",
+          note: "Classic pier landmark",
+          description: "สะพานท่าเรือชื่อดังของ Qingdao เป็นแลนด์มาร์กคลาสสิกที่ต้องแวะ",
+          best: "Morning"
+        },
+
+        {
+          name: "Huilan Pavilion",
+          zh: "回澜阁",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0596,
+          lng: 120.314,
+          district: "Old Town Coast",
+          note: "End pavilion at Zhanqiao",
+          description: "ศาลาปลายสะพาน Zhanqiao จุดถ่ายรูปสำคัญริมทะเล",
+          best: "Morning"
+        },
+
+        {
+          name: "Little Qingdao",
+          zh: "小青岛",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0609,
+          lng: 120.3024,
+          district: "Island View",
+          note: "Lighthouse and sea view",
+          description: "เกาะเล็กใกล้ฝั่ง มีประภาคารและวิวทะเลสวย",
+          best: "Afternoon"
+        },
+
+        {
+          name: "Lu Xun Park Coast",
+          zh: "鲁迅公园",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0642,
+          lng: 120.3088,
+          district: "Coast",
+          note: "Rocky coast view",
+          description: "สวนริมทะเลที่มีโขดหินและวิวชายฝั่งสวยมาก",
+          best: "Afternoon"
+        },
+
+        {
+          name: "Daxue Road",
+          zh: "大学路",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0715,
+          lng: 120.325,
+          district: "Old Town",
+          note: "Famous red wall photo spot",
+          description: "ถนนดังสำหรับถ่ายรูป มีกำแพงแดงและต้นไม้เป็นเอกลักษณ์",
+          best: "Afternoon"
+        },
+
+        {
+          name: "Second Bathing Beach",
+          zh: "第二海水浴场",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0545,
+          lng: 120.3398,
+          district: "Badaguan",
+          note: "Beach with old villas",
+          description: "ชายหาดสวยในโซน Badaguan ใกล้วิลล่าเก่าและบรรยากาศดี",
+          best: "Morning"
+        },
+
+        {
+          name: "Third Bathing Beach",
+          zh: "第三海水浴场",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0618,
+          lng: 120.3728,
+          district: "Central Coast",
+          note: "Beach near modern center",
+          description: "ชายหาดใกล้โซนเมืองใหม่ เหมาะเดินเล่นช่วงเย็น",
+          best: "Evening"
+        },
+
+        {
+          name: "Princess House",
+          zh: "公主楼",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0568,
+          lng: 120.3439,
+          district: "Badaguan",
+          note: "Fairy tale style house",
+          description: "บ้านสไตล์เทพนิยายในย่าน Badaguan ถ่ายรูปสวยมาก",
+          best: "Afternoon"
+        },
+
+        {
+          name: "Huashi Villa",
+          zh: "花石楼",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0558,
+          lng: 120.3432,
+          district: "Badaguan",
+          note: "Beautiful coastal villa",
+          description: "วิลล่าหินสวยริมทะเล เป็นอีกจุดเด่นของย่าน Badaguan",
+          best: "Afternoon"
+        },
+
+        {
+          name: "Qingdao Railway Station Facade",
+          zh: "青岛站",
+          cat: "photo",
+          day: "photo",
+          lat: 36.0645,
+          lng: 120.3131,
+          district: "Station Area",
+          note: "Classic station facade",
+          description: "หน้าสถานีรถไฟ Qingdao อาคารสวยคลาสสิก ใกล้โรงแรมมาก",
+          best: "Morning"
+        },
+
+        {
+          name: "Chun He Lou",
+          zh: "春和楼",
+          cat: "food",
+          day: "food",
+          lat: 36.068,
+          lng: 120.318,
+          district: "Zhongshan Road",
+          note: "Historic Shandong cuisine",
+          description: "ร้านอาหารเก่าแก่ชื่อดัง เหมาะลองอาหารสไตล์ซานตง",
+          best: "Lunch / Dinner"
+        },
+
+        {
+          name: "Wang Jie Shaokao",
+          zh: "王姐烧烤",
+          cat: "food",
+          day: "food",
+          lat: 36.0689,
+          lng: 120.3175,
+          district: "Old Town",
+          note: "Popular grilled food",
+          description: "ร้านปิ้งย่างยอดนิยมของ Qingdao เหมาะแวะกินตอนเย็น",
+          best: "Evening"
+        },
+
+        {
+          name: "Kaihai Seafood Dumplings",
+          zh: "开海红岛海鲜虾水饺",
+          cat: "food",
+          day: "food",
+          lat: 36.058,
+          lng: 120.366,
+          district: "Zhanshan",
+          note: "Seafood + shrimp dumplings",
+          description: "ร้านดังเรื่องซีฟู้ดและเกี๊ยวกุ้ง เหมาะมื้อเย็น",
+          best: "Dinner"
+        },
+
+        {
+          name: "Pichaiyuan Food Street",
+          zh: "劈柴院美食街",
+          cat: "food",
+          day: "food",
+          lat: 36.0695,
+          lng: 120.317,
+          district: "Old Town",
+          note: "Many local snacks in one place",
+          description: "ถนนอาหารที่รวมของกินท้องถิ่นหลายแบบไว้ในจุดเดียว",
+          best: "Evening"
+        },
+
+        {
+          name: "Taidong Night Market",
+          zh: "台东夜市",
+          cat: "food",
+          day: "food",
+          lat: 36.0906,
+          lng: 120.3509,
+          district: "Shibei",
+          note: "Dense street food zone",
+          description: "ตลาดกลางคืนยอดนิยม ของกินแน่น เดินสนุก บรรยากาศคึกคัก",
+          best: "Night"
+        }
+      ],
+
+      dayRoutes: {
+        day1: [
+          [36.0652, 120.3162],
+          [36.0641, 120.3202],
+          [36.06797, 120.31561],
+          [36.0685, 120.3194],
+          [36.0727, 120.3149],
+          [36.0782, 120.3107],
+          [36.0775, 120.3365],
+          [36.0812, 120.3383]
+        ],
+
+        day2: [
+          [36.0652, 120.3162],
+          [36.0866, 120.3293],
+          [36.0869, 120.3315],
+          [36.0721, 120.3271],
+          [36.067, 120.3185],
+          [36.0695, 120.317],
+          [36.0906, 120.3509]
+        ],
+
+        day3: [
+          [36.0652, 120.3162],
+          [36.0609, 120.3605],
+          [36.0615, 120.3668],
+          [36.0649, 120.3824],
+          [36.0603, 120.3956],
+          [36.0557, 120.3435],
+          [36.0698, 120.3318]
+        ]
+      },
+
+      photoPlaces: [
+        "Zhanqiao Pier",
+        "Huilan Pavilion",
+        "Little Qingdao",
+        "Lu Xun Park Coast",
+        "Daxue Road",
+        "Second Bathing Beach",
+        "Third Bathing Beach",
+        "Princess House",
+        "Huashi Villa",
+        "Qingdao Railway Station Facade"
+      ],
+
+      foodPlaces: [
+        "Chun He Lou",
+        "Wang Jie Shaokao",
+        "Kaihai Seafood Dumplings",
+        "Pichaiyuan Food Street",
+        "Taidong Night Market",
+        "Qingdao Beer Street",
+        "Cafe La Mansarde"
+      ]
+    };
+
+    const appData = window.APP_DATA;
+
+    function getPlaceByName(name) {
+      return appData.places.find(function(place) {
+        return place.name === name;
+      });
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(function() {
+        toast.classList.remove("show");
+      }, 1800);
+    }
+
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+
+        showToast("คัดลอกภาษาจีนแล้ว");
+      } catch (error) {
+        showToast("คัดลอกไม่สำเร็จ");
+      }
+    }
+
+    function buildGooglePhotosLink(place) {
+      const query = encodeURIComponent(place.zh || place.name);
+      return "https://www.google.com/search?tbm=isch&q=" + query;
+    }
+
+    function buildAmapLink(place) {
+      return "https://uri.amap.com/marker?position=" + place.lng + "," + place.lat + "&name=" + encodeURIComponent(place.zh || place.name);
+    }
+
+    function createActionButtons(place) {
+      return `
+        <div class="action-row">
+          <button class="btn btn-copy" type="button" onclick="copyText('${escapeForJs(place.zh || place.name)}')">
+            Copy ภาษาจีน
+          </button>
+          <a class="btn btn-photo" href="${buildGooglePhotosLink(place)}" target="_blank" rel="noopener noreferrer">
+            เปิด Google Photos
+          </a>
+          <a class="btn btn-map" href="${buildAmapLink(place)}" target="_blank" rel="noopener noreferrer">
+            เปิด Amap
+          </a>
+        </div>
+      `;
+    }
+
+    function escapeForJs(text) {
+      return String(text)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/\n/g, " ");
+    }
+
+    function renderHotel() {
+      const hotel = appData.hotel;
+      const hotelCard = document.getElementById("hotelCard");
+
+      hotelCard.innerHTML = `
+        <h3>${hotel.name}</h3>
+        <div class="hotel-zh">${hotel.zh}</div>
+        <div class="hotel-meta">
+          <div><strong>District:</strong> ${hotel.district}</div>
+          <div><strong>Note:</strong> ${hotel.note}</div>
+          <div><strong>Description:</strong> ${hotel.description}</div>
+          <div><strong>Best time:</strong> ${hotel.best}</div>
+          <div><strong>Coordinates:</strong> ${hotel.lat}, ${hotel.lng}</div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">Hotel</span>
+          <span class="tag">Start Point</span>
+          <span class="tag">Railway Station Area</span>
+        </div>
+        ${createActionButtons(hotel)}
+      `;
+    }
+
+    function renderSummaryTags() {
+      const summaryTags = document.getElementById("summaryTags");
+      const tags = [
+        "3 Days",
+        appData.photoPlaces.length + " Photo Spots",
+        appData.foodPlaces.length + " Food Spots",
+        appData.itineraries.length + " Main Routes",
+        "Old Town",
+        "Sea View",
+        "Cafe",
+        "Beer",
+        "Night Market"
+      ];
+
+      summaryTags.innerHTML = tags
+        .map(function(tag) {
+          return `<span class="tag">${tag}</span>`;
+        })
+        .join("");
+    }
+
+    function renderItineraries() {
+      const itineraryList = document.getElementById("itineraryList");
+
+      itineraryList.innerHTML = appData.itineraries
+        .map(function(itinerary) {
+          const pointItems = itinerary.points
+            .map(function(pointName) {
+              const place = getPlaceByName(pointName);
+
+              if (!place) {
+                return `
+                  <div class="point-item">
+                    <strong>${pointName}</strong>
+                    <p>ยังไม่มีรายละเอียดเพิ่มเติม</p>
+                  </div>
+                `;
+              }
+
+              const transport = appData.transportGuide[place.name] || null;
+
+              return `
+                <div class="point-item">
+                  <strong>${place.name}</strong>
+                  <small>${place.zh}</small>
+                  <p>${place.description}</p>
+                  <div class="meta-line">
+                    เขต: ${place.district} · เวลาที่เหมาะ: ${place.best}
+                  </div>
+                  ${
+                    transport
+                      ? `
+                        <div class="meta-line">
+                          การเดินทาง: ${transport.summary} · สถานี: ${transport.station} · สาย: ${transport.line}
+                        </div>
+                      `
+                      : ""
+                  }
+                  ${createActionButtons(place)}
+                </div>
+              `;
+            })
+            .join("");
+
+          return `
+            <div class="day-card">
+              <div class="day-head" style="background:${itinerary.color}">
+                <h3>${itinerary.title}</h3>
+                <p>${itinerary.subtitle}</p>
+              </div>
+              <div class="day-body">
+                <p>${itinerary.description}</p>
+                <div class="meta-line">
+                  Center: ${itinerary.center[0]}, ${itinerary.center[1]} · Zoom: ${itinerary.zoom}
+                </div>
+                <div class="point-list">
+                  ${pointItems}
+                </div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function renderMiniPlaceList(targetId, names) {
+      const target = document.getElementById(targetId);
+
+      target.innerHTML = names
+        .map(function(name) {
+          const place = getPlaceByName(name);
+
+          if (!place) {
+            return `
+              <div class="mini-card">
+                <h4>${name}</h4>
+                <p>ไม่พบรายละเอียด</p>
+              </div>
+            `;
+          }
+
+          return `
+            <div class="mini-card">
+              <h4>${place.name}</h4>
+              <div class="zh">${place.zh}</div>
+              <p>${place.description}</p>
+              <div class="mini-meta">เขต: ${place.district}</div>
+              <div class="mini-meta">เวลาที่เหมาะ: ${place.best}</div>
+              ${createActionButtons(place)}
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function renderTransportGuide() {
+      const transportList = document.getElementById("transportList");
+      const transportNames = Object.keys(appData.transportGuide);
+
+      transportList.innerHTML = transportNames
+        .map(function(name) {
+          const transport = appData.transportGuide[name];
+          const place = getPlaceByName(name) || {
+            name: name,
+            zh: name,
+            lat: appData.hotel.lat,
+            lng: appData.hotel.lng
+          };
+
+          return `
+            <div class="transport-item">
+              <h4>${name}</h4>
+              <p><strong>Mode:</strong> ${transport.mode}</p>
+              <p><strong>Summary:</strong> ${transport.summary}</p>
+              <p><strong>Station:</strong> ${transport.station}</p>
+              <p><strong>Line:</strong> ${transport.line}</p>
+              <p><strong>Exit:</strong> ${transport.exit}</p>
+              <div class="transport-note">${transport.note}</div>
+              ${createActionButtons(place)}
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function init() {
+      renderHotel();
+      renderSummaryTags();
+      renderItineraries();
+      renderMiniPlaceList("photoList", appData.photoPlaces);
+      renderMiniPlaceList("foodList", appData.foodPlaces);
+      renderTransportGuide();
+    }
+
+    init();
+
+    window.copyText = copyText;
+  </script>
+</body>
+</html>
