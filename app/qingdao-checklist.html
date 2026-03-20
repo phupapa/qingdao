@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qingdao Travel Checklist</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    :root {
+      --bg: #f3f6fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+      --orange: #ea580c;
+      --orange-soft: #ffedd5;
+      --dark: #111827;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      --radius: 18px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .topbar {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .topbar-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.3;
+    }
+
+    .topbar-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0ea5e9, #2563eb);
+      color: #ffffff;
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      opacity: 0.96;
+      max-width: 900px;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: 0.2s ease;
+      background: #ffffff;
+      color: #111827;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-plan {
+      background: #111827;
+      color: #ffffff;
+      border-color: #111827;
+    }
+
+    .btn-section {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border-color: #bfdbfe;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .summary-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #f9fafb;
+    }
+
+    .summary-item strong {
+      display: block;
+      font-size: 20px;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .summary-item span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .checklist-card {
+      border: 1px solid var(--line);
+      background: #f9fafb;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .checklist-card-head {
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .checklist-list {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: #2563eb;
+      cursor: pointer;
+    }
+
+    .note-box {
+      border: 1px solid #fed7aa;
+      background: var(--orange-soft);
+      color: #9a3412;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 14px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 8px 0 4px;
+    }
+
+    @media (max-width: 900px) {
+      .summary-grid,
+      .checklist-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 14px;
+      }
+
+      .hero {
+        padding: 22px 18px;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .card-body {
+        padding: 16px;
+      }
+
+      .summary-grid,
+      .checklist-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div>
+        <div class="topbar-title">Qingdao Travel Checklist</div>
+        <div class="topbar-subtitle">หน้าแยกสำหรับเช็กลิสต์ของที่ต้องเตรียม และกดกลับไปหน้าแผนเที่ยวได้</div>
+      </div>
+
+      <a class="btn btn-plan" href="index.html">กลับไปหน้า Travel Plan</a>
+    </header>
+
+    <section class="hero">
+      <h1>Checklist เที่ยวชิงเต่า</h1>
+      <p>
+        เช็กลิสต์แยกจากหน้า Travel Plan สำหรับทริปชิงเต่า 5 วัน เดือนมีนาคม ครอบครัว 4 คน
+        ใช้เปิดดูหน้านี้อย่างเดียวตอนจัดกระเป๋า แล้วกดกลับไปหน้าแผนเที่ยวได้ทันที
+      </p>
+
+      <div class="action-row">
+        <a class="btn btn-plan" href="index.html">ไปหน้า Travel Plan</a>
+        <a class="btn btn-section" href="#documents">เอกสาร</a>
+        <a class="btn btn-section" href="#money">การเงิน</a>
+        <a class="btn btn-section" href="#clothes">เสื้อผ้า</a>
+        <a class="btn btn-section" href="#health">ยาและสุขภาพ</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-body">
+        <h2 class="section-title">สรุปเร็ว</h2>
+        <p class="section-subtitle">รายการหลักที่ควรเช็กก่อนออกจากบ้าน</p>
+
+        <div class="summary-grid">
+          <div class="summary-item">
+            <strong>4 คน</strong>
+            <span>ครอบครัว 4 คน</span>
+          </div>
+          <div class="summary-item">
+            <strong>5 วัน</strong>
+            <span>ทริปชิงเต่า</span>
+          </div>
+          <div class="summary-item">
+            <strong>มีนาคม</strong>
+            <span>อากาศเย็น ลมแรง</span>
+          </div>
+          <div class="summary-item">
+            <strong>2 หน้า</strong>
+            <span>กดสลับ Checklist / Plan ได้</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="documents">
+      <div class="card-body">
+        <h2 class="section-title">Checklist หลัก</h2>
+        <p class="section-subtitle">เช็กทีละหมวด และกดกลับไปหน้าแผนเที่ยวได้ตลอด</p>
+
+        <div class="checklist-grid">
+          <div class="checklist-card">
+            <div class="checklist-card-head">เอกสารสำคัญ</div>
+            <ul class="checklist-list">
+              <li class="checklist-item"><input id="doc-1" type="checkbox" /><label for="doc-1">Passport ครบทุกคน และอายุเหลืออย่างน้อย 6 เดือน</label></li>
+              <li class="checklist-item"><input id="doc-2" type="checkbox" /><label for="doc-2">Visa / เอกสารเข้าเมืองที่เกี่ยวข้อง</label></li>
+              <li class="checklist-item"><input id="doc-3" type="checkbox" /><label for="doc-3">ตั๋วเครื่องบินไป-กลับ</label></li>
+              <li class="checklist-item"><input id="doc-4" type="checkbox" /><label for="doc-4">ใบจองโรงแรม</label></li>
+              <li class="checklist-item"><input id="doc-5" type="checkbox" /><label for="doc-5">ประกันการเดินทาง</label></li>
+              <li class="checklist-item"><input id="doc-6" type="checkbox" /><label for="doc-6">สำเนา Passport และรูปถ่ายเก็บในมือถือ</label></li>
+            </ul>
+          </div>
+
+          <div class="checklist-card" id="money">
+            <div class="checklist-card-head">การเงิน</div>
+            <ul class="checklist-list">
+              <li class="checklist-item"><input id="money-1" type="checkbox" /><label for="money-1">เงินหยวนสำหรับใช้จ่ายเบื้องต้น</label></li>
+              <li class="checklist-item"><input id="money-2" type="checkbox" /><label for="money-2">Alipay / WeChat Pay ตั้งค่าแล้ว</label></li>
+              <li class="checklist-item"><input id="money-3" type="checkbox" /><label for="money-3">บัตรเครดิต / เดบิต สำหรับสำรอง</label></li>
+              <li class="checklist-item"><input id="money-4" type="checkbox" /><label for="money-4">แบ่งเงินสดแยกหลายจุดในกระเป๋า</label></li>
+            </ul>
+          </div>
+
+          <div class="checklist-card">
+            <div class="checklist-card-head">อินเทอร์เน็ตและแอป</div>
+            <ul class="checklist-list">
+              <li class="checklist-item"><input id="app-1" type="checkbox" /><label for="app-1">eSIM / SIM สำหรับจีน</label></li>
+              <li class="checklist-item"><input id="app-2" type="checkbox" /><label for="app-2">VPN ติดตั้งและทดสอบแล้ว</label></li>
+              <li class="checklist-item"><input id="app-3" type="checkbox" /><label for="app-3">Amap / Baidu Map / DiDi พร้อมใช้</label></li>
+              <li class="checklist-item"><input id="app-4" type="checkbox" /><label for="app-4">Google Translate หรือแอปแปลภาษา</label></li>
+              <li class="checklist-item"><input id="app-5" type="checkbox" /><label for="app-5">WeChat และ Alipay login เรียบร้อย</label></li>
+            </ul>
+          </div>
+
+          <div class="checklist-card" id="clothes">
+            <div class="checklist-card-head">เสื้อผ้าและอุปกรณ์</div>
+            <ul class="checklist-list">
+              <li class="checklist-item"><input id="cloth-1" type="checkbox" /><label for="cloth-1">เสื้อกันหนาวสำหรับอากาศมีนาคม</label></li>
+              <li class="checklist-item"><input id="cloth-2" type="checkbox" /><label for="cloth-2">เสื้อแขนยาว / กางเกงขายาว / ถุงเท้า</label></li>
+              <li class="checklist-item"><input id="cloth-3" type="checkbox" /><label for="cloth-3">รองเท้าเดินสบาย</label></li>
+              <li class="checklist-item"><input id="cloth-4" type="checkbox" /><label for="cloth-4">หมวก / แว่นกันแดด / ร่มพับ</label></li>
+              <li class="checklist-item"><input id="cloth-5" type="checkbox" /><label for="cloth-5">ปลั๊กแปลง / สายชาร์จ / Power bank</label></li>
+            </ul>
+          </div>
+
+          <div class="checklist-card" id="health">
+            <div class="checklist-card-head">ยาและสุขภาพ</div>
+            <ul class="checklist-list">
+              <li class="checklist-item"><input id="health-1" type="checkbox" /><label for="health-1">ยาประจำตัวครบทุกคน</label></li>
+              <li class="checklist-item"><input id="health-2" type="checkbox" /><label for="health-2">ยาแก้หวัด / ยาแก้ปวด / ยาแก้ท้องเสีย</label></li>
+              <li class="checklist-item"><input id="health-3" type="checkbox" /><label for="health-3">พลาสเตอร์ / หน้ากาก / เจลล้างมือ</label></li>
+              <li class="checklist-item"><input id="health-4" type="checkbox" /><label for="health-4">ครีมทาผิว / ลิปบาล์ม เพราะอากาศเย็นและลมแรง</label></li>
+            </ul>
+          </div>
+
+          <div class="checklist-card">
+            <div class="checklist-card-head">ของใช้จุกจิก</div>
+            <ul class="checklist-list">
+              <li class="checklist-item"><input id="misc-1" type="checkbox" /><label for="misc-1">ทิชชู่พกพา</label></li>
+              <li class="checklist-item"><input id="misc-2" type="checkbox" /><label for="misc-2">ขวดน้ำ</label></li>
+              <li class="checklist-item"><input id="misc-3" type="checkbox" /><label for="misc-3">ถุงผ้า / ถุงพับได้</label></li>
+              <li class="checklist-item"><input id="misc-4" type="checkbox" /><label for="misc-4">ขนมหรือของกินรองท้อง</label></li>
+              <li class="checklist-item"><input id="misc-5" type="checkbox" /><label for="misc-5">กล้อง / เมมโมรี่การ์ด / แบตสำรอง</label></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="note-box">
+      แนะนำให้วางไฟล์หน้านี้ชื่อ <strong>qingdao-checklist.html</strong> และให้หน้าเดิมเพิ่มปุ่มลิงก์ไปหน้านี้ด้วย เช่น
+      <strong>&lt;a href="qingdao-checklist.html"&gt;Open Checklist&lt;/a&gt;</strong>
+      เพื่อกดกลับไปกลับมาระหว่าง 2 หน้าได้ทันที
+    </section>
+
+    <div class="footer-note">
+      หน้าแยกสำหรับ Checklist โดยลิงก์กลับไปหน้า <code>qingdao-travel-plan.html</code>
+    </div>
+  </div>
+</body>
+</html>
